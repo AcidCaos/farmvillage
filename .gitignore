@@ -1,0 +1,14 @@
+/dist*/
+/.idea
+__pycache__/
+/build/
+/*.spec
+*.rar
+*.zip
+*.lnk
+/log.txt
+/chromium
+/chromium-profile
+/cache
+/xml/gz/v855098/*.xml
+/xml/gz/v855098/*.amf
