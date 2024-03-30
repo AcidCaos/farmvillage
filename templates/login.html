@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Meta -->
+        <meta charset="utf-8"/>
+        <!-- Title and Icon -->
+        <title>FarmVille</title>
+        <link rel="shortcut icon" href="img/icon.png"/>
+	    <link rel="icon" type="image/gif" href="img/icon.png"/>
+        <!-- CSS -->
+		<link rel="stylesheet" href="css/facebook.css"/>
+    </head>
+    <body class="ego_wide canvas center_fixed_width_app fbx UIPage_LoggedOut liquid hideBanner Locale_en_US" style="position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%); overflow: auto;">
+        <center>
+            <img src="img/logo.png" style="width: 200px;"/>
+            <p>By the Farm Village team ~ {{version}}</p>
+        </center>
+		<div class="mvl ptm uiInterstitial canvas_error_page uiInterstitialLarge uiBoxWhite">
+			<!-- LOGIN CONTENT -->
+            <div class="phl ptm uiInterstitialContent" style="overflow: auto; display: inblock;">
+				<br>
+				<div style="margin-left:20px; font-size:13px; float: left;">
+                    {% if saves_info %}
+                    <form method="post">
+                        <!-- VILLAGE SELECTION -->
+                        <b>Select a Village</b>
+                        <br><br>
+                        <div style="float: left; margin-right: 4px;">
+                            <img src="img/worker.png" style="height: 27px; margin-top: 0px;">
+                        </div>
+                        <div style="float: left">
+                            <select id="UID" name="UID" style="height: 27px; min-width: 330px;" required>
+                                {% for save in saves_info %}
+                                <option value="{{save.uid}}" title="{{save.uid}}">{{save.name}} ({{save.xp}} xp)</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <br><br>
+                        <br>
+                        <!-- RELEASE SELECTION -->
+                        <b>Game Version</b>
+                        <br><br>
+                        <div style="overflow: auto; display: inblock;">
+                            <div style="float: left">
+                                <div style="float: left; margin-right: 4px;">
+                                    <img src="img/world.png" style="height: 27px; margin-top: 0px;">
+                                </div>
+                                <div style="float: left">
+                                    <select id="GAMEVERSION" name="GAMEVERSION" style="height: 24px;" required>
+                                        <option value="v855097-855094" title="v855097-855094">v855097-855094 (Latest)</option>
+                                    </select>
+                                </div>
+                                <br><br>
+                            </div>
+                            <div style="float: right;">
+                                <button type="submit" style="font-size:14px; height: 25px">Log in</button>
+                            </div>
+                        </div>
+                    </form>
+                    <br>
+                    <!-- NEW VILLAGE -->
+                    <p style="font-size:13px; display: inline;">Or </p>
+                    {% endif %}
+                    <p style="font-size:13px; display: inline;">
+                        <b><a href="/new.html">Create a new Village</a></b>
+                    </p>
+                    <br><br>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

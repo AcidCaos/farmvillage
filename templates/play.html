@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Meta -->
+        <meta charset="utf-8"/>
+        <!-- Title and Icon -->
+        <title id="pageTitle">FarmVille</title>
+        <link rel="shortcut icon" href="img/favicon.gif"/>
+        <link rel="icon" type="image/gif" href="img/favicon.gif"/>
+    </head>
+    <body style="font-family: 'lucida grande',tahoma,verdana,arial,sans-serif">
+        <script>
+            function getExperiments() {
+                console.log('getExperiments');
+                return {
+                    "fv_exp_world_score": 2, /* EXPERIMENT_FLASH_WORLDSCORE_AMF: VARIANT_USE_WORLDSCORE_AMF */
+                    "fv_exp_storage_config": 2, /* EXPERIMENT_FLASH_STORAGECONFIG_AMF: VARIANT_USE_STORAGECONFIG_AMF */
+                    
+                    "fv_contests": 3,
+                    "fv_farmexpress_web_xpromo": 1,
+                    "fv_sub_coins": 3,
+                    "fv_crafting_oos_stats": 2
+                };
+            }
+
+            function getUserInfo(){
+                console.log("getUserInfo")
+                return {first_name: "{{ user.name }}", uid: "{{ user.uid }}"}
+            }
+
+            function closeOnLoadPopDialogs(){
+                console.log("closeOnLoadPopDialogs")
+            }
+
+            function getFriendData(){
+                console.log("getFriendData")
+                return [
+                    {
+                        none: "no"
+                    }
+                ]
+            }
+
+            function safeConsoleLog(message){
+                console.log("safeConsoleLog", message)
+            }
+            function onWorldLoad(){
+                console.log("onWorldLoad")
+                return false
+            }
+
+            function getAppFriendIds(){
+                console.log("getAppFriendIds")
+                return []
+            }
+
+            function viewItemXmlInArtTool(param1, param2){
+                console.log("viewItemXmlInArtTool(id: ", param2, param1, ")")
+            }
+
+            function onLoadStep(step){
+                console.log("onLoadStep", step)
+                return ""
+            }
+
+            function ztrackCount(counter, kingdom, phylum, zclass){
+                console.log("ztrackCount: counter "+counter+" | kingdom "+kingdom+" | plylum "+phylum+" | zclass "+zclass)
+                return ""
+            }
+
+            function getFlashMovie(movieName) {
+                return null;
+            }
+
+            function getPreloaderScreenshot(swf, param1) {
+                console.log("getPreloaderScreenshot")
+            }
+
+        </script>
+        <center>
+            <h2>FarmVille</h2>
+            <p>Version: {{ version }} | Release date: {{ release_date }}</p>
+            <div>
+                <!-- SESSION HEADER -->
+                <div id="header" style="width: 760px; margin-top: 50px;">
+                    <div id="session" style="float: right;">
+                        <p style="display:inline">Welcome <b>{{save_info.name}}</b>! {{save_info.xp}} xp (<a href="/">Log Out</a>)</p>
+                    </div>
+                </div>
+                <br>
+                <!-- GAME BAR -->
+                <div style="overflow-x:hidden;overflow-y:hidden;width:1018px;height:40px;background-image:url(/img/game_bar/ecb8d4257f9af29b38f1a10c4ccb322c4ebb2e8c.png);background-color: transparent; background-position: 324px 20px; background-repeat: no-repeat; margin: 0px; padding: 0px; ">
+                    <div style="position:relative;float:left;height:40px;background-image:url(/img/game_bar/ecb8d4257f9af29b38f1a10c4ccb322c4ebb2e8c.png);background-color: transparent; background-position: 0px 20px; background-repeat: no-repeat; border-width: 0px; border-style: none; margin: 0px; padding: 0px 0px 0px 5px; border-color: white; ">
+                    <a href="#" title="Free Gifts" style="color:rgb(59, 89, 152);cursor:pointer;width:91px;background-image:url(/img/game_bar/c7ae80613dbb3a1aa848ddf6fb3baea29c233ec6.png);background-color: transparent; text-decoration:none;float:left;height:27px;margin: 11px 0px 0px 4px; " target="_blank"></a>
+                    <a href="#" title="Play" style="color:rgb(59, 89, 152);cursor:pointer;width:36px;background-image:url(/img/game_bar/8bba081e4b32e771144af4a7404209007dff7756.png);background-color: transparent; text-decoration:none;float:left;height:27px;background-position: 0px -27px; margin: 11px 0px 0px 4px;" target="_blank"></a>
+                    <a href="#" title="My Neighbors" style="color:rgb(59, 89, 152);cursor:pointer;width:99px;background-image:url(/img/game_bar/c82d6a5be3328edc136a4f5f2ba7f3ed6228f7b4.png);background-color: transparent; text-decoration:none;float:left;height:27px;margin: 11px 0px 0px 4px; " target="_blank"></a>
+                    <a href="#" target="_blank" title="Add Farm Coins &amp; Cash" style="color:rgb(59, 89, 152);cursor:pointer;width:278px;background-image:url(/img/game_bar/15509e6078e7b7da47c0cd1bf5c643bd9b2ddb64.png);background-color: transparent; text-decoration:none;float:left;height:27px;margin: 11px 0px 0px 4px; ">
+                        <div style="position:absolute;width:160px;height:36px;background-image:url(/img/game_bar/a8e4cf2a4842f3dec98ec268d66475c8173b8026.png);background-color: transparent; left:362px;top:1px;display:block;background-repeat: no-repeat; margin: 0px; padding: 0px; ">
+                            <!-- Timer -->
+                            <div style="position:absolute;top:17px;width:11px;height:16px;text-align:center;font-size:13px;font-weight:bold;left:67px;margin: 0px; padding: 0px; ">0</div>
+                            <div style="position:absolute;top:17px;width:11px;height:16px;text-align:center;font-size:13px;font-weight:bold;left:80px;margin: 0px; padding: 0px; ">0</div>
+                            <div style="position:absolute;top:17px;width:11px;height:16px;text-align:center;font-size:13px;font-weight:bold;left:99px;margin: 0px; padding: 0px; ">0</div>
+                            <div style="position:absolute;top:17px;width:11px;height:16px;text-align:center;font-size:13px;font-weight:bold;left:112px;margin: 0px; padding: 0px; ">0</div>
+                            <div style="position:absolute;top:17px;width:11px;height:16px;text-align:center;font-size:13px;font-weight:bold;left:131px;margin: 0px; padding: 0px; ">0</div>
+                            <div style="position:absolute;top:17px;width:11px;height:16px;text-align:center;font-size:13px;font-weight:bold;left:144px;margin: 0px; padding: 0px; ">0</div>
+                        </div>
+                    </a>
+                    <a href="#" target="_blank" title="Redeem" style="color:rgb(59, 89, 152);cursor:pointer;width:59px;background-image:url(/img/game_bar/fb98c926d5cb2a763cf3695fc9d774330224fca6.png);background-color: transparent; text-decoration:none;float:left;height:27px;margin: 11px 0px 0px 4px; "></a>
+                    <a href="#" title="Add Farm Coins &amp; Cash" style="color:rgb(59, 89, 152);cursor:pointer;width:106px;background-image:url(/img/game_bar/db55c5639428cd3f20f517053c60229fa4f1d78f.png);background-color: transparent; display:none;text-decoration:none;float:left;height:27px;margin: 11px 0px 0px 4px; " target="_blank"></a>
+                    <a href="#" target="_blank" title="Help" style="color:rgb(59, 89, 152);cursor:pointer;width:45px;background-image:url(/img/game_bar/b1bb2f3b3104f295aa5349b78a77f8eaf5313d7c.png);background-color: transparent; text-decoration:none;float:left;height:27px;margin: 11px 0px 0px 4px; "></a>
+                    </div>
+                    <div style="float:right;margin: 0px; padding: 0px; ">
+                        <div style="float:left;width:0px;margin: 0px; padding: 15px 5px 0px 0px; ">
+                            <a href="#" style="color:rgb(59, 89, 152);cursor:pointer;text-decoration:none;" target="_blank">
+                                <img src="/img/game_bar/2d9375ecade3323f674d30aa2060f304ff36456a.png" style="width:0px;border-width: 0px; border-style: none; border-color: white; ">
+                            </a>
+                        </div>
+                        <div style="cursor:pointer;height:35px;position:relative;float:right;width:26px;display:block;margin: -2px 5px 0px 0px; padding: 0px; ">
+                            <div style="background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAcCAYAAAB/E6/TAAADG0lEQVRIx7WW2S/jURTH+0/Yd2pLJP4DGSQ88+BZ4g+YFzx79MCDRLzMi4cRmQnpvndUR2u6UdReSy1BrCU0DJ3v3HNMG0tXTJOPqv5yPvece+65JJI0Xm63+7Narf4jl8thtVq9kv/xmp2dbSOJ0+mEy+WCUqmExWLxf7hEo9Gw5Pj4mFleXoZCocDExMT7ZJ7q6h5BQIA0kAs+pSxxVVXJBUgH93Pak0p+VVS0CxClsjImjsQEk4ps5eVyAV5iT4ZY1AsSl9AqlU7+lErxFqaek0TU1BSylJYiLmVlUSYTYOvq6okrmZ6e9puam2EuKYnJjzTQDww8iPNW+EoyMzMjo0Nob2mBobgYxndgIgYHodfrQ+LsFUUlXq/3C0m2t7fhbGuDrrAwZfRFRTHxjY9DHHKWicwKJGaz+UGMEj7lhKqhAeqCgrhoUkTZ1/cYT6WiUfVbQgOS/rCwsIDb21tMtbZCkZfHKPPz34xfZLO0tAQxHzm+hH7Q3BIpwmg0wtHbC1lublrIxaKeom1shMVk4sFrt9s5KxadnZ3h6uoKNDTpS+vICBS1tRjLyYnJeALM/f1QiRg6nQ6rq6vY29vjrKKicDiM+/t77O/v80NqsQpTdze+ZWXh+1Oys2OiqK+H8d+e0DUSCARYEld0d3eH6+treDyex2tAJsNYTQ1GMzPjYhwa4mepqdbX16OCpCJqipubG+zs7EB0JWen7+zE14yMKCMCdUcHdKJMFEMckVeClEShUIgzo+/EYea9o9KM1dVhVNw9puFhFogr/VmZ3iyiJrm8vMTu7i7dprDZbHA6HFwmat9EgrRFp6en2NjYgM/nY0iwuLjIbG1tvV8UDAZ5n6hNKSD9r3BycsLvh4eHPLJIRmL6PW0RSajNV1ZWWEAZXVxc8HMR0dHREQ4ODjiQ3+/H3NwcC2lhKYkoCJWHSnV+fh7do3giWlAk4NraGncfVYD2NKaIykRngAT0+WUzpCIiSECVmJ+f53j0mUVarZZXsrm5yRnQ/sTqulRFEWjPIk1DM1RC48ZgMPCZoEn+0fA4Exn9BW/8y0YOrTiKAAAAAElFTkSuQmCC);bottom:1px;height:30px;overflow-x:hidden;overflow-y:hidden;position:absolute;width:26px;background-repeat: no-repeat; margin: 0px; padding: 0px; ">
+                                <!-- Notifications -->
+                                <div style="color:white;font-size:11px;font-weight:normal;left:3px;position:absolute;right:4px;text-align:center;top:4px;width:20px;display:block;margin: 0px; padding: 0px; ">0</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="clear:both;margin: 0px; padding: 0px; "></div>
+                </div>
+                <!-- EMBED GAME -->
+                <object codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" WIDTH="1018" HEIGHT="600" id="fv" ALIGN="">
+                    <param NAME=quality VALUE=high>
+                    <param NAME=bgcolor VALUE=#9ee9f2>
+                    <param name="allowFullScreen" value="true" />
+                    <embed
+                        id="game_embed",
+                        src="embeds/Flash/v855097-855094/FV_Preloader.swf?swfLocation=embeds/Flash/v855097-855094/FarmGame.swf"
+                        allowFullScreen="true" bgcolor="#9ee9f2" quality=high WIDTH="1018" HEIGHT="600" NAME="fv" ALIGN=""
+                        TYPE="application/x-shockwave-flash" PLUGINSPAGE="http://www.macromedia.com/go/getflashplayer"
+                        flashvars='brk=0
+                            &app_url={{ base_url }}/&brk=0
+                            &sn_app_url={{ base_url }}/sn_app_url/&brk=0
+                            &asset_url={{ base_url }}/&brk=0
+                            &additional_asset_urls={{ base_url }}/&brk=0
+                            &quest_url={{ base_url }}/xml/gz/v855098/questSettings_0.xml.gz&brk=0
+                            &quest_min_url={{ base_url }}/xml/gz/v855098/questSettings_0.xml.gz&brk=0
+                            &xml_url={{ base_url }}/xml/gz/v855098/&brk=0
+                            &assethash_url=&brk=0
+                            &master_assethash_url={{ base_url }}/assethash/v9/&brk=0
+                            &masterysigns_amf_url={{ base_url }}/masterysigns_amf_url/&brk=0
+                            &items_amf_pristine_version={{ base_url }}/items_amf_pristine_version/&brk=0
+
+                            &serverTime={{ server_time }}&brk=0
+                            &debugMode={{ debug }}&brk=0
+                            &zaspDebug={{ debug }}&brk=0
+                            &noSound=0&brk=0
+
+                            &master_id=0&brk=0
+
+                            &fb_sig_user={{ user.uid }}&brk=0
+                            &fb_sig_api_key=0&brk=0
+                            &fb_sig_session_key=0.aaaaaaaa_aaaaaaa_aaaaa__.00000.9999999999-0000000000&brk=0
+
+                            &fb_sig_time={{ server_time }}&brk=0
+                            &token=0&brk=0
+                            &authBypass=1&brk=0
+
+                            &___!!!___zy_user={{ user.uid }}&brk=0
+                            &___!!!___zy_ts=0&brk=0
+                            &___!!!___zy_session=0&brk=0
+
+                            &friendsInfo=[]&brk=0
+                            &user_key={{ user.uid }}&brk=0
+                            &spdebug=notnull&brk=0
+                            &language=en&brk=0
+                            &dailyBonus=0&brk=0
+                            &is_staging=true&brk=0
+                            &generateSchema=1&brk=0
+                            &skipFacebook=false&brk=0
+                            &decouple_from_facebook=false&brk=0
+                            &decoupled_facebook_id={{ user.uid }}&brk=0
+
+                            &____dbg_tool_mode=1&brk=0
+                            &____ui_sandbox_mode=1&brk=0
+
+                            &fotd=/assets/fotd/Defaults/274e045c99b4b61250ca117afefc3b7a.jpg;/assets/fotd/Defaults/32d4dac05c2ab4be40365736d6cf7e4d.jpg;/assets/fotd/Defaults/5ca00c0235a9db6292b80afef8f0e64b.jpg;/assets/fotd/Defaults/699f6b5583fd98baf34535d44330d936.jpg;/assets/fotd/Defaults/80fae1f12e0f8003ab027cd2fa688759.jpg;/assets/fotd/Defaults/c39dc440ae2980169f6427816fcf0bdb.jpg;/assets/fotd/Defaults/c6571ef457955b182bc6214c5ec3fffb.jpg;/assets/fotd/Defaults/e06a2e7a289347539891da53c7ad32ad.jpg;/assets/fotd/Defaults/eed676d08408291bcabcdc52f2d42f58.jpg;/assets/fotd/Defaults/f6ec557199d66b983b8937d98a91f49b.jpg;/assets/fotd/Defaults/fa2e9c1002bbd0d0ec4e88965293e7da.jpg&brk=0
+                            
+                            &FEATURE_IFRAME=true&brk=0
+                            &iframeRedirect=1&brk=0
+                            &type=&brk=0
+                            &masterId=1&brk=0
+                            &uid={{ user.uid }}&brk=0
+                            &locale=en_US&brk=0
+                            &fblocale=en_US&brk=0
+                            &fb_sig_locale=en_US&brk=0
+                            &req_FlashControllerStartTimestamp={{ server_time }}&brk=0
+                            &fb_sig_added=1&brk=0
+                            &fb_sig_profile_update_time={{ server_time }}&brk=0
+                            &fb_sig_api_secret=secret&brk=0
+                            &fb_sig_expires={{ server_time }}&brk=0
+
+                            &fb_sig_ss=0&brk=0
+                            &fb_sig_ext_perms=auto_publish_recent_activity&brk=0
+                            &fb_sig_app_id=10000&brk=0
+                            &fb_sig=0&brk=0
+                        '>
+                    </embed>
+                </object>
+            </div>
+        </center>
+    </body>
+</html>
