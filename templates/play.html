@@ -78,12 +78,11 @@
 
         </script>
         <center>
-            <h2>FarmVille</h2>
-            <p>Version: {{ version }} | Release date: {{ release_date }}</p>
+            <img src="img/logo.jpg" style="width: 250px;"/>
             <div>
                 <!-- SESSION HEADER -->
-                <div id="header" style="width: 760px; margin-top: 50px;">
-                    <div id="session" style="float: right;">
+                <div id="header" style="width: 850px; margin-top: 50px;">
+                    <div id="session" style="float: right; font-size: 14px;">
                         <p style="display:inline">Welcome <b>{{save_info.name}}</b>! {{save_info.xp}} xp (<a href="/">Log Out</a>)</p>
                     </div>
                 </div>
@@ -145,7 +144,8 @@
                             &assethash_url=&brk=0
                             &master_assethash_url={{ base_url }}/assethash/v9/&brk=0
                             &masterysigns_amf_url={{ base_url }}/masterysigns_amf_url/&brk=0
-                            &items_amf_pristine_version={{ base_url }}/items_amf_pristine_version/&brk=0
+                            &items_amf_pristine_version={{ base_url }}/assets/hashed/itemsamfpristine/&brk=0
+                            &items_opt_amf={{ base_url }}/xml/gz/v855038/items_opt.amf&brk=0
 
                             &serverTime={{ server_time }}&brk=0
                             &debugMode={{ debug }}&brk=0
@@ -203,6 +203,9 @@
                         '>
                     </embed>
                 </object>
+            </div>
+            <div style="margin-top: 50px;">
+                <p style="font-size: 11px;">Farm Village team ~ {{version}}</p>
             </div>
         </center>
     </body>

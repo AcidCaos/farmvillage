@@ -1,7 +1,7 @@
 
-version_name = "pre-alpha 0.01a.2024_03_29"
-version_code = "0.01a.2024_03_29"
-release_date = 'Friday, 30 March 2024'
+version_code = "0.01a.2024_04_07"
+version_name = "pre-alpha " + version_code
+release_date = 'Sunday, 7 April 2024'
 
 def migrate_loaded_save(save: dict):
     

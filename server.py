@@ -26,6 +26,7 @@ import commands
 from engine import timestamp_now
 from version import version_name, release_date
 from bundle import ASSETS_DIR, EMBEDS_DIR, ASSETHASH_DIR, STUB_ASSETS_DIR, PATCHED_ASSETS_DIR, TEMPLATES_DIR, XML_DIR
+from player import save_session
 
 BIND_IP = "127.0.0.1"
 BIND_PORT = 5500
@@ -115,6 +116,10 @@ def stub_items():
 def xml(path):
     return send_from_directory(XML_DIR, path, mimetype='text/xml')
 
+# @app.route("/assets/Environment/grass_themeBackground_7.swf", methods=['GET'])
+# def stub_grass_themeBackground_7():
+#     return send_from_directory(ASSETS_DIR, "Environment/02de7becb766242e421e1430176f55a2.swf", mimetype='text/xml')
+
 @app.route("/assets/<path:path>", methods=['GET'])
 def assets(path):
     return send_from_directory(ASSETS_DIR, path)
@@ -129,7 +134,9 @@ def report_exception():
 @app.route("/record_stats.php", methods=['POST'])
 def record_stats():
     stats = json.loads(request.data)
-    print("[+] Stats:", json.dumps(stats, indent=4))
+    print("[+] Stats:")
+    for i in stats["stats"]:
+        print(" * ", i["statfunction"], ": ", i["data"], sep="")
     return "{}"
 
 @app.route("/flashservices/gateway.php", methods=['POST'])
@@ -166,27 +173,45 @@ def flashservices_gateway():
             flashControllerInit = reqq['params'][3]
             response["data"] = commands.init_user(UID)
             resps.append(response)
-        
-        elif reqq.functionName == 'UserService.initUser':
-            resps.append(response)
 
         elif reqq.functionName == 'UserService.postInit':
             resps.append(response)
 
         elif reqq.functionName == 'UserService.setSeenFlag':
             flag = reqq['params'][0]
+            commands.set_seen_flag(UID, flag)
             resps.append(response)
 
         elif reqq.functionName == 'UserService.resetSystemNotifications':
             resps.append(response)
         
         elif reqq.functionName == 'UserContentService.onCreateImage':
-            avatar_appearance = reqq['params'][0]
+            name = reqq['params'][0]
             data = reqq['params'][1]
             feed_post = reqq['params'][2]
+            if name == "avatar_appearance":
+                commands.set_avatar(UID, data)
+            resps.append(response)
+
+        elif reqq.functionName == 'UserService.saveOptions':
+            options = reqq['params'][0]
+            commands.save_options(UID, options)
+            resps.append(response)
+        
+        elif reqq.functionName == 'WorldService.performAction':
+            actionName = reqq['params'][0]
+            m_save = reqq['params'][1]
+            params = reqq['params'][2] # [{'energyMetadata': None, 'neighborId': '0', 'energyCost': 0, 'energySource': 0}, {'firstWA': True}]
+
+            if actionName == 'plow':
+                commands.world_action_plow(UID, m_save, params)
+            elif actionName == 'place':
+                commands.world_action_place(UID, m_save, params)
 
         else:
             resps.append(response)
+    
+    save_session(UID)
 
     emsg = {
         "serverTime": timestamp_now(),
@@ -201,6 +226,12 @@ def flashservices_gateway():
 
     ret_body = remoting.encode(ev, strict=True, logger=True).getvalue()
     return Response(ret_body, mimetype='application/x-amf')
+
+@app.route("/sn_app_url/gifts.php", methods=['GET'])
+def sn_app_url_gifts():
+    template = request.args.get("template")
+    ref = request.args.get("ref")
+    return "{}"
 
 print (" [+] Running server...")
 

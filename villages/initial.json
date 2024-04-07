@@ -236,7 +236,7 @@
         "sizeY": 30,
         "objectsArray": [
             {
-                "id": 0,
+                "id": 63000,
                 "itemName": "barn",
                 "state":"built",
                 "plantTime": 0,
