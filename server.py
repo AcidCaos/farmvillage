@@ -139,12 +139,18 @@ def record_stats():
         print(" * ", i["statfunction"], ": ", i["data"], sep="")
     return "{}"
 
+@app.route("/report_log.php", methods=['POST'])
+def report_log():
+    print("[+] Log:", request.data.decode("utf-8"))
+    return "{}"
+
 @app.route("/flashservices/gateway.php", methods=['POST'])
 def flashservices_gateway():
     resp_msg = remoting.decode(request.data)
     print("[+] Gateway AMF3 Request:", resp_msg)
     resps = []
-    for reqq in resp_msg.bodies[0][1].body[1]:
+    reqs = resp_msg.bodies[0][1].body[1]
+    for reqq in reqs:
 
         print(f"[+] {reqq.functionName}: {reqq['params']}")
         UID = resp_msg.bodies[0][1].body[0]["uid"]
@@ -174,9 +180,9 @@ def flashservices_gateway():
             response["data"] = commands.init_user(UID)
             resps.append(response)
 
-        # elif reqq.functionName == 'UserService.postInit':
-        #     response["data"] = commands.post_init_user(UID)
-        #     resps.append(response)
+        elif reqq.functionName == 'UserService.postInit':
+            response["data"] = commands.post_init_user(UID)
+            resps.append(response)
         
         elif reqq.functionName == 'FriendSetService.getBatchFriendSetData':
             response["data"] = []
@@ -208,6 +214,11 @@ def flashservices_gateway():
             action = reqq['params'][0]
             commands.increment_action_count(UID, action)
             resps.append(response)
+        
+        elif reqq.functionName == 'UserService.resetActionCount':
+            action = reqq['params'][0]
+            commands.reset_action_count(UID, action)
+            resps.append(response)
 
         elif reqq.functionName == 'UserService.setSeenFlag':
             flag = reqq['params'][0]
@@ -234,15 +245,19 @@ def flashservices_gateway():
             actionName = reqq['params'][0]
             m_save = reqq['params'][1]
             params = reqq['params'][2] # [{'energyMetadata': None, 'neighborId': '0', 'energyCost': 0, 'energySource': 0}, {'firstWA': True}]
-
-            if actionName == 'plow':
-                commands.world_action_plow(UID, m_save, params)
-            elif actionName == 'place':
-                commands.world_action_place(UID, m_save, params)
+            commands.world_perform_action(UID, actionName, m_save, params)
+            resps.append(response)
+        
+        elif reqq.functionName == 'UserService.updateFeatureFrequencyTimestamp':
+            feature = reqq['params'][0]
+            commands.update_feature_frequency_timestamp(UID, feature)
+            resps.append(response)
 
         else:
             resps.append(response)
     
+    assert len(resps) == len(reqs)
+
     save_session(UID)
 
     emsg = {

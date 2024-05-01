@@ -64,6 +64,12 @@ def increment_action_count(UID, action) -> None:
         save["userInfo"]["player"]["actionCounts"][action] += 1
     return
 
+def reset_action_count(UID, action) -> None:
+    save = session(UID)
+    if action in save["userInfo"]["player"]["actionCounts"]:
+        save["userInfo"]["player"]["actionCounts"][action] = 0
+    return
+
 def set_seen_flag(UID, flag) -> None:
     save = session(UID)
     save["userInfo"]["player"]["seenFlags"][flag] = True
@@ -71,10 +77,6 @@ def set_seen_flag(UID, flag) -> None:
 
 def save_options(UID, options) -> None:
     save = session(UID)
-    # animationDisabled = options['animationDisabled']
-    # sfxDisabled = options['sfxDisabled']
-    # graphicsLowQuality = options['graphicsLowQuality']
-    # musicDisabled = options['musicDisabled']
     save["userInfo"]["player"]["options"] = options.copy()
     save["options"] = options
     return
@@ -85,18 +87,29 @@ def set_avatar(UID, avatar_appearance) -> None:
     # save["userInfo"]["avatar"] = avatar_appearance
     return
 
-def world_action_plow(UID, m_save, params) -> None:
+def world_perform_action(UID, actionName, m_save, params) -> None:
     save = session(UID)
-    # Add the plowed plot to the world objects
-    m_save["plantTime"] = None
-    save["world"]["objectsArray"].append(m_save)
-    # Decrease 15 gold
-    save["userInfo"]["player"]["gold"] = max(0, save["userInfo"]["player"]["gold"] - 15)
-    return
+
+    if actionName == 'plow':
+        # Decrease 15 gold
+        save["userInfo"]["player"]["gold"] = max(0, save["userInfo"]["player"]["gold"] - 15)
+        # Add the plowed plot to the world objects
+        m_save["plantTime"] = timestamp_now()
+        # Place the plot
+        world_perform_action(UID, 'place', m_save, params)
+
+    elif actionName == 'place':
+        # TODO: replace temporary ID
+        save["world"]["objectsArray"].append(m_save)
 
 def world_action_place(UID, m_save, params) -> None:
     save = session(UID)
     # Add the placed object to the world objects
     m_save["buildTime"] = None
     save["world"]["objectsArray"].append(m_save)
+    return
+
+def update_feature_frequency_timestamp(UID, feature) -> None:
+    save = session(UID)
+    save["userInfo"]["player"]["featureFrequency"][feature] = timestamp_now()
     return

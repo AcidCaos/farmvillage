@@ -178,9 +178,7 @@
             "itemFlags": {
                 "giftcard": ""
             },
-            "featureFrequency": {
-                "AvatarIndicatorLastInteraction": 10
-            },
+            "featureFrequency": {},
             "externalLevels": {},
             "actionCounts": {
                 "tutorialProgress": 0

@@ -11,6 +11,6 @@ def migrate_loaded_save(save: dict):
     if "version" not in save or save["version"] is None:
         _changed = True
         save["version"] = "0.01a"
-        print(" [!] Applied version to save")
+        print("[!] Applied version to save")
 
     return _changed

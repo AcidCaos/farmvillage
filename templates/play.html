@@ -2570,6 +2570,45 @@
                 return appFriendIds;
             }
 
+            function getNonAppFriendsInfo(){
+                console.log("getNonAppFriendsInfo")
+                tResult = {"requestedFriends": {"Facebook": null} };
+                jsResult = {
+                    "data": [
+                        {
+                            "uid": "20000",
+                            "first_name": "getNonAppFriendsInfo",
+                            "last_name": "getNonAppFriendsInfo",
+                            "name": "getNonAppFriendsInfo",
+                            "picture": { "data": {"url":""} },
+                            "valid": true,
+                            "is_app_user": false,
+                            "allowed_restrictions": false,
+                            "pic_big":""
+                        }
+                    ]
+                };
+                document.getElementById('flashapp').onNonAppFriendsCallback(jsResult);
+                // document.getElementById('flashapp').onNonAppFriendsCallback(tResult, jsResult);
+            }
+
+            function getNonAppFriendsInfoV2() {
+                console.log("getNonAppFriendsInfoV2")
+                response = [
+                    {
+                        "uid":"30000",
+                        "first_name":"getNonAppFriendsInfoV2",
+                        "last_name":"getNonAppFriendsInfoV2",
+                        "name":"getNonAppFriendsInfoV2",
+                        "pic_square":"",
+                        "is_app_user":true,
+                        "allowed_restrictions":false,
+                        "pic_big":""
+                    }
+                ];
+                document.getElementById('flashapp').onNonAppFriendsV2Callback(response);
+            }
+
             function checkForPublishPermission(uid) {
                 console.log("checkForPublishPermission", uid)
                 hasPublishPermission = 1;
@@ -2624,8 +2663,151 @@
                 var currentWorldType = "farm";
                 return currentWorldType;
             }
-
         </script>
+
+        <script> // FarmNS module
+
+            if (typeof (FarmNS) === "undefined") {
+                FarmNS = {}
+            }
+
+            FarmNS.getFlash = function () {
+                return document.getElementById("flashapp")
+            };
+
+            FarmNS.setZid = function (zid) {
+                console.log("FarmNS.setZid:", zid)
+            };
+
+            FarmNS.initW2e = function () {
+                console.log("FarmNS.initW2e")
+            };
+
+            FarmNS.showW2eIron = function () {
+                console.log("FarmNS.showW2eIron")
+            };
+
+            FarmNS.FlashExtendedPermissionsManager = {
+                getPermissions: function () {
+                    console.log("FarmNS.FlashExtendedPermissionsManager.getPermissions")
+                    return [];
+                },
+                refreshExtendedPermsFlash: function (callId) {
+                    console.log("FarmNS.FlashExtendedPermissionsManager.refreshExtendedPermsFlash")
+                    FarmNS.getFlash().doRegisteredCallback(callId, [{
+                        publish_actions: true,
+                        user_games_activity: true,
+                        friends_games_activity: true,
+                        publish_actions: true,
+                        user_birthday: true,
+                        read_stream: true,
+                        user_friends: true,
+                        extended_permissions_gift_given: true
+                    }])
+                },
+                requestExtendedPermsFlash: function (callId, perms_list, e) {
+                    console.log("FarmNS.FlashExtendedPermissionsManager.requestExtendedPermsFlash:", perms_list, e)
+                    FarmNS.getFlash().doRegisteredCallback(callId, [{}])
+                },
+                requestExtendedPerms: function (callId, f, e) {
+                    console.log("FarmNS.FlashExtendedPermissionsManager.requestExtendedPerms:", callId, f, e)
+                },
+                checkFriendsPermissionFlash: function () {
+                    console.log("FarmNS.FlashExtendedPermissionsManager.checkFriendsPermissionFlash")
+                    FarmNS.getFlash().onFriendsDataLoaded(true)
+                }
+            }
+
+            FarmNS.Request2Manager = {
+                shareFarmstamaticPhoto: function (imagePath, message) {
+                    console.log("FarmNS.Request2Manager.shareFarmstamaticPhoto:", imagePath, message)
+                }
+            }
+
+            FarmNS.UISandboxManager = {
+                setSendAssetNameCallbackID: function (callId) {
+                    console.log("FarmNS.UISandboxManager.setSendAssetNameCallbackID")
+                },
+                setRemoveAssetNameCallbackID: function (callId2) {
+                    console.log("FarmNS.UISandboxManager.setRemoveAssetNameCallbackID")
+                },
+                setAssetToSynced: function (assetName) {
+                    console.log("FarmNS.UISandboxManager.setAssetToSynced")
+                },
+                onFlashLoadComplete: function () {
+                    console.log("FarmNS.UISandboxManager.onFlashLoadComplete")
+                }
+            }
+        </script>
+
+        <script> // FB module
+
+            if (typeof (FB) === "undefined") {
+                FB = {}
+            }
+
+            FB.Facebook = {}
+            FB.Facebook.apiClient = {
+                callMethod: function (method, params, callback) {
+                    console.log("FB.Facebook.apiClient.callMethod")
+                    console.log(" - method:", method)
+                    console.log(" - params:", params)
+                    console.log(" - callback:", callback)
+                    
+                    if (method === "friends.getAppUsers") {
+                        console.log(params["auth_token"])
+                        result = ["10000"]
+                        callback([], null)
+                        //callback(result, null)
+                    }
+                    else if (method === "friends.get"){
+                        var result = [
+                            {
+                                "uid": "10000",
+                                "first_name": "AcidCaos",
+                                "last_name": "",
+                                "name": "AcidCaos",
+                                "pic_square": "{{ base_url }}\/img\/profile\/acid.48.jpg",
+                                "is_app_user": true,
+                                "allowed_restrictions": false,
+                                "pic_big": "{{ base_url }}\/img\/profile\/acid.48.jpg"
+                            }
+                        ];
+                        callback([], null)
+                        //callback(result, null)
+                    }
+                    else if (method === "users.getLoggedInUser"){ // This is not working properly. 
+                        var result = {
+                            uid: "{{ user.uid }}",
+                            firstName: "{{ user.name }}",
+                            name: "{{ user.name }}",
+                            picture: "",
+                        }
+                        res = callback(result, null)
+                        console.log(" - result", res)
+                        return result
+                    }
+                    else if (method === "users.getInfo") {
+                        var result = [
+                            {
+                                "uid": "10000",
+                                "first_name": "AcidCaos",
+                                "last_name": "",
+                                "name": "AcidCaos",
+                                "pic_square": "{{ base_url }}\/img\/profile\/acid.48.jpg",
+                                "is_app_user": true,
+                                "allowed_restrictions": false,
+                                "pic_big": "{{ base_url }}\/img\/profile\/acid.48.jpg"
+                            }
+                        ];
+                        callback(result, null)
+                    } else if (method === "users.hasAppPermission") {
+                        callback(true, null)
+                    }
+                }
+            }
+        </script>
+
         <center>
             <img src="img/logo.jpg" style="width: 250px;"/>
             <div>
@@ -2683,6 +2865,9 @@
                         allowFullScreen="true" bgcolor="#9ee9f2" quality=high WIDTH="1018" HEIGHT="600" NAME="fv" ALIGN=""
                         TYPE="application/x-shockwave-flash" PLUGINSPAGE="http://www.macromedia.com/go/getflashplayer"
                         flashvars='brk=0
+
+                        &__ENDPOINTS__&brk=0
+
                             &app_url={{ base_url }}/&brk=0
                             &sn_app_url={{ base_url }}/sn_app_url/&brk=0
                             &asset_url={{ base_url }}/&brk=0
@@ -2692,63 +2877,86 @@
                             &xml_url={{ base_url }}/xml/gz/v855098/&brk=0
                             &assethash_url=&brk=0
                             &master_assethash_url={{ base_url }}/assethash/v9/&brk=0
-                            &masterysigns_amf_url={{ base_url }}/masterysigns_amf_url/&brk=0
+                            &masterysigns_amf_url={{ base_url }}/masterysigns/v1/&brk=0
                             &items_amf_pristine_version={{ base_url }}/assets/hashed/itemsamfpristine/&brk=0
                             &items_opt_amf={{ base_url }}/xml/gz/v855038/items_opt.amf&brk=0
 
+                        &__SERVER_INFO__&brk=0
+
                             &serverTime={{ server_time }}&brk=0
-                            &debugMode={{ debug }}&brk=0
-                            &zaspDebug={{ debug }}&brk=0
-                            &noSound=0&brk=0
+                            &flashRevision=855098&brk=0
+                            &configRevision=855098&brk=0
+                            &phpRevision=855098&brk=0
+                        
+                        &__GAME_CONFIG__&brk=0
 
-                            &master_id=0&brk=0
-
-                            &fb_sig_user={{ user.uid }}&brk=0
-                            &fb_sig_api_key=0&brk=0
-                            &fb_sig_session_key=0.aaaaaaaa_aaaaaaa_aaaaa__.00000.9999999999-0000000000&brk=0
-
-                            &fb_sig_time={{ server_time }}&brk=0
-                            &token=0&brk=0
-                            &authBypass=1&brk=0
-
-                            &___!!!___zy_user={{ user.uid }}&brk=0
-                            &___!!!___zy_ts=0&brk=0
-                            &___!!!___zy_session=0&brk=0
-
-                            &friendsInfo=[]&brk=0
-                            &user_key={{ user.uid }}&brk=0
-                            &spdebug=notnull&brk=0
                             &language=en&brk=0
-                            &dailyBonus=0&brk=0
-                            &is_staging=true&brk=0
-                            &generateSchema=1&brk=0
-                            &skipFacebook=false&brk=0
-                            &decouple_from_facebook=false&brk=0
-                            &decoupled_facebook_id={{ user.uid }}&brk=0
-
-                            &____dbg_tool_mode=1&brk=0
-                            &____ui_sandbox_mode=1&brk=0
-
-                            &fotd=/assets/fotd/Defaults/274e045c99b4b61250ca117afefc3b7a.jpg;/assets/fotd/Defaults/32d4dac05c2ab4be40365736d6cf7e4d.jpg;/assets/fotd/Defaults/5ca00c0235a9db6292b80afef8f0e64b.jpg;/assets/fotd/Defaults/699f6b5583fd98baf34535d44330d936.jpg;/assets/fotd/Defaults/80fae1f12e0f8003ab027cd2fa688759.jpg;/assets/fotd/Defaults/c39dc440ae2980169f6427816fcf0bdb.jpg;/assets/fotd/Defaults/c6571ef457955b182bc6214c5ec3fffb.jpg;/assets/fotd/Defaults/e06a2e7a289347539891da53c7ad32ad.jpg;/assets/fotd/Defaults/eed676d08408291bcabcdc52f2d42f58.jpg;/assets/fotd/Defaults/f6ec557199d66b983b8937d98a91f49b.jpg;/assets/fotd/Defaults/fa2e9c1002bbd0d0ec4e88965293e7da.jpg&brk=0
-                            
-                            &FEATURE_IFRAME=true&brk=0
-                            &iframeRedirect=1&brk=0
-                            &type=&brk=0
-                            &masterId=1&brk=0
-                            &uid={{ user.uid }}&brk=0
                             &locale=en_US&brk=0
                             &fblocale=en_US&brk=0
                             &fb_sig_locale=en_US&brk=0
-                            &req_FlashControllerStartTimestamp={{ server_time }}&brk=0
+                            &fotd=/assets/fotd/Defaults/274e045c99b4b61250ca117afefc3b7a.jpg;/assets/fotd/Defaults/32d4dac05c2ab4be40365736d6cf7e4d.jpg;/assets/fotd/Defaults/5ca00c0235a9db6292b80afef8f0e64b.jpg;/assets/fotd/Defaults/699f6b5583fd98baf34535d44330d936.jpg;/assets/fotd/Defaults/80fae1f12e0f8003ab027cd2fa688759.jpg;/assets/fotd/Defaults/c39dc440ae2980169f6427816fcf0bdb.jpg;/assets/fotd/Defaults/c6571ef457955b182bc6214c5ec3fffb.jpg;/assets/fotd/Defaults/e06a2e7a289347539891da53c7ad32ad.jpg;/assets/fotd/Defaults/eed676d08408291bcabcdc52f2d42f58.jpg;/assets/fotd/Defaults/f6ec557199d66b983b8937d98a91f49b.jpg;/assets/fotd/Defaults/fa2e9c1002bbd0d0ec4e88965293e7da.jpg&brk=0
+
+                        &__USER_INFO__&brk=0
+
+                            &uid={{ user.uid }}&brk=0
+                            &user_key={{ user.uid }}&brk=0
+                            
+                        &__SOCIAL_NETWORK__&brk=0
+
+                            &__COMMENT__: These disabled forces the use of Fb social network functions, not Zy. Check FarmGame:pickSocialNetworkInit(). &brk=0
+                            &___!!!___zy_user={{ user.uid }}&brk=0
+                            &___!!!___zy_ts=0&brk=0
+                            &___!!!___zy_session=0&brk=0
+                            
+                            &__COMMENT__: These enable the use of Fb social network functions, and get used for JS FB calls. Check FarmGame:pickSocialNetworkInit(). &brk=0
+                            &oauth_session=true&brk=0
+                            &fb_sig_user={{ user.uid }}&brk=0
+                            &fb_sig_api_key=9a38e4c75bc6012ae3df475a6b2a01dc&brk=0
+                            &fb_sig_session_key=0.aaaaaaaa_aaaaaaa_aaaaa__.00000.9999999999-0000000000&brk=0
+
+                            &__COMMENT__: This disabled (+ "as_app_name" flashvar) make m_facebookSession to be of type JSSession. &brk=0
+                            &___!!!___fb_sig_ss=102452128776&brk=0
+
+                            &__COMMENT__: This makes com.facebook.delegates.JSDelegate:buildCall() to get the SWF object. &brk=0
+                            &as_app_name=getElementById%28%27flashapp%27%29&brk=0
+
+                            &__COMMENT__: Other FB fields. &brk=0
+                            &fb_sig_time={{ server_time }}&brk=0
                             &fb_sig_added=1&brk=0
                             &fb_sig_profile_update_time={{ server_time }}&brk=0
                             &fb_sig_api_secret=secret&brk=0
                             &fb_sig_expires={{ server_time }}&brk=0
+                            &___!!!___fb_sig_ext_perms=auto_publish_recent_activity&brk=0
+                            &___!!!___fb_sig_app_id=102452128776&brk=0
+                            &___!!!___fb_sig=0&brk=0
+                        
+                        &__FEATURES_&_CONFIG__&brk=0
 
-                            &fb_sig_ss=0&brk=0
-                            &fb_sig_ext_perms=auto_publish_recent_activity&brk=0
-                            &fb_sig_app_id=10000&brk=0
-                            &fb_sig=0&brk=0
+                            &debugMode=1&brk=0
+                            &noSound=0&brk=0
+                            &master_id=0&brk=0
+                            &token=0&brk=0
+                            &authBypass=1&brk=0
+                            &FEATURE_IFRAME=false&brk=0
+                            &iframeRedirect=0&brk=0
+                            &type=n&brk=0
+                            &masterId=1&brk=0
+                            &req_FlashControllerStartTimestamp={{ server_time }}&brk=0
+                            &dailyBonus=0&brk=0
+                            &is_staging=true&brk=0
+                            &generateSchema=1&brk=0
+                            &skipFacebook=false&brk=0
+                            &BUY_FROM_FEEDS_OFFER=%7B%0A%20%20%22offerID%22:0,%0A%20%20%22friendRewardItemCode%22:1,%0A%20%20%22offerLengthSeconds%22:1000,%0A%20%20%22numSharesRequired%22:1,%0A%20%20%22postingThrottleSeconds%22:100,%0A%20%20%22prereq%22:null%0A%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20&brk=0
+
+                            &OPS_JS_GET_FRIENDS_PERMISSION=true&brk=0
+                            &batchLimitFunctionExceptions=%7B%0A%20%20%20%20%22UserService.saveFeatureOptions%22%3A%201%2C%0A%20%20%20%20%22UserService.publishUserAction%22%3A%201%2C%0A%20%20%20%20%22LeaderboardService.getPassedFriendFeed%22%3A%201%2C%0A%20%20%20%20%22WorldService.performAction%22%3A%201%2C%0A%20%20%20%20%22FarmService.saveIcons%22%3A%201%2C%0A%20%20%20%20%22AvatarService.saveAvatar%22%3A%201%0A%7D&brk=0
+                            &batchLimiterVerboseData=1&brk=0
+                            &FEATURE_FLASHPARAM_REPORT_ERRORS=1&brk=0
+                            &FEATURE_FLASHPARAM_REPORT_SWF_EXPORT_ERRORS=1&brk=0
+                            &R2_NEIGHBOR_AUTOPOP_ENABLE=1&brk=0
+                            &R2_NEIGHBOR_AUTOPOP_COOLDOWN_HOURS=0&brk=0
+
+                            &MAX_TRANSACTION_DEPTH=1000&brk=0
                         '>
                     </embed>
                 </object>
