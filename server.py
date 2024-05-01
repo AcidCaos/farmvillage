@@ -174,7 +174,39 @@ def flashservices_gateway():
             response["data"] = commands.init_user(UID)
             resps.append(response)
 
-        elif reqq.functionName == 'UserService.postInit':
+        # elif reqq.functionName == 'UserService.postInit':
+        #     response["data"] = commands.post_init_user(UID)
+        #     resps.append(response)
+        
+        elif reqq.functionName == 'FriendSetService.getBatchFriendSetData':
+            response["data"] = []
+            resps.append(response)
+        
+        elif reqq.functionName == 'UserService.r2InterstitialPostInit':
+            response["data"] = {
+                "r2InterstitialItems": [],
+                "r2InterstitialFeedItems": [],
+                "r2InterstitialMinigameIndex": [],
+                "r2InterstitialTypeIndex": None,
+                "r2InterstitialFriendCount": None
+            }
+            resps.append(response)
+        
+        elif reqq.functionName == 'FriendListService.getFriendsForR2FlashNeighborFlow':
+            response["data"] = {
+                "requestedFriends": {
+                    "GhostNeighbor": [],
+                    "FarmVille": [],
+                    "Facebook": [],
+                    "PossibleCommunity": [],
+                    "CurrentAllNeighbor": [],
+                }
+            }
+            resps.append(response)
+
+        elif reqq.functionName == 'UserService.incrementActionCount':
+            action = reqq['params'][0]
+            commands.increment_action_count(UID, action)
             resps.append(response)
 
         elif reqq.functionName == 'UserService.setSeenFlag':
