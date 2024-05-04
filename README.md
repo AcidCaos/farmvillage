@@ -1,4 +1,8 @@
 # FarmVille
+<!-- ![FarmVille](templates/img/logo.jpg "FarmVille logo") -->
+
+> FarmVille 1 officially closed December 31th, 2020
+
 The FarmVille 1 preservation project by the Farm Village team. This project is dedicated to preserving this Flash game so that it's not lost to time.
 
 ---
@@ -11,20 +15,27 @@ The FarmVille 1 preservation project by the Farm Village team. This project is d
 
 ## Reporting Bugs and Contacting
 
-:speech_balloon: Check our [Discord group](#SOON) [SOON]
+:speech_balloon: Check our [Discord group](https://discord.gg/Bm2EkN5vhz)
 
 :paw_prints: The project [Contributors](../../contributors)
 
+<!--
 ## How to Install on Windows
 
 - Download a flash-compatible browser. :flashlight: **Recommended:** [Flash.pm Browser](https://flash.pm/browser/). Alternatives can be found [here](FLASH.md).
 - Download the latest version from the [Releases](#releases) section.
 - Extract the downloaded zip file to a suitable location.
+-->
 
 ## How to Play
 
+- No official release has been made, so you have to run from source (experienced users only).
+- Right now, assets are not provided. WARC files need to be [downloaded](https://archive.org/details/original-farmville) from the Web Archive, [extracted](https://github.com/recrm/ArchiveTools/blob/master/warc_extractor/warc_extractor.py) and placed inside an `assets/` folder.
+- Download a flash-compatible browser. :flashlight: **Recommended:** [Flash.pm Browser](https://flash.pm/browser/). Alternatives can be found [here](FLASH.md).
+<!--
 - Run the *farm-village* executable.
 - Open your flash browser and navigate to `http://127.0.0.1:5500/`.
+-->
 
 :information_source: To play on GNU/Linux check [this page](LINUX.md).
 
@@ -33,6 +44,10 @@ The FarmVille 1 preservation project by the Farm Village team. This project is d
 :penguin: [FarmVille on GNU/Linux](LINUX.md)
 
 :flashlight: [Flash Continuation](FLASH.md) documentation
+
+## External Links
+
+:beginner: [FarmVille 1 Wiki (FANDOM)](https://farmville.fandom.com/wiki/FarmVille_Wiki)
 
 ## On archives and accessibility to digital heritage
 

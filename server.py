@@ -24,7 +24,7 @@ import pyamf
 
 import commands
 from engine import timestamp_now
-from version import version_name, release_date
+from version import version_name
 from bundle import ASSETS_DIR, EMBEDS_DIR, ASSETHASH_DIR, STUB_ASSETS_DIR, PATCHED_ASSETS_DIR, TEMPLATES_DIR, XML_DIR
 from player import save_session
 
@@ -53,8 +53,7 @@ def login():
         saves_info = all_saves_info()
         return render_template("login.html",
             saves_info=saves_info,
-            version=version_name,
-            release_date=release_date
+            version=version_name
         )
 
 @app.route("/play.html", methods=['GET'])
@@ -69,7 +68,6 @@ def play():
     print("[PLAY] UID:", UID)
     return render_template("play.html", 
         version=version_name,
-        release_date=release_date,
         base_url=f"http://{BIND_IP}:{BIND_PORT}",
         server_time=timestamp_now(),
         debug="true",
@@ -144,10 +142,24 @@ def report_log():
     print("[+] Log:", request.data.decode("utf-8"))
     return "{}"
 
+@app.route("/cb.php", methods=['POST'])
+def cb():
+    print("[+] Callback:", request.data.decode("utf-8"))
+    return "{}"
+
+@app.route("/sn_app_url/index.php", methods=['GET'])
+def sn_app_url_index():
+    ref = request.args.get("ref")
+    ooscode = request.args.get("ooscode")
+    oosfunc = request.args.get("oosfunc")
+    oosmsg = request.args.get("oosmsg")
+    print("[!] Reported Error:", ref ,":", ooscode, oosfunc, oosmsg)
+    return redirect("/")
+
 @app.route("/flashservices/gateway.php", methods=['POST'])
 def flashservices_gateway():
     resp_msg = remoting.decode(request.data)
-    print("[+] Gateway AMF3 Request:", resp_msg)
+    # print("[+] Gateway AMF3 Request:", resp_msg)
     resps = []
     reqs = resp_msg.bodies[0][1].body[1]
     for reqq in reqs:
@@ -230,10 +242,10 @@ def flashservices_gateway():
         
         elif reqq.functionName == 'UserContentService.onCreateImage':
             name = reqq['params'][0]
-            data = reqq['params'][1]
+            png_b64 = reqq['params'][1]
             feed_post = reqq['params'][2]
             if name == "avatar_appearance":
-                commands.set_avatar(UID, data)
+                commands.set_avatar_appearance(UID, name, png_b64, feed_post)
             resps.append(response)
 
         elif reqq.functionName == 'UserService.saveOptions':
@@ -244,8 +256,11 @@ def flashservices_gateway():
         elif reqq.functionName == 'WorldService.performAction':
             actionName = reqq['params'][0]
             m_save = reqq['params'][1]
-            params = reqq['params'][2] # [{'energyMetadata': None, 'neighborId': '0', 'energyCost': 0, 'energySource': 0}, {'firstWA': True}]
-            commands.world_perform_action(UID, actionName, m_save, params)
+            params = reqq['params'][2]
+            object_id = commands.world_perform_action(UID, actionName, m_save, params)
+            # This infroms the client of the new (non-temporary) object ID
+            response["id"] = object_id
+            response["data"] = {"id": object_id} # onMultiComplete and onComplete treat this differently. This is a temporary workaround
             resps.append(response)
         
         elif reqq.functionName == 'UserService.updateFeatureFrequencyTimestamp':
@@ -269,7 +284,7 @@ def flashservices_gateway():
     req = remoting.Response(emsg)
     ev = remoting.Envelope(pyamf.AMF0)
     ev[resp_msg.bodies[0][0]] = req
-    print("[+] Response:", ev)
+    # print("[+] Response:", ev)
 
     ret_body = remoting.encode(ev, strict=True, logger=True).getvalue()
     return Response(ret_body, mimetype='application/x-amf')

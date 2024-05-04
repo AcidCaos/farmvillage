@@ -31,7 +31,7 @@ __initial_village = json.load(open(os.path.join(VILLAGES_DIR, "initial.json")))
 
 # Load saved villages
 
-def load_saves():
+def load_saves() -> None:
     global __saves
 
     # Empty in memory
@@ -64,7 +64,7 @@ def load_saves():
         if modified:
             save_session(UID)
 
-def load_static_villages():
+def load_static_villages() -> None:
     global __villages
 
     # Empty in memory
@@ -121,7 +121,7 @@ def session(UID: str) -> dict:
     assert(isinstance(UID, str))
     return __saves[UID] if UID in __saves else None
 
-def get_player(UID):
+def get_player(UID: str):
     # Update last logged in
     ts_now = timestamp_now()
     session(UID)["userInfo"]["worldSummaryData"]["farm"]["lastLoaded"] = ts_now
@@ -143,11 +143,16 @@ def all_saves_info() -> list:
 
 # Persistency
 
-def save_session(UID: str):
-    # TODO 
+def save_session(UID: str) -> None:
     file = f"{UID}.save.json"
     print(f" * Saving village at {file}... ", end='')
-    village = session(UID)
+    # Must be a deep copy, otherwise we'll be modifying the in-memory object that is in use to check the temporary IDs.
+    village = copy.deepcopy(session(UID))
+    # Clean save file tempIds
+    for obj in village["world"]["objectsArray"]:
+        if "tempId" in obj:
+            del obj["tempId"]
+    # Save
     with open(os.path.join(SAVES_DIR, file), 'w') as f:
         json.dump(village, f, indent=4)
     print("Done.")

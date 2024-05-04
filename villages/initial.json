@@ -208,7 +208,7 @@
         "iconCodes": [
             "scratchCard"
         ],
-        "avatar": ""
+        "avatar": {}
     },
     "world": {
         "id": 1,
@@ -217,21 +217,22 @@
         "sizeY": 35,
         "objectsArray": [
             {
-                "id": 1,
-                "itemName": "barn",
-                "state":"built",
-                "plantTime": 0,
-                "components": {},
-                "direction": {},
+                "deleted": false,
                 "position": {
                     "x": 17,
-                    "y": 17,
-                    "z": 0
+                    "z": 0,
+                    "y": 17
                 },
+                "state": "built",
                 "instanceDataStoreKey": null,
-                "buildTime": null,
+                "direction": 0,
+                "components": {},
                 "className": "StorageBuilding",
-                "deleted": false
+                "contents": [],
+                "id": 1,
+                "buildTime": 0,
+                "plantTime": null,
+                "itemName": "barn"
             }
         ],
         "messageManager": []
