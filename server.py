@@ -13,6 +13,14 @@ from assets import check_assets
 print(" [+] Loading assets...")
 check_assets()
 
+print (" [+] Loading game settings...")
+from game_settings import load_game_settings
+load_game_settings()
+
+print(" [+] Loading items...")
+from items import load_items
+load_items()
+
 print (" [+] Loading players...")
 from player import load_saves, load_static_villages, all_saves_info, all_saves_uids, save_info, new_village
 load_saves()
