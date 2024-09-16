@@ -9,6 +9,10 @@ else:
     import sys
     sys.stdout.write("\x1b]2;FarmVille Server\x07")
 
+from assets import check_assets
+print(" [+] Loading assets...")
+check_assets()
+
 print (" [+] Loading players...")
 from player import load_saves, load_static_villages, all_saves_info, all_saves_uids, save_info, new_village
 load_saves()
@@ -91,6 +95,10 @@ def img(path):
 def css(path):
     return send_from_directory(TEMPLATES_DIR + "/css", path)
 
+@app.route("/crossdomain.xml", methods=['GET'])
+def crossdomain():
+    return send_from_directory(TEMPLATES_DIR, "crossdomain.xml")
+
 # Static endpoints
 
 @app.route("/embeds/Flash/v855097-855094/FV_Preloader.swf", methods=['GET'])
@@ -104,11 +112,6 @@ def embeds(path):
 @app.route("/assethash/<path:path>", methods=['GET'])
 def assethash_path(path):
     return send_from_directory(ASSETHASH_DIR, path, mimetype="application/x-amf")
-
-@app.route("/xml/gz/v855098/items.xml.gz", methods=['GET'])
-@app.route("/xml/gz/items.xml.gz", methods=['GET'])
-def stub_items():
-    return send_from_directory(STUB_ASSETS_DIR, "KehaYeah_items.xml.gz", mimetype='text/xml')
 
 @app.route("/xml/<path:path>", methods=['GET'])
 def xml(path):
