@@ -3,6 +3,8 @@ import math
 from player import session
 from engine import timestamp_now
 import engine
+from items import get_item_by_name
+from game_settings import level_to_xp
 
 def init_user(UID: str) -> dict:
     save = session(UID)
@@ -125,36 +127,86 @@ def world_perform_action(UID: str, actionName: str, m_save: dict, params: list) 
         m_save["tempId"] = object_tempId
 
         m_save["id"] = object_id
-        
+
     # Handle NaN values
     if "plantTime" in m_save and m_save["plantTime"] and type(m_save["plantTime"]) in [int, float] and math.isnan(m_save["plantTime"]):
         m_save["plantTime"] = None
     if "tempId" in m_save and m_save["tempId"] and type(m_save["tempId"]) in [int, float] and math.isnan(m_save["tempId"]):
         m_save["tempId"] = None
+    if "buildTime" in m_save and m_save["buildTime"] and type(m_save["buildTime"]) in [int, float] and math.isnan(m_save["buildTime"]):
+        m_save["buildTime"] = None
 
-    if actionName == 'plow':
-        # Decrease 15 gold
-        save["userInfo"]["player"]["gold"] = max(0, save["userInfo"]["player"]["gold"] - 15)
-        # Increase 1 xp
-        save["userInfo"]["player"]["xp"] += 1
+    # Some checks
+    if ("itemName" not in m_save or m_save["itemName"] is None) and ("className" in m_save and m_save["className"] != "Plow"):
+        print(" * Warning: no item name. World object id: {}".format(object_id))
+    
+    if actionName == 'plow': # Here itemName is usually None
         # Place the plot
-        world_perform_action(UID, 'place', m_save, params)
+        engine.world_update_or_add_object(session(UID)["world"]["objectsArray"], m_save)
+        # Decrease 15 gold
+        engine.apply_gold_diff(save, -15)
+        # Increase 1 xp
+        engine.apply_xp_increment(save, 1)
 
     elif actionName == 'place':
-        replaced = False
-        for i in range(len(save["world"]["objectsArray"])):
-            if engine.world_objects_equal(save["world"]["objectsArray"][i], m_save):
-                save["world"]["objectsArray"][i] = m_save
-                replaced = True
-                break
-        if not replaced:
-            save["world"]["objectsArray"].append(m_save)
+        item_data = get_item_by_name(m_save["itemName"])
+        # Place the object
+        engine.world_update_or_add_object(session(UID)["world"]["objectsArray"], m_save)
+        # Extract params
+        isGift: bool = False
+        isInventoryWithdrawal: bool = False
+        isStorageWithdrawal: bool = False
+        if params and len(params)>0:
+            if "isStorageWithdrawal" in params[0] and params[0]["isStorageWithdrawal"] != 0:
+                isStorageWithdrawal = True
+                print(" * Storage withdrawal")
+            if "isInventoryWithdrawal" in params[0] and params[0]["isInventoryWithdrawal"] == True:
+                isInventoryWithdrawal = True
+                print(" * Inventory withdrawal")
+            if "isGift" in params[0] and params[0]["isGift"] == True:
+                isGift = True
+                print(" * Gift")
+        # Withdrawal from storage
+        if isStorageWithdrawal:
+            engine.storage_withdrawal(save, m_save["itemName"], 1)
+        # TODO: Inventory withdrawal
+        # Check if must apply costs
+        must_apply_costs = True
+        if isGift or isInventoryWithdrawal or isStorageWithdrawal:
+            must_apply_costs = False
+        # Apply costs with currency if explicit
+        if must_apply_costs:
+            if params and len(params)>0 and "currency" in params[0]:
+                engine.apply_item_cost(save, item_data, currency=params[0]["currency"])
+            else:
+                engine.apply_item_cost(save, item_data)
+        # If planted an object, increase XP by plantXP
+        if m_save["state"] == "planted" and "plantXp" in item_data and item_data["plantXp"] is not None:
+            print(" * Applying plant XP: {}".format(item_data["plantXp"]))
+            engine.apply_xp_increment(save, item_data["plantXp"])
+        # Assume is bought object
+        elif must_apply_costs:
+            realXp = 0
+            if "buyXp" in item_data and item_data["buyXp"] is not None:
+                realXp = int(item_data["buyXp"])
+            elif "cost" in item_data and item_data["cost"] is not None:
+                realXp = int(item_data["cost"]) // 100
+            print(" * Applying buy XP: {}".format(realXp))
+            engine.apply_xp_increment(save, realXp)
+        # TODO: largeCropXp - check conditions: isBigPlot
+        # if "largeCropXp" in m_save and m_save["largeCropXp"] is not None:
+        #     print(" * Applying large crop XP: {}".format(m_save["largeCropXp"]))
+        #     engine.apply_xp_increment(save, m_save["largeCropXp"])
     
+    elif actionName == 'harvest':
+        # Apply production reward
+        item_data = get_item_by_name(m_save["itemName"])
+        engine.apply_item_yield_reward(save, item_data)
+        # Replace the object (probably a Plow) with the new one (usually with status "fallow")
+        engine.world_update_or_add_object(session(UID)["world"]["objectsArray"], m_save)
+
     elif actionName == 'move':
-        for i in range(len(save["world"]["objectsArray"])):
-            if engine.world_objects_equal(save["world"]["objectsArray"][i], m_save):
-                save["world"]["objectsArray"][i] = m_save
-                break
+        engine.world_replace_object(session(UID)["world"]["objectsArray"], m_save)
     
     return object_id
 
@@ -162,3 +214,14 @@ def update_feature_frequency_timestamp(UID: str, feature: str) -> None:
     save = session(UID)
     save["userInfo"]["player"]["featureFrequency"][feature] = timestamp_now()
     return
+
+def publish_user_actions(UID: str, action: str, params: dict) -> None:
+    save = session(UID)
+    # We are not tracking XP increments properly, so we'll use this to correct the XP level on Level Ups.
+    if action == "LevelUp":
+        level = int(params["level_number"])
+        current_xp = int(save["userInfo"]["player"]["xp"])
+        expected_minimum_xp = int(level_to_xp(level))
+        if current_xp < expected_minimum_xp:
+            print(" * Correcting XP: {}->{} (minimal XP for level {})".format(current_xp, expected_minimum_xp, level))
+            save["userInfo"]["player"]["xp"] = expected_minimum_xp

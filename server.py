@@ -278,6 +278,12 @@ def flashservices_gateway():
             feature = reqq['params'][0]
             commands.update_feature_frequency_timestamp(UID, feature)
             resps.append(response)
+        
+        elif reqq.functionName == 'UserService.publishUserAction':
+            action = reqq['params'][0]
+            params = reqq['params'][1]
+            commands.publish_user_actions(UID, action, params)
+            resps.append(response)
 
         else:
             resps.append(response)

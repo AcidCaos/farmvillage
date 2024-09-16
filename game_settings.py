@@ -60,10 +60,10 @@ def xp_to_level(xp: int) -> int:
     xp = int(xp)
     for x in sorted(_xp_level_map.keys(), key=int, reverse=True):
         if xp >= int(x):
-            return int(_xp_level_map[x])
+            return int(_xp_level_map[str(x)])
     return None
 
 def level_to_xp(level: int) -> int:
     level = int(level)
     global _level_xp_map
-    return int(_level_xp_map[level])
+    return int(_level_xp_map[str(level)])
