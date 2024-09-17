@@ -1,6 +1,6 @@
 
-version_code = "0.01a.2024_09_16"
-version_name = "pre-alpha " + version_code
+version_code = "0.01a"
+version_name = "alpha " + version_code
 
 def migrate_loaded_save(save: dict):
     

@@ -10,5 +10,13 @@ __pycache__/
 /chromium
 /chromium-profile
 /cache
+/saves
+/assets
 /xml/gz/v855098/*.xml
 /xml/gz/v855098/*.amf
+/xml/gz/v855098/*.json
+/xml/gz/v855038/*.json
+/embeds/Flash/v295145-295127/
+/embeds/Flash/v295765-295762/
+/xml/v295145-295127/
+/xml/v295765-295762/

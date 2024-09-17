@@ -6,6 +6,7 @@ You will need:
 
 - A browser with Flash support (see [Flash Chromium browser](#flash-chromium-browser) section).
 - Adobe Flash Player installed (see [Flash Player for Linux Pepper](#flash-player-for-linux-pepper) section).
+- Assets are not provided. WARC files need to be [downloaded](https://archive.org/details/original-farmville) from the Web Archive, [extracted](https://github.com/recrm/ArchiveTools/blob/master/warc_extractor/warc_extractor.py) and placed inside an `assets/` folder.
 
 ## Flash Chromium browser
 

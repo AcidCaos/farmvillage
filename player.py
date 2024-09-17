@@ -1,4 +1,5 @@
 import os
+import sys
 import json
 import copy
 import uuid
@@ -40,14 +41,14 @@ def load_saves() -> None:
     # Saves dir check
     if not os.path.exists(SAVES_DIR):
         try:
-            print(f"Creating '{SAVES_DIR}' folder...")
+            print(f" * Creating '{SAVES_DIR}' folder...")
             os.mkdir(SAVES_DIR)
         except:
-            print(f"Could not create '{SAVES_DIR}' folder.")
-            exit(1)
+            print(f"[!] Could not create '{SAVES_DIR}' folder.")
+            sys.exit(1)
     if not os.path.isdir(SAVES_DIR):
-        print(f"'{SAVES_DIR}' is not a folder... Move the file somewhere else.")
-        exit(1)
+        print(f"[!] '{SAVES_DIR}' is not a folder... Move the file somewhere else.")
+        sys.exit(1)
 
     # Saves in /saves
     for file in os.listdir(SAVES_DIR):

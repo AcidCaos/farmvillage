@@ -1,5 +1,6 @@
 print (" [+] Loading basics...")
 import os
+import sys
 import json
 
 if os.name == 'nt':
@@ -37,7 +38,7 @@ import pyamf
 import commands
 from engine import timestamp_now
 from version import version_name
-from bundle import ASSETS_DIR, EMBEDS_DIR, ASSETHASH_DIR, STUB_ASSETS_DIR, PATCHED_ASSETS_DIR, TEMPLATES_DIR, XML_DIR
+from bundle import BASE_DIR, ASSETS_DIR, EMBEDS_DIR, ASSETHASH_DIR, PATCHED_ASSETS_DIR, TEMPLATES_DIR, XML_DIR
 from player import save_session
 
 BIND_IP = "127.0.0.1"
@@ -315,5 +316,8 @@ def sn_app_url_gifts():
 print (" [+] Running server...")
 
 if __name__ == '__main__':
-    app.secret_key = 'SECRET_KEY'
+    app.secret_key = os.urandom(24)
+    app.root_path = BASE_DIR
+    app.template_folder = TEMPLATES_DIR
+    app.static_folder = TEMPLATES_DIR
     app.run(host=BIND_IP, port=BIND_PORT, debug=False, threaded=True)

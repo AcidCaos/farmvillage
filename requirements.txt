@@ -1,3 +1,4 @@
+requests==2.28.1
 Flask==2.1.2
 Py3AMF==0.8.10
 tqdm==4.66.5

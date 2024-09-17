@@ -1,17 +1,17 @@
 import os
+import sys
 import shutil
 import threading
 import requests
 import tqdm
 import hashlib
 
-from bundle import ASSETS_DIR
+from bundle import ASSETS_DIR, TMP_DIR
 from warc_extractor.warc_extractor import _main_interface
 
-WARC_PATH = os.path.join(ASSETS_DIR, "warc")
-EXTRACTION_PATH = os.path.join(ASSETS_DIR, "extracted")
-EXTRACTED_INNER_ASSETS_PATH = os.path.join(EXTRACTION_PATH, "/zynga1-a.akamaihd.net/farmville/assets/hashed/assets")
-INNER_ASSETS_PATH = os.path.join(ASSETS_DIR, "assets")
+WARC_PATH = os.path.join(TMP_DIR, "warc")
+EXTRACTION_PATH = os.path.join(TMP_DIR, "extracted")
+EXTRACTED_INNER_ASSETS_PATH = os.path.join(EXTRACTION_PATH, "zynga1-a.akamaihd.net", "farmville", "assets", "hashed", "assets")
 
 BASE_URL = "https://archive.org/download/original-farmville/"
 FILES = [
@@ -29,17 +29,29 @@ FILES = [
     },
 ]
 
+def __inner_assets_check():
+    return os.path.exists(os.path.join(ASSETS_DIR, "Environment")) and os.path.exists(os.path.join(ASSETS_DIR, "xpromoSupport")) # TODO: check for more directories
+    
 def check_assets():
 
     # check if extracted assets directory exists
-    if os.path.exists(INNER_ASSETS_PATH):
-       print(" * Assets directory found.")
-       return
+    if __inner_assets_check():
+        print(" * Assets directory found.")
+        return
+    print(" * Assets not found or missing assets.")
     
-    # check if assets directory exists
-    if not os.path.exists(ASSETS_DIR):
-        print(" * Assets directory not found. Creating assets directory...")
-        os.mkdir(ASSETS_DIR)
+    # check if assets dir already exists and is not empty
+    if os.path.exists(ASSETS_DIR) and os.listdir(ASSETS_DIR):
+        print(" [!] Assets directory found (not empty) but seems incomplete. Remove before proceeding. Exiting...")
+        sys.exit(1)
+    elif os.path.exists(ASSETS_DIR):
+        print(" [!] Empty assets directory found. Removing...")
+        os.rmdir(ASSETS_DIR)
+    
+    # check if tmp directory exists
+    if not os.path.exists(TMP_DIR):
+        print(" * Creating tmp directory...")
+        os.mkdir(TMP_DIR)
     
     # check if WARC directory exists and is not empty
     if not os.path.exists(WARC_PATH) or not os.listdir(WARC_PATH):
@@ -70,7 +82,7 @@ def check_assets():
                     continue
                 else:
                     print(" [!] File hash mismatch. Need to redownload. Exiting...")
-                    exit(1)
+                    sys.exit(1)
 
     if missing_warc_files:
         print(" [!] (Re)Downloading missing or corrupted WARC assets file(s)...")
@@ -78,12 +90,34 @@ def check_assets():
         check_assets()
         return
     
-    # check if extracted assets directory exists and is not empty
-    if not os.path.exists(EXTRACTION_PATH) or not os.listdir(EXTRACTION_PATH):
-        print(" * Extracted assets directory not found. Extracting assets... (one time only, might take a while)")
-        assets_extract()
-        check_assets()
-        return
+    # At this point, assets are not found or incomplete, so we need to extract them
+    print(" * Extracting assets... (one time only, might take a while: up to 1h)")
+    assets_extract()
+
+    # move extracted assets to assets directory
+    print(" * Moving extracted assets to assets directory...")
+
+    # If the destination is a directory or a symlink to a directory, the source is moved inside the directory.
+    # The destination path must not already exist.
+    assert not os.path.exists(ASSETS_DIR)
+    
+    # If the destination is on our current filesystem (it should be),
+    # then rename() is used (which should be really efficient), instead of a copy and remove.
+    dest = shutil.move(EXTRACTED_INNER_ASSETS_PATH, ASSETS_DIR)
+    if not dest:
+        print(" [!] Moving extracted assets failed. Exiting...")
+        sys.exit(1)
+    
+    # delete tmp extracted assets directory and warc directory
+    print(" * Cleaning up tmp dir...")
+    shutil.rmtree(TMP_DIR)
+    print(" * Assets extracted!")
+    
+    # Let's check again if the assets are extracted
+    if not __inner_assets_check():
+        print(" [!] Asset extraction failed. Exiting...")
+        sys.exit(1)
+    return
 
 def warc_download(files_list):
     # create WARC directory
@@ -147,16 +181,5 @@ def assets_extract():
         silence=False
     )
     if not os.path.exists(EXTRACTED_INNER_ASSETS_PATH) or not os.listdir(EXTRACTED_INNER_ASSETS_PATH):
-        print(" [!] Extraction failed. Exiting...")
-        exit(1)
-    
-    # move extracted assets to assets directory
-    dest = shutil.move(EXTRACTED_INNER_ASSETS_PATH, INNER_ASSETS_PATH)
-    if not dest:
-        print(" [!] Moving extracted assets failed. Exiting...")
-        exit(1)
-    
-    # delete tmp extracted assets directory and warc directory
-    shutil.rmtree(EXTRACTION_PATH)
-    shutil.rmtree(WARC_PATH)
-    print(" * Assets extracted!")
+        print(" [!] Extraction failed. Consider extracting and placing the assets manually. Exiting...")
+        sys.exit(1)

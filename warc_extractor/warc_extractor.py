@@ -690,7 +690,7 @@ def warc_records(string, path):
     """Iterates over warc records in path."""
     for filename in os.listdir(path):
         if re.search(string, filename) and ".warc" in filename:
-            print("parsing", filename)
+            print(" * parsing", filename)
             with WARCFile(path + filename) as warc_file:
                 for record in warc_file:
                     yield record
