@@ -5,13 +5,19 @@
 
 The FarmVille 1 preservation project by the Farm Village team. This project is dedicated to preserving this Flash game so that it's not lost to time.
 
+[![Downloads](https://img.shields.io/github/downloads/AcidCaos/farmvillage/total?label=downloads%40all)](../../releases/latest)
+[![Discord](https://img.shields.io/discord/1232395114429546558?logo=discord&label=Discord&color=blue)](https://discord.gg/Bm2EkN5vhz)
+
 ---
 
 ## Releases
 
 | Version | Release date | Source | Download |
 | --- | --- | --- | --- |
-| **pre-alpha 0.01a** | soon™ |  |  |
+| **alpha 0.01a** | September 17, 2024 | :label: [tag](../../releases/tag/0.01a) | :package: [Bundle](../../releases/download/0.01a/farmvillage_0.01a.zip) (55 MB) |
+
+| :information_source: | The minimal _Bundle_ version does not include any assets or WARC files due to its size of approximately 17 GB. Instead, WARC files will be automatically downloaded and extracted the first time the server is launched. Please be patient during this initial setup process. |
+| --- | :--- |
 
 ## Reporting Bugs and Contacting
 
@@ -19,23 +25,16 @@ The FarmVille 1 preservation project by the Farm Village team. This project is d
 
 :paw_prints: The project [Contributors](../../contributors)
 
-<!--
 ## How to Install on Windows
 
 - Download a flash-compatible browser. :flashlight: **Recommended:** [Flash.pm Browser](https://flash.pm/browser/). Alternatives can be found [here](FLASH.md).
 - Download the latest version from the [Releases](#releases) section.
 - Extract the downloaded zip file to a suitable location.
--->
 
 ## How to Play
 
-- No official release has been made, so you have to run from source (experienced users only).
-- Right now, assets are not provided. WARC files need to be [downloaded](https://archive.org/details/original-farmville) from the Web Archive, [extracted](https://github.com/recrm/ArchiveTools/blob/master/warc_extractor/warc_extractor.py) and placed inside an `assets/` folder.
-- Download a flash-compatible browser. :flashlight: **Recommended:** [Flash.pm Browser](https://flash.pm/browser/). Alternatives can be found [here](FLASH.md).
-<!--
-- Run the *farm-village* executable.
+- Run the *farmvillage* executable.
 - Open your flash browser and navigate to `http://127.0.0.1:5500/`.
--->
 
 :information_source: To play on GNU/Linux check [this page](LINUX.md).
 
