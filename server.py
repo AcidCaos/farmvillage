@@ -91,7 +91,7 @@ def play():
         save_info=save_info(UID)
     )
 
-@app.route("/play_ruffle.html", methods=['GET'])
+@app.route("/ruffle.html", methods=['GET'])
 def play_ruffle():
     if 'UID' not in session:
         return redirect("/")
@@ -101,7 +101,7 @@ def play_ruffle():
 
     UID = session['UID']
     print("[PLAY_RUFFLE] UID:", UID)
-    return render_template("play_ruffle.html",
+    return render_template("ruffle.html",
         version=version_name,
         base_url=f"http://{BIND_IP}:{BIND_PORT}",
         server_time=timestamp_now(),
@@ -151,6 +151,14 @@ def xml(path):
 # @app.route("/assets/Environment/grass_themeBackground_7.swf", methods=['GET'])
 # def stub_grass_themeBackground_7():
 #     return send_from_directory(ASSETS_DIR, "Environment/02de7becb766242e421e1430176f55a2.swf", mimetype='text/xml')
+
+@app.route("/assets/Environment/grass_themeBackground_8.25.swf", methods=['GET'])
+def stub_grass_themeBackground_7():
+    return send_from_directory(ASSETS_DIR, "Environment/df0a488eac94bee5d6eca26fd6114603.swf", mimetype='text/xml')
+
+@app.route("/assets/decorations/toolbar32x32.png", methods=['GET'])
+def toolbar32x32():
+    return send_from_directory(ASSETS_DIR, "promo_bar/8c22dd1b08e3909a073485e7fa956758.png", mimetype='image/png')
 
 @app.route("/assets/<path:path>", methods=['GET'])
 def assets(path):
@@ -302,6 +310,17 @@ def flashservices_gateway():
             commands.set_seen_flag(UID, flag)
             resps.append(response)
 
+        elif reqq.functionName == 'UserService.setItemFlag':
+            flag = reqq['params'][0]
+            value = reqq['params'][1]
+            commands.set_item_flag(UID, flag, value)
+            resps.append(response)
+
+        elif reqq.functionName == 'SNPermissionsService.setSNExtendedPermissions':
+            permissions = reqq['params'][0]
+            commands.set_sn_extended_permissions(UID, permissions)
+            resps.append(response)
+
         elif reqq.functionName == 'UserService.resetSystemNotifications':
             resps.append(response)
         
@@ -332,11 +351,25 @@ def flashservices_gateway():
             feature = reqq['params'][0]
             commands.update_feature_frequency_timestamp(UID, feature)
             resps.append(response)
-        
+
+        elif reqq.functionName == 'UserService.updateFeatureFrequencyWithBackoff':
+            feature = reqq['params'][0]
+            backoff_increments = reqq['params'][1]
+            commands.update_feature_frequency_with_backoff(UID, feature, backoff_increments)
+            resps.append(response)
+
         elif reqq.functionName == 'UserService.publishUserAction':
             action = reqq['params'][0]
             params = reqq['params'][1]
             commands.publish_user_actions(UID, action, params)
+            resps.append(response)
+
+        elif reqq.functionName == 'WatchToEarnRewardGrantService.getUserZid':
+            response["data"] = commands.w2e_get_user_zid(UID)
+            resps.append(response)
+
+        elif reqq.functionName == 'WatchToEarnRewardGrantService.generateDailyTokens':
+            response["data"] = commands.w2e_generate_daily_tokens()
             resps.append(response)
 
         else:

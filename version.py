@@ -19,4 +19,11 @@ def migrate_loaded_save(save: dict):
             save["userInfo"]["player"]["lonelyAnimalCode"] = ""
             print("[!] Fixed lonelyAnimalCode format")
 
+        # client ref.: src/Classes/ExtendedPermissionState.as (hasExtendedPermission)
+        # Was stored as a list of permission names, but the client indexes it by name.
+        if isinstance(save.get("snExtendedPermissions"), list):
+            _changed = True
+            save["snExtendedPermissions"] = {perm: True for perm in save["snExtendedPermissions"]}
+            print("[!] Fixed snExtendedPermissions format")
+
     return _changed
