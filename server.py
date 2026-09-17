@@ -91,6 +91,28 @@ def play():
         save_info=save_info(UID)
     )
 
+@app.route("/play_ruffle.html", methods=['GET'])
+def play_ruffle():
+    if 'UID' not in session:
+        return redirect("/")
+
+    if session['UID'] not in all_saves_uids():
+        return redirect("/")
+
+    UID = session['UID']
+    print("[PLAY_RUFFLE] UID:", UID)
+    return render_template("play_ruffle.html",
+        version=version_name,
+        base_url=f"http://{BIND_IP}:{BIND_PORT}",
+        server_time=timestamp_now(),
+        debug="true",
+        user={
+            "uid": UID,
+            "name": save_info(UID)["name"]
+        },
+        save_info=save_info(UID)
+    )
+
 @app.route("/new.html")
 def new():
     session['UID'] = new_village()
