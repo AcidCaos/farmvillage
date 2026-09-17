@@ -7,6 +7,7 @@ __pycache__/
 *.zip
 *.lnk
 /log.txt
+/unhandled.log
 /chromium
 /chromium-profile
 /cache

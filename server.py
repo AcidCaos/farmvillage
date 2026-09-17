@@ -38,7 +38,7 @@ import pyamf
 import commands
 from engine import timestamp_now
 from version import version_name
-from bundle import BASE_DIR, ASSETS_DIR, EMBEDS_DIR, ASSETHASH_DIR, PATCHED_ASSETS_DIR, TEMPLATES_DIR, XML_DIR
+from bundle import BASE_DIR, ASSETS_DIR, EMBEDS_DIR, ASSETHASH_DIR, PATCHED_ASSETS_DIR, TEMPLATES_DIR, XML_DIR, UNHANDLED_LOG
 from player import save_session
 
 BIND_IP = "127.0.0.1"
@@ -190,6 +190,33 @@ def sn_app_url_index():
     print("[!] Reported Error:", ref ,":", ooscode, oosfunc, oosmsg)
     return redirect("/")
 
+def _json_safe(obj):
+    # pyamf request params can contain AMF-specific types (ASObject, ByteArray,
+    # Undefined, dates, ...) that json.dumps doesn't know how to serialize.
+    # Recurse through dict/list/tuple and fall back to str() for anything else.
+    if isinstance(obj, dict):
+        return {str(k): _json_safe(v) for k, v in obj.items()}
+    if isinstance(obj, (list, tuple)):
+        return [_json_safe(v) for v in obj]
+    if obj is None or isinstance(obj, (str, int, float, bool)):
+        return obj
+    return str(obj)
+
+def log_unhandled_command(function_name, params) -> None:
+    # Used to prioritize which Service.method branches to implement next -
+    # see TODO.md. One JSON object per line (JSON Lines) so it's easy to
+    # tally the most frequent unhandled calls later.
+    entry = {
+        "timestamp": timestamp_now(),
+        "functionName": function_name,
+        "params": _json_safe(params),
+    }
+    try:
+        with open(UNHANDLED_LOG, 'a') as f:
+            f.write(json.dumps(entry) + "\n")
+    except Exception as e:
+        print(f"[!] Failed to write to unhandled.log: {e}")
+
 @app.route("/flashservices/gateway.php", methods=['POST'])
 def flashservices_gateway():
     resp_msg = remoting.decode(request.data)
@@ -309,6 +336,7 @@ def flashservices_gateway():
             resps.append(response)
 
         else:
+            log_unhandled_command(reqq.functionName, reqq['params'])
             resps.append(response)
     
     assert len(resps) == len(reqs)
