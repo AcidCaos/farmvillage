@@ -223,6 +223,10 @@ def flashservices_gateway():
     # print("[+] Gateway AMF3 Request:", resp_msg)
     resps = []
     reqs = resp_msg.bodies[0][1].body[1]
+    # pyamf may decode the AMF0 requests array as an ECMA (associative) array
+    # (a dict keyed by index) instead of a strict array (a list) - normalize.
+    if isinstance(reqs, dict):
+        reqs = [reqs[k] for k in sorted(reqs.keys(), key=int)]
     for reqq in reqs:
 
         print(f"[+] {reqq.functionName}: {reqq['params']}")
