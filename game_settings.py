@@ -5,7 +5,7 @@ import xmltodict
 
 from bundle import XML_DIR, CACHE_DIR
 
-CONFIG_XML = os.path.join(XML_DIR, "gz\\v855098\\gameSettings.xml.gz")
+CONFIG_XML = os.path.join(XML_DIR, "gz", "v855098", "gameSettings.xml.gz")
 CACHE_CONFIG_JSON = os.path.join(CACHE_DIR, "gz_v855098_gameSettings.json")
 
 _cached_game_settings: dict = None
@@ -66,4 +66,6 @@ def xp_to_level(xp: int) -> int:
 def level_to_xp(level: int) -> int:
     level = int(level)
     global _level_xp_map
+    if str(level) not in _level_xp_map:
+        return None
     return int(_level_xp_map[str(level)])

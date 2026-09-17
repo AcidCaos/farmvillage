@@ -93,7 +93,9 @@ def apply_xp_increment(save: dict, const: int) -> None:
     apply_cash_diff(save, cash_gain)
 
     # New state
-    print(" * You need {} XP to reach level {}".format(level_to_xp(new_level+1)-new_xp, new_level+1))
+    next_level_xp = level_to_xp(new_level + 1)
+    if next_level_xp is not None:
+        print(" * You need {} XP to reach level {}".format(next_level_xp - new_xp, new_level+1))
 
 # Items costs and rewards
 
@@ -120,7 +122,7 @@ def apply_item_cost(save: dict, item_data: dict, currency: str = None) -> None:
 
     item_name = item_data["name"] if "name" in item_data else ""
     item_cost = int(item_data["cost"]) if "cost" in item_data and item_data["cost"] is not None else None
-    item_market = item_data["market"] if "market" in item_data and item_data["market"] is not "" else None
+    item_market = item_data["market"] if "market" in item_data and item_data["market"] != "" else None
     item_cash = int(item_data["cash"]) if "cash" in item_data and item_data["cash"] is not None else None
 
     if currency is None or currency == "":
