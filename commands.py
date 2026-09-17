@@ -77,10 +77,28 @@ def set_seen_flag(UID: str, flag: str) -> None:
     save["userInfo"]["player"]["seenFlags"][flag] = True
     return
 
+# client ref.: src/Transactions/TSetItemFlag.as, src/Classes/Player.as (setItemFlag/getItemFlag)
+def set_item_flag(UID: str, flag: str, value: str) -> None:
+    save = session(UID)
+    # Values are always strings client-side; an empty string is the "unset" value,
+    # but it still has to be stored so getItemFlag() stops returning undefined.
+    save["userInfo"]["player"]["itemFlags"][flag] = "" if value is None else str(value)
+    return
+
 def save_options(UID: str, options: dict) -> None:
     save = session(UID)
     save["userInfo"]["player"]["options"] = options.copy()
     save["options"] = options
+    return
+
+# client ref.: src/Transactions/TSetSNExtendedPermissions.as, src/Classes/ExtendedPermissionState.as
+def set_sn_extended_permissions(UID: str, permissions: dict) -> None:
+    save = session(UID)
+    # The client refreshes the social network permissions from the page (see the
+    # FarmNS.FlashExtendedPermissionsManager shim in templates/play.html) and sends us the
+    # whole map whenever it differs from what initUser handed it back in "snExtendedPermissions".
+    # hasExtendedPermission() reads it as name -> truthy, so it is stored exactly as received.
+    save["snExtendedPermissions"] = dict(permissions or {})
     return
 
 def set_avatar_appearance(UID: str, name, png_b64, feed_post) -> None:
@@ -215,6 +233,24 @@ def update_feature_frequency_timestamp(UID: str, feature: str) -> None:
     save["userInfo"]["player"]["featureFrequency"][feature] = timestamp_now()
     return
 
+# client ref.: src/Transactions/TSetFeatureFrequencyWithBackoff.as, src/Classes/Player.as (incrementBackoffInterval)
+def update_feature_frequency_with_backoff(UID: str, feature: str, backoff_increments: int) -> None:
+    save = session(UID)
+    backoff_increments = int(backoff_increments)
+    # Mirror of Player.incrementBackoffInterval(): every time the feature is shown it gets
+    # pushed back one more "<feature>_backoff_days" period (that attribute is never set in
+    # gameSettings.xml, so it is always the client's default of 1 day), and the increment
+    # count the client just computed is stored next to it under the "_backoff" postfix.
+    # Unlike the plain timestamp variant, canShowFeatureWithBackoff() compares this value
+    # against GlobalEngine.serverTime, which is in milliseconds.
+    backoff_increment_days = 1
+    next_time = (timestamp_now() + backoff_increments * backoff_increment_days * 86400) * 1000
+    save["userInfo"]["player"]["featureFrequency"][feature] = next_time
+    save["userInfo"]["player"]["featureFrequency"][feature + "_backoff"] = backoff_increments
+    # The matching actionCounts["<feature>_backoff"] bump arrives on its own, as
+    # Player.incrementBackoffInterval() also queues a TActionCount for it.
+    return
+
 def publish_user_actions(UID: str, action: str, params: dict) -> None:
     save = session(UID)
     # We are not tracking XP increments properly, so we'll use this to correct the XP level on Level Ups.
@@ -225,3 +261,18 @@ def publish_user_actions(UID: str, action: str, params: dict) -> None:
         if current_xp < expected_minimum_xp:
             print(" * Correcting XP: {}->{} (minimal XP for level {})".format(current_xp, expected_minimum_xp, level))
             save["userInfo"]["player"]["xp"] = expected_minimum_xp
+
+# client ref.: src/Transactions/TPostInit.as (getUserZid/onGetUserZid)
+def w2e_get_user_zid(UID: str) -> dict:
+    # The client only hands the zid over to the page's ad shim (FarmNS.setZid), which is a
+    # logging stub in templates/play.html, so our UID is as good a "Zynga id" as any.
+    return {"success": True, "zid": UID}
+
+# client ref.: src/Classes/WatchToEarnManager.as (generateDailyTokens/onGenerateDailyToken)
+def w2e_generate_daily_tokens() -> dict:
+    # Watch-to-earn traded ad views for Farm Cash through an external ad network (IronSource);
+    # that network is gone and templates/play.html only stubs out FarmNS.initW2e/showW2eIron,
+    # so no ad can ever complete and no token could ever be redeemed via grantReward.
+    # An empty token list is the state the client already handles: WatchToEarnManager falls
+    # through to oninitW2e("") and hides the watch-to-earn HUD icon.
+    return {"success": True, "Tokens": []}
