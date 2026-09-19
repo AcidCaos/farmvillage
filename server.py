@@ -2,6 +2,13 @@ print (" [+] Loading basics...")
 import os
 import sys
 import json
+import argparse
+
+# Parsed before anything heavy loads, so --help/bad args answer immediately
+_argparser = argparse.ArgumentParser(description="FarmVille Server")
+_argparser.add_argument("--ip", "--host", dest="ip", default="127.0.0.1", help="IP address to bind to (default: 127.0.0.1)")
+_argparser.add_argument("--port", dest="port", type=int, default=5500, help="Port to listen on (default: 5500)")
+_args = _argparser.parse_args()
 
 if os.name == 'nt':
     os.system("color")
@@ -41,8 +48,8 @@ from version import version_name
 from bundle import BASE_DIR, ASSETS_DIR, EMBEDS_DIR, ASSETHASH_DIR, PATCHED_ASSETS_DIR, TEMPLATES_DIR, XML_DIR, UNHANDLED_LOG
 from player import save_session
 
-BIND_IP = "127.0.0.1"
-BIND_PORT = 5500
+BIND_IP = _args.ip
+BIND_PORT = _args.port
 
 app: Flask = Flask(__name__)
 
