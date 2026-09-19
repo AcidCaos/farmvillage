@@ -153,7 +153,12 @@ def save_session(UID: str) -> None:
     for obj in village["world"]["objectsArray"]:
         if "tempId" in obj:
             del obj["tempId"]
-    # Save
-    with open(os.path.join(SAVES_DIR, file), 'w') as f:
+    # Save. Written to a temporary file first and moved into place: opening the real save with 'w'
+    # truncates it before json.dump runs, so anything json cannot serialize (e.g. a pyamf.Undefined
+    # that came straight off the wire) used to leave a half-written, unloadable save behind.
+    path = os.path.join(SAVES_DIR, file)
+    tmp = path + ".tmp"
+    with open(tmp, 'w') as f:
         json.dump(village, f, indent=4)
+    os.replace(tmp, path)
     print("Done.")

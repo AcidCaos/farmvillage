@@ -344,9 +344,15 @@ def flashservices_gateway():
         elif reqq.functionName == 'UserContentService.onCreateImage':
             name = reqq['params'][0]
             png_b64 = reqq['params'][1]
-            feed_post = reqq['params'][2]
+            image_type = reqq['params'][2]
             if name == "avatar_appearance":
-                commands.set_avatar_appearance(UID, name, png_b64, feed_post)
+                commands.set_avatar_appearance(UID, name, png_b64, image_type)
+            resps.append(response)
+
+        elif reqq.functionName == 'AvatarService.saveAvatar':
+            customization_data = reqq['params'][0]
+            gender = reqq['params'][1]
+            commands.save_avatar(UID, customization_data, gender)
             resps.append(response)
 
         elif reqq.functionName == 'UserService.saveOptions':

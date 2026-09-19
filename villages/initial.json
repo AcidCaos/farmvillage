@@ -189,7 +189,8 @@
             "energyManager": {
                 "turboChargers": 0
             },
-            "isAKeynoteUser": "1"
+            "isAKeynoteUser": "1",
+            "hideAvatar": "0"
         },
         "worldSummaryData": {
             "farm": {
@@ -219,7 +220,7 @@
         "iconCodes": [
             "scratchCard"
         ],
-        "avatar": {}
+        "avatar": null
     },
     "world": {
         "id": 1,

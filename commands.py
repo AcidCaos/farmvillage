@@ -169,17 +169,39 @@ def set_sn_extended_permissions(UID: str, permissions: dict) -> None:
     save["snExtendedPermissions"] = dict(permissions or {})
     return
 
-def set_avatar_appearance(UID: str, name, png_b64, feed_post) -> None:
-    save = session(UID)
-    # TODO: Figure out the format. This crashes at the loading screen.
-    # save["userInfo"]["avatar"] = {
-    #     "gender": ,
-    #     "version": "fv_1",
-    #     "items": ,
-    #     "": png_b64
+# client ref.: src/Transactions/TCreateImage.as, src/Managers/UserContentManager.as,
+# src/Classes/Idle/AvatarFeedIdleTask.as
+# This is a user-generated-content *image* upload, not where the avatar itself is stored (that is
+# AvatarService.saveAvatar below): the client renders the avatar it already has to a PNG for a feed
+# post. The callback only reads result.imagePath, and nothing here posts to a social network anymore,
+# so the snapshot is dropped and the client is left without an image path.
+def set_avatar_appearance(UID: str, name, png_b64, image_type) -> None:
+    return
 
-    # }
-    return {}
+# client ref.: src/Transactions/TSaveAvatar.as (signedCall("AvatarService.saveAvatar", params, gender)),
+# src/Classes/FarmGameWorld.as (onCustomizationScreenSave/saveAvatar)
+def save_avatar(UID: str, customization_data: dict, gender: str) -> None:
+    save = session(UID)
+    # What the client sends is the *parsed* customization map (slot -> item), plus the gender as a separate
+    # argument. initUser hands the stored blob straight to new FarmAvatar(avatar) with no gender argument,
+    # and FarmvilleClothingLoader parses it by its "version" field while FarmAvatar picks the gender out of
+    # the blob itself, so both have to be folded back into one object here.
+    # Only the itemId is kept: parseFVVersion1 rebuilds every slot from getItemById(itemId).toRawObject(),
+    # and everything else the client sends (filename, categoryId, category, metaData - each colour is its
+    # own appearanceItem, with its meta_data baked into avatar.xml) comes from that config anyway. Slots
+    # without an itemId are dropped, exactly as parseFVVersion1 drops the ones it cannot resolve; SimpleNPC
+    # refills them from the gender defaults. This also keeps the save JSON-serializable, since the incoming
+    # AMF objects carry pyamf.Undefined values.
+    items = {}
+    for slot, item in (customization_data or {}).items():
+        if isinstance(item, dict) and item.get("itemId") is not None:
+            items[slot] = {"itemId": item["itemId"]}
+    save["userInfo"]["avatar"] = {
+        "version": "fv_1",
+        "gender": gender if gender in ("male", "female") else "female",
+        "items": items,
+    }
+    return
 
 def world_perform_action(UID: str, actionName: str, m_save: dict, params: list) -> int:
     save = session(UID)

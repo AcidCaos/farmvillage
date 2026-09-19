@@ -74,6 +74,14 @@ def migrate_loaded_save(save: dict):
             save["witherOn"] = {"farm": bool(save.get("witherOn", True))}
             print("[!] Fixed witherOn format")
 
+        # client ref.: src/Transactions/TInitUser.as (if(result.avatar != null) ... else DoCreateNewAvatar)
+        # An empty object is truthy in AS3, so it took the "player already has an avatar" branch and built a
+        # blank FarmAvatar({}) instead of running the avatar customization screen. "No avatar yet" is null.
+        if save["userInfo"].get("avatar") == {}:
+            _changed = True
+            save["userInfo"]["avatar"] = None
+            print("[!] Fixed empty avatar (blocked avatar creation)")
+
         # Fix storage format
         # client ref.: src/Classes/Player.as (loadInventoryFromStorageData)
         _fix_storage = False
