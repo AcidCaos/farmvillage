@@ -38,13 +38,42 @@ _FC_SLOT_MACHINE_MYSTERY_PRIZES = [
 
 _FC_SLOT_MACHINE_WIN_CHANCE = 0.35
 
+# client ref.: src/Transactions/TInitUser.as (onComplete), src/Classes/Player.as (newPlayer/isFirstDay/accountAge)
+# The save doubles as the initUser response, so this is also where the "brand new player" state gets consumed:
+# is_new is only true for the very first initUser after new_village() created the farm, and is cleared right
+# after, so every later login takes the returning-player path (TInitUser.as' `if(!result.is_new)` block: daily
+# lottery, friend-unwither toaster, cross-game onboarding, incremental gate limited items, email bits, first
+# tractor flag) and Player.isNewPlayer stops being true.
+# firstDay is true while the farm is less than a day old. firstDayTimestamp is the creation time and never moves
+# (Player.accountAge = serverTime - firstDayTimestamp, read by quest prerequisites).
 def init_user(UID: str) -> dict:
     save = session(UID)
-    return save
+    user_info = save["userInfo"]
+    ts_now = timestamp_now()
+    is_new = bool(user_info["is_new"])
+    first_day = ts_now - user_info["firstDayTimestamp"] < 86400
+    # Persisted state: the session that just started is no longer the player's first one.
+    user_info["is_new"] = False
+    user_info["firstDay"] = first_day
+    user_info["worldSummaryData"]["farm"]["lastLoaded"] = ts_now
+    # Response: shallow copies, so the flags this session reports don't get persisted back into the save.
+    data = dict(save)
+    data["userInfo"] = dict(user_info)
+    data["userInfo"]["is_new"] = is_new
+    # The client reads these two off the response's top level, not off userInfo.
+    data["is_new"] = is_new
+    data["firstDay"] = first_day
+    # Same deal for energy: Player.loadObject only picks up energyMax out of userInfo.player, so without
+    # this mirror Global.player.energy ends up undefined (0) no matter what the save says.
+    data["energy"] = user_info["player"]["energy"]
+    return data
 
 def post_init_user(UID: str) -> dict:
     data = {
-        "postInitTimestampMetric": timestamp_now(),
+        # client ref.: src/Transactions/TPostInit.as (reads result[KEY_LOADTIME_POSTINIT]),
+        # src/Classes/util/LoadingMetricsRecorder.as (KEY_LOADTIME_POSTINIT)
+        "req_postInitEndTimestamp": timestamp_now(),
+        "postInitTimestampMetric": timestamp_now(), # Unused?
         "friendsFertilized": [],
         "totalFriendsFertilized": 0,
         "friendsFedAnimals": [],

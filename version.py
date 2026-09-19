@@ -66,6 +66,14 @@ def migrate_loaded_save(save: dict):
             }
             print("[!] Added irrigation featureOptions")
 
+        # client ref.: src/Transactions/TInitUser.as (Global.witherOnObject = result.witherOn),
+        # src/Global.as (getCurrentWitherStatus / setCurrentWitherStatus) - it's a map keyed by world
+        # type, not a flag. As a Boolean, setCurrentWitherStatus throws #1056 on assignment.
+        if not isinstance(save.get("witherOn"), dict):
+            _changed = True
+            save["witherOn"] = {"farm": bool(save.get("witherOn", True))}
+            print("[!] Fixed witherOn format")
+
         # Fix storage format
         # client ref.: src/Classes/Player.as (loadInventoryFromStorageData)
         _fix_storage = False

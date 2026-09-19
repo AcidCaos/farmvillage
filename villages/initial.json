@@ -325,7 +325,7 @@
     "locale": "en_US",
     "userLocale": "en_US",
     "crossPromos": null,
-    "witherOn": true,
+    "witherOn": { "farm": true },
     "isFarmvilleFan": false,
     "fanPageStatuses": [],
     "subscriptionStatus": "",
