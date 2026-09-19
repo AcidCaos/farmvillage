@@ -109,6 +109,47 @@ def migrate_loaded_save(save: dict):
             player["lotteryTickets"] = []
             print("[!] Fixed lotteryTickets format")
 
+        # client ref.: src/Transactions/TInitUser.as (isAQA / isAKeynoteUser / isEligibleForNoPopup),
+        # src/Classes/Player.as (setIsAutomatedQA / setIsKeynoteQA)
+        # Zynga-internal QA flags. Either one set to "1" permanently sets Global.suppressAllToasters and
+        # postInitActionsManager.dialogSupress - neither is ever reset - which silently drops every toaster
+        # and every post-init popup for the whole session. Ordinary players are "0".
+        # Note isEligibleForNoPopup is read off the response's *top level*, not userInfo.player, and with a
+        # bare truthiness test, so the string "0" would be truthy there - keep it on the player, where the
+        # client ignores it, rather than promoting it.
+        for _qa_flag in ("isAKeynoteUser", "isAQA", "isEligibleForNoPopup"):
+            if player.get(_qa_flag) != "0":
+                _changed = True
+                player[_qa_flag] = "0"
+                print(f"[!] Cleared player.{_qa_flag} (QA flag, suppresses toasters/popups)")
+
+        # client ref.: src/Classes/Player.as (loadStatsFromPlayerObject), src/Display/HUD/StatsDropDown.as
+        # The status shelf needs userInfo.player.stats: loadStatsFromPlayerObject returns immediately when
+        # it is missing, so every cell (level/ribbons/masteries/medals/collections/buildings) stays empty.
+        # It only needs medals.{bronze,silver,gold,total}, collections and buildings - ribbons/masteries are
+        # overwritten in place, recounted from player.achievements/player.mastery.
+        if not isinstance(player.get("stats"), dict):
+            _changed = True
+            player["stats"] = {
+                "medals": {"bronze": 0, "silver": 0, "gold": 0, "total": 0},
+                "collections": 0,
+                "buildings": 0,
+            }
+            print("[!] Added player.stats")
+
+        # client ref.: src/Classes/Mastery.as (currentLevel, MASTERED_LEVEL = 2), src/Classes/Player.as (addMastery)
+        # mastery[code] is a 0-based mastery star level (so 1 = the second star) and masteryCounters[code] a
+        # harvest count; both only ever move through a transaction response's goals/goalCounters
+        # (TFarmTransaction.handleGoalResponse), which the server does not send yet. villages/initial.json
+        # used to seed every crop with 1, handing new farms 51 level-2 masteries - an all-ones map is that
+        # seed and nothing else, since no server code has ever written to either field.
+        for _mastery_key in ("mastery", "masteryCounters"):
+            _seeded = player.get(_mastery_key)
+            if isinstance(_seeded, dict) and _seeded and set(_seeded.values()) == {1}:
+                _changed = True
+                player[_mastery_key] = {}
+                print(f"[!] Cleared seeded player.{_mastery_key}")
+
         # Fix storage format
         # client ref.: src/Classes/Player.as (loadInventoryFromStorageData)
         _fix_storage = False
