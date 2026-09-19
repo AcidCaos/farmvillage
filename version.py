@@ -82,6 +82,33 @@ def migrate_loaded_save(save: dict):
             save["userInfo"]["avatar"] = None
             print("[!] Fixed empty avatar (blocked avatar creation)")
 
+        # client ref.: src/Classes/Player.as (loadObject)
+        # These keys were named after Player's member variables instead of the keys loadObject actually
+        # reads off the response, so their values never reached the client. Rename them (and give them the
+        # type the client expects - lotteryTickets is read with "as Array", and limitedSaleInfo lands in
+        # m_limitedSaleTimers, which getLimitedSaleExpiration dereferences with .hasOwnProperty).
+        player = save["userInfo"]["player"]
+        _renames = {
+            "organicCertificationTotal": ("organicCertificationCount", 0),
+            "lastSocialPlumbingActionTime": ("lastSocialPlumbingTime", 0),
+            "adoptedAnimals": ("m_adoptedAnimals", {}),
+            "limitedSaleExpirations": ("limitedSaleInfo", {}),
+            "initialCashPurchaseTransactions": ("numCashTransactions", 0),
+            "initialCPATransactions": ("numCPATransactions", 0),
+        }
+        for old_key, (new_key, default) in _renames.items():
+            if old_key in player:
+                _changed = True
+                value = player.pop(old_key)
+                # the old values were all placeholders of the wrong type, so only keep matching ones
+                player[new_key] = value if isinstance(value, type(default)) else default
+                print(f"[!] Renamed player.{old_key} -> player.{new_key}")
+
+        if not isinstance(player.get("lotteryTickets"), list):
+            _changed = True
+            player["lotteryTickets"] = []
+            print("[!] Fixed lotteryTickets format")
+
         # Fix storage format
         # client ref.: src/Classes/Player.as (loadInventoryFromStorageData)
         _fix_storage = False
