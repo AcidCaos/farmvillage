@@ -422,6 +422,12 @@ def flashservices_gateway():
             response["data"] = commands.buy_consumable_package(UID, package_name)
             resps.append(response)
 
+        elif reqq.functionName == 'IrrigationService.consumeIrrigationPackages':
+            action_type = reqq['params'][0]
+            amount = reqq['params'][1]
+            response["data"] = commands.consume_water_packages(UID, action_type, amount)
+            resps.append(response)
+
         elif reqq.functionName == 'WatchToEarnRewardGrantService.getUserZid':
             response["data"] = commands.w2e_get_user_zid(UID)
             resps.append(response)
@@ -456,7 +462,7 @@ def flashservices_gateway():
 def sn_app_url_gifts():
     template = request.args.get("template")
     ref = request.args.get("ref")
-    return "{}"
+    return redirect("/")
 
 print (" [+] Running server...")
 

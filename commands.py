@@ -6,6 +6,7 @@ from engine import timestamp_now
 import engine
 from items import get_item_by_name
 from game_settings import level_to_xp
+import storage
 
 def _pick_weighted(pool: list) -> dict:
     return random.choices(pool, weights=[entry["weight"] for entry in pool])[0]
@@ -224,7 +225,7 @@ def world_perform_action(UID: str, actionName: str, m_save: dict, params: list) 
                 print(" * Gift")
         # Withdrawal from storage
         if isStorageWithdrawal:
-            engine.storage_withdrawal(save, m_save["itemName"], 1)
+            storage.store_withdraw_item_by_name(save, m_save["itemName"], 1)
         # TODO: Inventory withdrawal
         # Check if must apply costs
         must_apply_costs = True
@@ -263,6 +264,12 @@ def world_perform_action(UID: str, actionName: str, m_save: dict, params: list) 
 
     elif actionName == 'move':
         engine.world_replace_object(session(UID)["world"]["objectsArray"], m_save)
+
+    elif actionName == 'use':
+        item_name = m_save["itemName"]
+        storage_group_id = params[0]["storageId"]
+        count = params[0]["itemCount"]
+        storage.consume_by_name(save, item_name, count, storage_group_id)
     
     return object_id
 
@@ -324,7 +331,7 @@ def _apply_fc_slot_machine_reward(save: dict, reward: dict) -> None:
     elif reward["type"] == "turbo_charger":
         engine.apply_turbo_chargers_diff(save, quantity)
     elif reward["type"] == "item_grant":
-        engine.storage_deposit(save, reward["value"], quantity)
+        storage.store_deposit_item_by_name(save, reward["value"], quantity)
     # "free_spin" is tracked purely client-side (FeatureOptionsManager's SLOT_MACHINE/
     # SLOT_MACHINE_FREESPINS option, bumped locally by FCSlotMachineWindow.grantReward) - there is
     # nothing to mirror server-side for it yet, since UserService.saveFeatureOptions isn't handled.
@@ -415,7 +422,7 @@ def _apply_scratch_card_reward(save: dict, reward: dict) -> None:
     elif reward["type"] == "coins":
         engine.apply_coins_diff(save, int(reward["value"]))
     elif reward["type"] == "item_grant":
-        engine.storage_deposit(save, reward["item_name"], int(reward["quantity"]))
+        storage.store_deposit_item_by_name(save, reward["item_name"], int(reward["quantity"]))
     # "scratch_card" (another free play) is granted purely client-side (ScratchCardWindow.grantFreeCard()).
 
 def _build_scratch_card_tiles(win_tile: dict = None, near_miss_tile: dict = None) -> list:
@@ -503,18 +510,59 @@ def pigo_get_game_settings(UID: str, game_token_name: str) -> list:
 
 def pigo_buy_token(UID: str) -> str:
     save = session(UID)
-    engine.storage_deposit(save, _PIGO_TOKEN_ITEM_NAME, 1)
+    storage.store_deposit_item_by_name(save, _PIGO_TOKEN_ITEM_NAME, 1)
     return "success"
 
 def pigo_buy_token_package(UID: str) -> str:
     save = session(UID)
-    engine.storage_deposit(save, _PIGO_TOKEN_ITEM_NAME, _PIGO_TOKEN_PACKAGE_COUNT)
+    storage.store_deposit_item_by_name(save, _PIGO_TOKEN_ITEM_NAME, _PIGO_TOKEN_PACKAGE_COUNT)
     return "success"
 
 def pigo_grant_reward(UID: str, game_token_name: str, item_name: str) -> dict:
     save = session(UID)
     win_counts = _pigo_win_counts(save, game_token_name)
     win_counts[item_name] = win_counts.get(item_name, 0) + 1
-    engine.storage_deposit(save, item_name, 1)
-    engine.storage_withdrawal(save, _PIGO_TOKEN_ITEM_NAME, 1)
+    storage.store_deposit_item_by_name(save, item_name, 1)
+    storage.store_withdraw_item_by_name(save, _PIGO_TOKEN_ITEM_NAME, 1)
     return {"complete": True}
+
+# client ref.: src/Transactions/TBuyConsumables.as
+def buy_consumable_package(UID: str, package_name: str) -> dict:
+    save = session(UID)
+    print(f"[BUY_PKG] package={package_name}")
+    package_item = get_item_by_name(package_name)
+    print(f"[BUY_PKG] * cost={package_item.get('cash')} cash")
+    engine.apply_item_cost(save, package_item, currency="cash")
+
+    # Extract items from the package and give them to the player
+    if "itemPackage" in package_item:
+        print(f"[BUY_PKG] Found itemPackage: {package_item['itemPackage']}")
+        package_contents = package_item["itemPackage"]
+
+        # itemPackage can be a dict (single item) or list (multiple items)
+        if isinstance(package_contents, dict):
+            package_contents = [package_contents]
+
+        if isinstance(package_contents, list):
+            for item_spec in package_contents:
+                item_name = item_spec.get("value")
+                amount = int(item_spec.get("amount", 1))
+
+                print(f"[BUY_PKG] Deposit {amount}x {item_name} to GiftBox")
+                storage.store_deposit_item_by_name(save, item_name, amount, group=storage.GIFTBOX_ID)
+        else:
+            print(f"[BUY_PKG] ERROR: itemPackage is not a list after conversion")
+    else:
+        print(f"[BUY_PKG] ERROR: No itemPackage field in package item")
+
+    return {}
+
+# client ref.: src/Managers/IrrigationManager.as (consumeWaterPackages)
+def consume_water_packages(UID: str, action_type: str, amount: int) -> dict:
+    save = session(UID)
+    print(f"[IRRIGATION] Consuming {amount} water for {action_type}")
+
+    engine.add_water(save, action_type, amount)
+    # Remove the water item from the player's gift storage
+    storage.remove_gift_by_code(save, "3YG", amount)
+    return {}

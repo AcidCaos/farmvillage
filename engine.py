@@ -1,6 +1,5 @@
 from datetime import datetime
 import constants
-from items import get_item_by_name
 from game_settings import xp_to_level, level_to_xp
 
 # Utils
@@ -161,58 +160,31 @@ def apply_item_yield_reward(save: dict, item_data: dict) -> None:
         print(" * Apply {} item yield reward: {} COINS".format(item_data["name"], item_coin_yield))
         apply_coins_diff(save, item_coin_yield)
 
-# Storage and Inventory
-
-def storage_withdrawal(save: dict, item_name: str, amount: int = 1) -> None:
-    item_data = get_item_by_name(item_name)
-    if item_data is None:
-        print(" * Storage Withdrawal: item '{}' not found.".format(item_name))
-        return
-    if amount <= 0:
-        print(" * Storage Withdrawal: invalid amount: {}".format(amount))
-        return
-    
-    item_code = item_data["code"]
-    
-    storage = save["userInfo"]["player"]["storageData"]
-
-    # TODO: Fix this code and player save data structure (it's oddly formatted)
-    for group in storage:
-        for code in storage[group]:
-            if code == item_code:
-                storage[group][code][0] -= amount
-                if storage[group][code][0] <= 0:
-                    del storage[group][code]
-                print(" * Storage Withdrawal: {}x {} (code {})".format(amount, item_name, item_code))
-                return
-
-# client ref.: src/Classes/Player.as (addGift, non-auto-consumable/non-package branch adds a StorageItem
-# to this.gifts, which loads from storageData[Global.world.GIFTBOX_ID] - see TInitUser.as)
-def storage_deposit(save: dict, item_name: str, amount: int = 1, group: int = constants.GIFTBOX_STORAGE_GROUP_ID) -> None:
-    item_data = get_item_by_name(item_name)
-    if item_data is None:
-        print(" * Storage Deposit: item '{}' not found.".format(item_name))
-        return
-    if amount <= 0:
-        print(" * Storage Deposit: invalid amount: {}".format(amount))
-        return
-
-    item_code = item_data["code"]
-    storage = save["userInfo"]["player"]["storageData"]
-    group_key = str(group)
-
-    if group_key not in storage:
-        storage[group_key] = {}
-    if item_code in storage[group_key]:
-        storage[group_key][item_code][0] += amount
-    else:
-        storage[group_key][item_code] = [amount]
-
-    print(" * Storage Deposit: {}x {} (code {})".format(amount, item_name, item_code))
-
 # client ref.: src/Classes/Player.as (turboChargers, loaded from userInfo.player.energyManager.turboChargers)
 def apply_turbo_chargers_diff(save: dict, const: int) -> None:
     if const == 0:
         return
     energy_manager = save["userInfo"]["player"]["energyManager"]
     energy_manager["turboChargers"] = max(0, energy_manager["turboChargers"] + const)
+
+# Feature Options
+
+# client ref.: src/Managers/FeatureOptionsManager.as (getFeatureOption)
+def get_feature_option(save: dict, feature_name: str, option_name: str = None) -> dict:
+         featureOptions = save["userInfo"]["featureOptions"]
+         if feature_name in featureOptions:
+            if option_name and option_name in featureOptions[feature_name]:
+                    return featureOptions[feature_name][option_name]
+            return featureOptions[feature_name]
+
+# Irrigation
+
+# client ref.: src/Managers/IrrigationManager.as (addWater)
+def add_water(save: dict, actionType: str, increment: int):
+    FEATURE_NAME = "irrigation"
+    irrigation_feature_data = get_feature_option(save, FEATURE_NAME, FEATURE_NAME)
+
+    currentWorld = save["userInfo"]["currentWorldType"]
+    if(not (currentWorld in irrigation_feature_data[actionType])):
+        irrigation_feature_data[actionType][currentWorld] = {"amount": 0}
+    irrigation_feature_data[actionType][currentWorld]["amount"] += increment
