@@ -40,4 +40,16 @@ def migrate_loaded_save(save: dict):
             save["pigoState"] = {}
             print("[!] Added pigoState")
 
+        # Migrate motdSeenFlags from int (0) to dict to track MOTD timestamps
+        if not isinstance(save.get("motdSeenFlags"), dict):
+            _changed = True
+            save["motdSeenFlags"] = {}
+            print("[!] Fixed motdSeenFlags format")
+
+        # Add currentMOTD needed for MOTD support
+        if "currentMOTD" not in save["userInfo"]["player"]:
+            _changed = True
+            save["userInfo"]["player"]["currentMOTD"] = None
+            print("[!] Added currentMOTD")
+
     return _changed

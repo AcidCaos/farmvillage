@@ -353,6 +353,30 @@ def slot_spin(UID: str) -> dict:
         "payOut": pay_out,
     }
 
+# client ref.: src/Transactions/TGetMOTD.as (perform, onComplete)
+# client ref.: src/Display/MOTD.as (MOTD constructor - reads icon, text, dialog, title, buttonText, etc.)
+def get_motd(UID: str, motd_seen_flag: str) -> dict:
+    save = session(UID)
+
+    # Track which MOTDs the player has seen in their save
+    if "motdSeenFlags" not in save:
+        save["motdSeenFlags"] = {}
+
+    # Record that this MOTD was seen
+    save["motdSeenFlags"][motd_seen_flag] = timestamp_now()
+
+    # Return a basic MOTD response. The client expects motdData to have at least:
+    # motdSeenFlag, dialog, icon, text. Most actual MOTDs are config-driven from client XML
+    # (MarketData.xml, gameSettingsCMS.xml, etc.); this is a placeholder server-side MOTD.
+    motd_data = {
+        "motdSeenFlag": motd_seen_flag,
+        "dialog": "MotdNormal",
+        "icon": "MOTD_ICON",
+        "text": "motd_default_message",
+    }
+
+    return {"motdData": motd_data}
+
 # client ref.: src/Widgets/Windows/ScratchCardWindow.as (loadItemIconWithScratchData, grantUserReward's
 # equivalent cases in UserRewardUtil.as). Like the FC Slot Machine, the reward pool/odds/card price are
 # server-authored data with no trace in any recovered client asset - invented substitute, not FarmVille's

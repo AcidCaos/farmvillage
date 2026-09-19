@@ -268,7 +268,12 @@ def flashservices_gateway():
         elif reqq.functionName == 'UserService.postInit':
             response["data"] = commands.post_init_user(UID)
             resps.append(response)
-        
+
+        elif reqq.functionName == 'UserService.getMOTD':
+            motd_seen_flag = reqq['params'][0]
+            response["data"] = commands.get_motd(UID, motd_seen_flag)
+            resps.append(response)
+
         elif reqq.functionName == 'FriendSetService.getBatchFriendSetData':
             response["data"] = []
             resps.append(response)
