@@ -52,4 +52,36 @@ def migrate_loaded_save(save: dict):
             save["userInfo"]["player"]["currentMOTD"] = None
             print("[!] Added currentMOTD")
 
+        # Add irrigation featureOptions
+        if "irrigation" not in save["userInfo"]["featureOptions"]:
+            _changed = True
+            save["userInfo"]["featureOptions"]["irrigation"] = {
+                "irrigation": {
+                    "waterPlots": {
+                        "farm": {
+                            "amount": 20
+                        }
+                    }
+                }
+            }
+            print("[!] Added irrigation featureOptions")
+
+        # Fix storage format
+        # client ref.: src/Classes/Player.as (loadInventoryFromStorageData)
+        _fix_storage = False
+        storage = save["userInfo"]["player"]["storageData"]
+        for sid in storage.keys():
+            for itemCode in storage[sid].keys():
+                metadata: list = storage[sid][itemCode]
+                if len(metadata) != 3:
+                    _fix_storage = True
+                    storage[sid][itemCode] = [
+                        metadata[0] if len(metadata) > 0 else 1,
+                        metadata[1] if len(metadata) > 1 else [],
+                        metadata[2] if len(metadata) > 2 else [],
+                    ]
+        if _fix_storage:
+            _changed = True
+            print("[!] Fixed storage format")
+
     return _changed

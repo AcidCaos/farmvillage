@@ -45,10 +45,11 @@ def get_items() -> list:
     global _cached_items
     return _cached_items["settings"]["items"]["item"]
 
-def get_item_by_id(id:int) -> dict:
-    # TODO
-    # return get_items()[id]
-    raise NotImplementedError
+def get_item_by_code(code:str) -> dict:
+    for item in get_items():
+        if item["code"] == code:
+            return item
+    return None
 
 def get_item_by_name(name:str) -> dict:
     for item in get_items():

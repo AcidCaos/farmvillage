@@ -17,10 +17,12 @@
                 "musicDisabled": false,
                 "animationDisabled": false
             },
+            "__comment__": "storageData[inventoryId][itemCode] = metaData (array: [quantity, sender_ids, extra_data]). extra_data is an array of objects {}",
             "storageData": {
+                "-1": {},
                 "-2": {
-                    "SB": [2],
-                    "KB": [1]
+                    "SB": [2, [], []],
+                    "KB": [1, [], []]
                 }
             },
             "hasVisitFriend": false,
@@ -203,6 +205,15 @@
             "world_seasons": {
                 "farm": 0,
                 "avalon": 1
+            },
+            "irrigation": {
+                "irrigation": {
+                    "waterPlots": {
+                        "farm": {
+                            "amount": 20
+                        }
+                    }
+                }
             }
         },
         "iconCodes": [
