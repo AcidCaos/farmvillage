@@ -57,7 +57,10 @@ def post_init_user(UID: str) -> dict:
             "allRewards": _FC_SLOT_MACHINE_REWARDS,
             "mgRewards": _FC_SLOT_MACHINE_MYSTERY_PRIZES,
         },
-        "hudIcons": ["scratchCard", "fcSlotMachine"],
+        # client ref.: src/Display/QueuedIcon.as, gameSettingsCMS.xml's <icons> block (matched by name/code) -
+        # "carnivalBooth" opens the Game Tent; which of its promo tiles show up is controlled separately by
+        # flashHotParams' CARNIVAL_PROMOS_ACTIVE/CARNIVAL_PROMO_DEFAULT (see villages/initial.json, version.py).
+        "hudIcons": ["scratchCard", "fcSlotMachine", "carnivalBooth"],
         "crossGameGiftingState": None,
         "marketView": None,
         "marketViewCraftingSkills": None,

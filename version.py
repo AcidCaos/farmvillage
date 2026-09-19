@@ -26,4 +26,12 @@ def migrate_loaded_save(save: dict):
             save["snExtendedPermissions"] = {perm: True for perm in save["snExtendedPermissions"]}
             print("[!] Fixed snExtendedPermissions format")
 
+        # client ref.: src/Classes/MarketConfigSettings.as (getActiveCarnivalPromotions) - without these,
+        # the Carnival Booth's promo grid stays empty (Global.flashHotParams["CARNIVAL_PROMOS_ACTIVE"] is NaN).
+        if "CARNIVAL_PROMOS_ACTIVE" not in save["flashHotParams"]:
+            _changed = True
+            save["flashHotParams"]["CARNIVAL_PROMOS_ACTIVE"] = 6
+            save["flashHotParams"]["CARNIVAL_PROMO_DEFAULT"] = "Carnival_Coming_Soon"
+            print("[!] Added Carnival Booth flashHotParams")
+
     return _changed
