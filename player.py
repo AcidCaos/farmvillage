@@ -7,6 +7,7 @@ import uuid
 
 from engine import timestamp_now
 from bundle import VILLAGES_DIR, SAVES_DIR
+from game_settings import xp_to_level
 from version import migrate_loaded_save
 
 __villages = {}  # ALL static neighbors
@@ -122,12 +123,62 @@ def session(UID: str) -> dict:
     assert(isinstance(UID, str))
     return __saves[UID] if UID in __saves else None
 
+def village(UID: str) -> dict:
+    # A neighbour is either another player's save or a static village under /villages. Both are the same
+    # shape, but only saves are writable, so callers that mutate must go through session() instead.
+    assert(isinstance(UID, str))
+    if UID in __saves:
+        return __saves[UID]
+    return __villages[UID] if UID in __villages else None
+
+# Neighbours
+
+def neighbor_uids(UID: str) -> list:
+    # Everyone on this server neighbours everyone else: there is no friend-request flow to reverse-engineer
+    # (that lived on Facebook), and the client only ever sees the list the server hands it.
+    return [uid for uid in all_uids() if uid != UID]
+
+def neighbor_metadata(UID: str) -> list:
+    # client ref.: src/Classes/Friend.as (setMetaData) - one entry per neighbour, holding exactly the fields
+    # Friend reads. `stats` is left out on purpose: FriendBarSlot only draws the stats card when the object
+    # has ribbons/medals/masteries/collections/buildings, and we have nothing truthful to put in them.
+    # `name`/`profilePic` are overwritten from the SN user (Friend's snUser setter) for anyone the JS
+    # getFriendData() in templates/play.html also reports, and are the fallback for anyone it does not.
+    result = []
+    for uid in neighbor_uids(UID):
+        save = village(uid)
+        if save is None:
+            continue
+        player = save["userInfo"]["player"]
+        xp = player.get("xp") or 0
+        result.append({
+            "uid": uid,
+            "name": save["userInfo"].get("attr", {}).get("name", "Farmer"),
+            "gold": player.get("gold") or 0,
+            "xp": xp,
+            "level": xp_to_level(xp),
+            "worldScores": player.get("worldScores"),
+            "avatar": save["userInfo"].get("avatar"),
+            "profilePic": "",
+            "worldName": "farm", # client ref.: src/Classes/Constants/WorldsConstants.as (WORLD_ID_HOME)
+            "isNeighbor": True,
+            "community": 0, # Not a community (non-network) neighbour: these are all real, visitable saves
+            "hasEmailPermission": False,
+            "usedPhotoContest": False,
+            "unlockedWorldTypes": None,
+            "featureCredits": None,
+            "questIds": None,
+            "breedingStats": None,
+            "stats": None,
+        })
+    return result
+
 def get_player(UID: str):
     # Update last logged in
     ts_now = timestamp_now()
     session(UID)["userInfo"]["worldSummaryData"]["farm"]["lastLoaded"] = ts_now
     player_info = session(UID)
-    player_info["userInfo"]["player"]["neighbors"] = [] # TODO
+    player_info["userInfo"]["player"]["neighbors"] = neighbor_uids(UID)
     return player_info
 
 def save_info(UID: str) -> dict:
@@ -141,6 +192,28 @@ def all_saves_info() -> list:
     for uid in __saves:
         saves_info.append(save_info(uid))
     return list(saves_info)
+
+def social_network_friends(UID: str) -> list:
+    # client ref.: src/Classes/util/FacebookSocialNetwork.as (getFriendList/getAppFriends, toSocialNetworkUser)
+    # The client asks JavaScript for its social graph (templates/play.html's getFriendData()) before it asks
+    # the gateway for anything. These uids must match neighbor_metadata()'s exactly: FriendManager only
+    # promotes a neighbour into the friend bar when it can pair the two halves by uid.
+    # `pic_square` is left empty on purpose - the originals were Facebook CDN urls and were never recovered,
+    # and FriendBarSlot.setupOccupiedSpot() already falls back to its embedded no-profile-pic art.
+    friends = []
+    for uid in neighbor_uids(UID):
+        save = village(uid)
+        if save is None:
+            continue
+        name = save["userInfo"].get("attr", {}).get("name", "Farmer")
+        friends.append({
+            "uid": uid,
+            "first_name": name,
+            "name": name,
+            "pic_square": "",
+            "sex": "",
+        })
+    return friends
 
 # Persistency
 
