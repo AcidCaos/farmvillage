@@ -87,8 +87,13 @@ def post_init_user(UID: str) -> dict:
         "friendsFedAnimals": [],
         "totalFriendsFedAnimals": 0,
         "showBookmark": True,
-        "showToolbarThankYou": True,
-        "toolbarGiftName": True,
+        # client ref.: src/Transactions/TPostInit.as (showToolbarThankYou branch), src/Classes/util/ZLocUtils.as (tk_pk)
+        # The FarmVille Game Bar was a Zynga browser toolbar, gone with the rest of their web platform - it
+        # can no longer be installed, so its "thanks for installing" toaster must never fire. toolbarGiftName
+        # is a "package:key" localization pair; anything else makes tk_pk return null and the toaster renders
+        # its unsubstituted "{item}" placeholder.
+        "showToolbarThankYou": False,
+        "toolbarGiftName": None,
         "isAbleToPlayMusic": True,
         "FOFData": [],
         "prereqDSData": [],
