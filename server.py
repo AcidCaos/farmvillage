@@ -364,6 +364,10 @@ def flashservices_gateway():
             commands.publish_user_actions(UID, action, params)
             resps.append(response)
 
+        elif reqq.functionName == 'SlotService.spin':
+            response["data"] = commands.slot_spin(UID)
+            resps.append(response)
+
         elif reqq.functionName == 'WatchToEarnRewardGrantService.getUserZid':
             response["data"] = commands.w2e_get_user_zid(UID)
             resps.append(response)

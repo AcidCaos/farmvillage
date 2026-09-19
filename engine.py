@@ -185,3 +185,34 @@ def storage_withdrawal(save: dict, item_name: str, amount: int = 1) -> None:
                     del storage[group][code]
                 print(" * Storage Withdrawal: {}x {} (code {})".format(amount, item_name, item_code))
                 return
+
+# client ref.: src/Classes/Player.as (addGift, non-auto-consumable/non-package branch adds a StorageItem
+# to this.gifts, which loads from storageData[Global.world.GIFTBOX_ID] - see TInitUser.as)
+def storage_deposit(save: dict, item_name: str, amount: int = 1, group: int = constants.GIFTBOX_STORAGE_GROUP_ID) -> None:
+    item_data = get_item_by_name(item_name)
+    if item_data is None:
+        print(" * Storage Deposit: item '{}' not found.".format(item_name))
+        return
+    if amount <= 0:
+        print(" * Storage Deposit: invalid amount: {}".format(amount))
+        return
+
+    item_code = item_data["code"]
+    storage = save["userInfo"]["player"]["storageData"]
+    group_key = str(group)
+
+    if group_key not in storage:
+        storage[group_key] = {}
+    if item_code in storage[group_key]:
+        storage[group_key][item_code][0] += amount
+    else:
+        storage[group_key][item_code] = [amount]
+
+    print(" * Storage Deposit: {}x {} (code {})".format(amount, item_name, item_code))
+
+# client ref.: src/Classes/Player.as (turboChargers, loaded from userInfo.player.energyManager.turboChargers)
+def apply_turbo_chargers_diff(save: dict, const: int) -> None:
+    if const == 0:
+        return
+    energy_manager = save["userInfo"]["player"]["energyManager"]
+    energy_manager["turboChargers"] = max(0, energy_manager["turboChargers"] + const)

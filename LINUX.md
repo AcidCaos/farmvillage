@@ -11,7 +11,7 @@ You will need:
 ## Flash Chromium browser
 
 Download a Chromium version with PPAPI support.
-<br>Tested with version *86.0.4240.75*, which can be downloaded [here](https://chromium.cypress.io/linux/stable/86.0.4240.75).
+<br>Tested with version *86.0.4240.198*, which can be downloaded [here](https://ungoogled-software.github.io/ungoogled-chromium-binaries/releases/linux_portable/64bit/86.0.4240.198-1.1).
 
 Fancy trying other versions? Here are some relevant Linux Chromium release comments:
 

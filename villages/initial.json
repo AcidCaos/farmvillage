@@ -276,16 +276,15 @@
         "wishName": null,
         "wishImage": null
     },
-    "snExtendedPermissions": [
-        "publish_actions",
-        "user_games_activity",
-        "friends_games_activity",
-        "publish_actions",
-        "user_birthday",
-        "read_stream",
-        "user_friends",
-        "extended_permissions_gift_given"
-    ],
+    "snExtendedPermissions": {
+        "publish_actions": true,
+        "user_games_activity": true,
+        "friends_games_activity": true,
+        "user_birthday": true,
+        "read_stream": true,
+        "user_friends": true,
+        "extended_permissions_gift_given": true
+    },
     "___####___npcs": [
         {
             "id": "1000", "__comment1__": "DEFAULT_MODEL_FARM_ID",

@@ -1,10 +1,38 @@
 import math
+import random
 
 from player import session
 from engine import timestamp_now
 import engine
 from items import get_item_by_name
 from game_settings import level_to_xp
+
+# client ref.: src/Widgets/Windows/FCSlotMachineWindow.as (grantReward), src/Widgets/Slots/FCSlotMachine/FCSlotMachineItemPanel.as
+# The FC Slot Machine's reward pool/odds are server-authored data with no trace in any recovered client
+# asset (TPostInit.as just expects postInit's fcSlotMachineRewards.allRewards/mgRewards to be non-empty, or
+# it pops "invalid rewards for FC Slot Machine"). This pool is an invented, reasonable substitute - not
+# FarmVille's original values - using item names/fields the client can actually resolve (see FCSlotMachineWindow.as
+# grantReward()'s switch on payOut.type, and Player.as addGift() for why item_grant uses giftable animal items).
+_FC_SLOT_MACHINE_REWARDS = [
+    {"type": "coins", "quantity": 500, "classType": "1", "weight": 30},
+    {"type": "coins", "quantity": 2000, "classType": "1", "weight": 20},
+    {"type": "free_spin", "quantity": 1, "classType": "1", "weight": 20},
+    {"type": "turbo_charger", "quantity": 1, "classType": "2", "weight": 15},
+    {"type": "cash", "quantity": 1, "classType": "2", "weight": 8},
+    {"type": "item_grant", "value": "cow", "quantity": 1, "classType": "2", "weight": 4},
+    {"type": "item_grant", "value": "horse", "quantity": 1, "classType": "3", "weight": 2},
+    {"type": "cash", "quantity": 3, "classType": "3", "weight": 1},
+]
+
+# Decorative "this week's prizes" panel (FCSlotMachinePrizeFrame) - only `value` (a FarmItem name) is read.
+_FC_SLOT_MACHINE_MYSTERY_PRIZES = [
+    {"value": "cow"},
+    {"value": "horse"},
+    {"value": "sheep"},
+    {"value": "goat"},
+]
+
+_FC_SLOT_MACHINE_WIN_CHANCE = 0.35
 
 def init_user(UID: str) -> dict:
     save = session(UID)
@@ -24,8 +52,12 @@ def post_init_user(UID: str) -> dict:
         "FOFData": [],
         "prereqDSData": [],
         "neighborCount": 1,
-        "fcSlotMachineRewards": None,
-        "hudIcons": ["scratchCard"],
+        # client ref.: src/Transactions/TPostInit.as (pops "invalid rewards for FC Slot Machine" otherwise)
+        "fcSlotMachineRewards": {
+            "allRewards": _FC_SLOT_MACHINE_REWARDS,
+            "mgRewards": _FC_SLOT_MACHINE_MYSTERY_PRIZES,
+        },
+        "hudIcons": ["scratchCard", "fcSlotMachine"],
         "crossGameGiftingState": None,
         "marketView": None,
         "marketViewCraftingSkills": None,
@@ -276,3 +308,41 @@ def w2e_generate_daily_tokens() -> dict:
     # An empty token list is the state the client already handles: WatchToEarnManager falls
     # through to oninitW2e("") and hides the watch-to-earn HUD icon.
     return {"success": True, "Tokens": []}
+
+def _apply_fc_slot_machine_reward(save: dict, reward: dict) -> None:
+    quantity = int(reward["quantity"])
+    if reward["type"] == "cash":
+        engine.apply_cash_diff(save, quantity)
+    elif reward["type"] == "coins":
+        engine.apply_coins_diff(save, quantity)
+    elif reward["type"] == "turbo_charger":
+        engine.apply_turbo_chargers_diff(save, quantity)
+    elif reward["type"] == "item_grant":
+        engine.storage_deposit(save, reward["value"], quantity)
+    # "free_spin" is tracked purely client-side (FeatureOptionsManager's SLOT_MACHINE/
+    # SLOT_MACHINE_FREESPINS option, bumped locally by FCSlotMachineWindow.grantReward) - there is
+    # nothing to mirror server-side for it yet, since UserService.saveFeatureOptions isn't handled.
+
+# client ref.: src/Widgets/Windows/FCSlotMachineWindow.as (spin/onSpinTransactionComplete/stopSpin/grantReward)
+def slot_spin(UID: str) -> dict:
+    save = session(UID)
+
+    won = random.random() < _FC_SLOT_MACHINE_WIN_CHANCE
+    if won:
+        reward = random.choices(_FC_SLOT_MACHINE_REWARDS, weights=[r["weight"] for r in _FC_SLOT_MACHINE_REWARDS])[0]
+        pay_out = reward
+        slots = [reward, reward, reward]
+        _apply_fc_slot_machine_reward(save, reward)
+    else:
+        pay_out = None
+        # 3 reel results that aren't all identical, so the client's own compareSlots() (which decides
+        # whether to visually highlight a match) doesn't show a win when there isn't a payOut.
+        while True:
+            slots = random.choices(_FC_SLOT_MACHINE_REWARDS, k=3)
+            if not (slots[0] == slots[1] == slots[2]):
+                break
+
+    return {
+        "slots": slots,
+        "payOut": pay_out,
+    }
