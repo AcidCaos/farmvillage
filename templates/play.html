@@ -2545,28 +2545,19 @@
                 console.log("closeOnLoadPopDialogs")
             }
 
+            // Every other save in /saves plus every static village in /villages, from
+            // player.social_network_friends(). The uids match the compressed `neighbors` blob that
+            // UserService.initUser returns; FriendManager.parseFriends() pairs the two by uid, and only
+            // neighbours present in BOTH halves reach the friend bar.
             function getFriendData(){
                 console.log("getFriendData")
-                var friendData = [
-                    {
-                        "uid":"10000",
-                        "first_name":"AcidCaos",
-                        "last_name":"",
-                        "name":"AcidCaos",
-                        "pic_square":"{{ base_url }}\/img\/profile\/acid.48.jpg",
-                        "sex": "m",
-                        "___is_app_user":true,
-                        "___allowed_restrictions":false,
-                        "___pic_big":"{{ base_url }}\/img\/profile\/acid.48.jpg"
-                    }
-                ];
+                var friendData = {{ friends|tojson }};
                 return friendData;
             }
 
             function getAppFriendIds() {
                 console.log("getAppFriendIds")
-                var appFriendIds = ["10000"];
-                return [];
+                var appFriendIds = {{ friends|map(attribute='uid')|list|tojson }};
                 return appFriendIds;
             }
 

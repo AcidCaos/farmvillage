@@ -1,4 +1,7 @@
 from datetime import datetime
+import base64
+import json
+import zlib
 import constants
 from game_settings import xp_to_level, level_to_xp
 
@@ -6,6 +9,13 @@ from game_settings import xp_to_level, level_to_xp
 
 def timestamp_now():
     return int(datetime.now().timestamp())
+
+# client ref.: src/Classes/util/FarmGameUtil.as (uncompressAndDecodeDefault)
+# A few initUser fields travel as a string rather than as AMF: base64 of the zlib-compressed JSON. The
+# client picks the decoder off the fv_ops_json_optimization experiment, but both variants parse plain
+# JSON, and templates/play.html pins that experiment to 0 (the Base64Decoder + ByteArray.uncompress path).
+def compress_and_encode(obj) -> str:
+    return base64.b64encode(zlib.compress(json.dumps(obj).encode("utf-8"))).decode("ascii")
 
 # World Objects
 

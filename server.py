@@ -23,7 +23,7 @@ from items import load_items
 load_items()
 
 print (" [+] Loading players...")
-from player import load_saves, load_static_villages, all_saves_info, all_saves_uids, save_info, new_village
+from player import load_saves, load_static_villages, all_saves_info, all_saves_uids, save_info, new_village, social_network_friends
 load_saves()
 print (" [+] Loading static villages...")
 load_static_villages()
@@ -88,7 +88,9 @@ def play():
             "uid": UID,
             "name": save_info(UID)["name"]
         },
-        save_info=save_info(UID)
+        save_info=save_info(UID),
+        # Served to the client's getFriendData()/getAppFriendIds() JS hooks - see player.social_network_friends()
+        friends=social_network_friends(UID)
     )
 
 @app.route("/ruffle.html", methods=['GET'])
@@ -110,7 +112,9 @@ def play_ruffle():
             "uid": UID,
             "name": save_info(UID)["name"]
         },
-        save_info=save_info(UID)
+        save_info=save_info(UID),
+        # Served to the client's getFriendData()/getAppFriendIds() JS hooks - see player.social_network_friends()
+        friends=social_network_friends(UID)
     )
 
 @app.route("/new.html")
@@ -370,6 +374,20 @@ def flashservices_gateway():
             response["data"] = {"id": object_id} # onMultiComplete and onComplete treat this differently. This is a temporary workaround
             resps.append(response)
         
+        elif reqq.functionName == 'WorldService.loadOwnWorld':
+            world_type = reqq['params'][0]
+            response["data"] = commands.load_own_world(UID, world_type)
+            resps.append(response)
+
+        elif reqq.functionName == 'UserService.getGifts':
+            response["data"] = commands.get_gifts(UID)
+            resps.append(response)
+
+        elif reqq.functionName == 'WorldService.loadNeighborWorld':
+            neighbor_id = reqq['params'][0]
+            response["data"] = commands.load_neighbor_world(UID, neighbor_id)
+            resps.append(response)
+
         elif reqq.functionName == 'UserService.updateFeatureFrequencyTimestamp':
             feature = reqq['params'][0]
             commands.update_feature_frequency_timestamp(UID, feature)

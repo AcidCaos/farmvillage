@@ -1,11 +1,11 @@
 import math
 import random
 
-from player import session
+from player import session, village, neighbor_uids, neighbor_metadata, save_session
 from engine import timestamp_now
 import engine
 from items import get_item_by_name
-from game_settings import level_to_xp
+from game_settings import level_to_xp, get_farming_int
 import storage
 
 def _pick_weighted(pool: list) -> dict:
@@ -66,6 +66,14 @@ def init_user(UID: str) -> dict:
     # Same deal for energy: Player.loadObject only picks up energyMax out of userInfo.player, so without
     # this mirror Global.player.energy ends up undefined (0) no matter what the save says.
     data["energy"] = user_info["player"]["energy"]
+    # client ref.: src/Transactions/TInitUser.as (setUnparsedFriendData), src/Managers/FriendManager.as
+    # Two separate things, both required: the top-level compressed blob carries each neighbour's metadata,
+    # while userInfo.player.neighbors is the plain uid list that flags which of them are actual neighbours.
+    # FriendManager.parseFriends() only promotes a neighbour into the friend bar when the blob entry is
+    # matched by a social-network user of the same uid, which templates/play.html's getFriendData() serves.
+    data["neighbors"] = engine.compress_and_encode(neighbor_metadata(UID))
+    data["userInfo"]["player"] = dict(user_info["player"])
+    data["userInfo"]["player"]["neighbors"] = neighbor_uids(UID)
     return data
 
 def post_init_user(UID: str) -> dict:
@@ -84,7 +92,7 @@ def post_init_user(UID: str) -> dict:
         "isAbleToPlayMusic": True,
         "FOFData": [],
         "prereqDSData": [],
-        "neighborCount": 1,
+        "neighborCount": len(neighbor_uids(UID)),
         # client ref.: src/Transactions/TPostInit.as (pops "invalid rewards for FC Slot Machine" otherwise)
         "fcSlotMachineRewards": {
             "allRewards": _FC_SLOT_MACHINE_REWARDS,
@@ -321,8 +329,100 @@ def world_perform_action(UID: str, actionName: str, m_save: dict, params: list) 
         storage_group_id = params[0]["storageId"]
         count = params[0]["itemCount"]
         storage.consume_by_name(save, item_name, count, storage_group_id)
-    
+
+    elif actionName == 'neighborAct':
+        # client ref.: src/Transactions/NeighborActions/TBaseNeighborAction.as (perform)
+        neighbor_act(UID, params[0]["hostId"], params[0]["actionType"], m_save)
+
     return object_id
+
+# Neighbours
+
+# client ref.: src/Classes/NeighborActions/*NeighborAction.as (getExecuteXpYield/getExecuteCoinYield)
+# What the visitor earns for helping out, as (xpKey, xpDefault, goldKey, goldDefault) into the farming
+# settings. BaseNeighborAction.execute() adds these to Global.player client-side before the transaction is
+# even queued, so the server has to apply exactly the same amounts or the HUD drifts from the save. The
+# seasonal actions (trickneighbor, the Halloween pair, neighborHarvestFeatureBuilding) never override the
+# base class' yields, so they are deliberately absent here: they really do pay out nothing directly.
+_NEIGHBOR_ACTION_YIELDS = {
+    "plow":         ("neighborPlowBonusXp", 1, "neighborPlowBonusGold", 10),
+    "harvest":      ("neighborPlowBonusXp", 1, "neighborPlowBonusGold", 10),
+    "fert":         ("fertilizeSuccessXpGain", 0, "fertilizeSuccessCoinGain", 10),
+    "unwither":     ("unwitherXpReward", 1, "unwitherGoldReward", 10),
+    "feedchickens": ("feedAnimalSuccessXpGain", 1, "feedAnimalSuccessCoinGain", 10),
+}
+
+def neighbor_act(UID: str, host_id: str, action_type: str, m_save: dict) -> None:
+    save = session(UID)
+    host_id = str(host_id)
+
+    # The worked object arrives already in its post-action state - the client mutates the plot
+    # (Plot.executePlow(), executeFertilize(), ...) and only then constructs the transaction off it - so the
+    # host's world can take it as-is, the same way the player's own 'plow'/'harvest' branches do above.
+    host = session(host_id)
+    if host is None:
+        # Static villages under /villages are templates loaded read-only, so helping one shows up for the
+        # duration of the visit but is not written back to disk.
+        print(f" * Neighbor action '{action_type}' on read-only village {host_id}: not persisted.")
+    else:
+        engine.world_update_or_add_object(host["world"]["objectsArray"], m_save)
+        save_session(host_id)
+
+    # Reward the visitor, mirroring BaseNeighborAction.execute()'s optimistic client-side update.
+    if action_type in _NEIGHBOR_ACTION_YIELDS:
+        xp_key, xp_default, gold_key, gold_default = _NEIGHBOR_ACTION_YIELDS[action_type]
+        engine.apply_xp_increment(save, get_farming_int(xp_key, xp_default))
+        engine.apply_coins_diff(save, get_farming_int(gold_key, gold_default))
+    return
+
+def load_own_world(UID: str, world_type: str) -> dict:
+    # client ref.: src/Transactions/TWorldLoad.as, src/Transactions/TBaseWorldLoad.as (onComplete),
+    # src/Init/Worlds/HomeWorldInit.as (resyncToBackendData)
+    # This is the trip *back* from a neighbour's farm: WorldManager.goHome() queues TWorldLoad with an empty
+    # worldType, meaning "my home farm". A non-empty worldType is travel to one of the other farm worlds
+    # (england, hawaii, ...), which a save does not model - it holds a single `world`, and its
+    # worldSummaryData only ever has "farm" in it - so those are answered with the home farm as well. The
+    # client follows whatever result.user.currentWorldType says, so it lands somewhere consistent instead of
+    # throwing inside Global.world.loadObject().
+    save = session(UID)
+    if world_type not in ("", "farm"):
+        print(f" * loadOwnWorld for un-modelled world '{world_type}': serving the home farm instead.")
+    return {
+        "user": {
+            "currentWorldType": "farm",
+            # HomeWorldInit.resyncToBackendData reloads storage/inventory/crafting off user.player here, so
+            # anything picked up while away (helping rewards, goodie bags) is in place on arrival.
+            "player": save["userInfo"]["player"],
+            "worldSummaryData": save["userInfo"].get("worldSummaryData"),
+        },
+        "world": save["world"],
+        "craftingState": save.get("craftingState"),
+    }
+
+def get_gifts(UID: str) -> dict:
+    # client ref.: src/Transactions/TRefreshGifts.as (onComplete -> Player.refreshGiftBox)
+    # TWorldLoad.onComplete queues this unconditionally, so it follows every single world load.
+    return {"storageData": session(UID)["userInfo"]["player"]["storageData"]}
+
+def load_neighbor_world(UID: str, neighbor_id: str) -> dict:
+    # client ref.: src/Transactions/TLoadNeighbor.as, src/Transactions/TBaseWorldLoad.as (onComplete),
+    # src/Init/Worlds/VisitWorldInit.as (onEnterWorld -> VisitorManager.initForVisit)
+    neighbor = village(str(neighbor_id))
+    if neighbor is None:
+        return {"isNeighborMissing": True}
+    return {
+        "user": {
+            # `id` is filled in client-side from the uid that was visited; firstName titles the farm.
+            "currentWorldType": "farm",
+            "firstName": neighbor["userInfo"].get("attr", {}).get("name", "Farmer"),
+            "avatar": neighbor["userInfo"].get("avatar"),
+            "ugcItemData": None,
+            "instanceDataStore": None,
+        },
+        "world": neighbor["world"],
+        # Crafting crews are not implemented; an empty crew just means "you are not a member of theirs".
+        "neighborCraftingCrew": [],
+    }
 
 def update_feature_frequency_timestamp(UID: str, feature: str) -> None:
     save = session(UID)

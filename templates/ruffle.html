@@ -2547,28 +2547,16 @@
                 console.log("closeOnLoadPopDialogs")
             }
 
+            // See the same pair of hooks in play.html - served from player.social_network_friends().
             function getFriendData(){
                 console.log("getFriendData")
-                var friendData = [
-                    {
-                        "uid":"10000",
-                        "first_name":"AcidCaos",
-                        "last_name":"",
-                        "name":"AcidCaos",
-                        "pic_square":"{{ base_url }}\/img\/profile\/acid.48.jpg",
-                        "sex": "m",
-                        "___is_app_user":true,
-                        "___allowed_restrictions":false,
-                        "___pic_big":"{{ base_url }}\/img\/profile\/acid.48.jpg"
-                    }
-                ];
+                var friendData = {{ friends|tojson }};
                 return friendData;
             }
 
             function getAppFriendIds() {
                 console.log("getAppFriendIds")
-                var appFriendIds = ["10000"];
-                return [];
+                var appFriendIds = {{ friends|map(attribute='uid')|list|tojson }};
                 return appFriendIds;
             }
 
