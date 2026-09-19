@@ -6,10 +6,12 @@ __pycache__/
 *.rar
 *.zip
 *.lnk
+/TODO.txt
 /log.txt
 /unhandled.log
 /chromium
 /chromium-profile
+/tools
 /cache
 /saves
 /assets
@@ -21,3 +23,5 @@ __pycache__/
 /embeds/Flash/v295765-295762/
 /xml/v295145-295127/
 /xml/v295765-295762/
+assethash/**/*.amf
+assethash/**/*.json

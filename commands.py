@@ -7,6 +7,9 @@ import engine
 from items import get_item_by_name
 from game_settings import level_to_xp
 
+def _pick_weighted(pool: list) -> dict:
+    return random.choices(pool, weights=[entry["weight"] for entry in pool])[0]
+
 # client ref.: src/Widgets/Windows/FCSlotMachineWindow.as (grantReward), src/Widgets/Slots/FCSlotMachine/FCSlotMachineItemPanel.as
 # The FC Slot Machine's reward pool/odds are server-authored data with no trace in any recovered client
 # asset (TPostInit.as just expects postInit's fcSlotMachineRewards.allRewards/mgRewards to be non-empty, or
@@ -332,7 +335,7 @@ def slot_spin(UID: str) -> dict:
 
     won = random.random() < _FC_SLOT_MACHINE_WIN_CHANCE
     if won:
-        reward = random.choices(_FC_SLOT_MACHINE_REWARDS, weights=[r["weight"] for r in _FC_SLOT_MACHINE_REWARDS])[0]
+        reward = _pick_weighted(_FC_SLOT_MACHINE_REWARDS)
         pay_out = reward
         slots = [reward, reward, reward]
         _apply_fc_slot_machine_reward(save, reward)
@@ -349,3 +352,145 @@ def slot_spin(UID: str) -> dict:
         "slots": slots,
         "payOut": pay_out,
     }
+
+# client ref.: src/Widgets/Windows/ScratchCardWindow.as (loadItemIconWithScratchData, grantUserReward's
+# equivalent cases in UserRewardUtil.as). Like the FC Slot Machine, the reward pool/odds/card price are
+# server-authored data with no trace in any recovered client asset - invented substitute, not FarmVille's
+# original values. Reward "value" holds whatever loadItemIconWithScratchData expects per type: an amount
+# for coins/cash_from_card, an item *code* (not name) for item_grant, nothing for scratch_card.
+_SCRATCH_CARD_TILE_COUNT = 9
+_SCRATCH_CARD_PRICE = 4  # Farm Cash
+_SCRATCH_CARD_WIN_CHANCE = 0.15
+_SCRATCH_CARD_NEAR_MISS_CHANCE = 0.35
+
+_SCRATCH_CARD_REWARDS = [
+    {"type": "coins", "value": "500", "weight": 30},
+    {"type": "coins", "value": "2000", "weight": 20},
+    {"type": "scratch_card", "weight": 15},
+    {"type": "cash_from_card", "value": "1", "weight": 10},
+    {"type": "item_grant", "item_name": "cow", "quantity": "1", "weight": 4},
+    {"type": "item_grant", "item_name": "horse", "quantity": "1", "weight": 2},
+    {"type": "cash_from_card", "value": "3", "weight": 4},
+]
+
+# Decorative "this week's prizes" panel - only `value` (a FarmItem *code*) is read.
+_SCRATCH_CARD_MYSTERY_PRIZES = ["cow", "horse", "sheep", "goat"]
+
+def _scratch_card_tile(reward: dict) -> dict:
+    tile = {"type": reward["type"]}
+    if reward["type"] == "item_grant":
+        tile["value"] = get_item_by_name(reward["item_name"])["code"]
+        tile["quantity"] = reward["quantity"]
+    elif reward["type"] != "scratch_card":
+        tile["value"] = reward["value"]
+    return tile
+
+def _apply_scratch_card_reward(save: dict, reward: dict) -> None:
+    if reward["type"] == "cash_from_card":
+        engine.apply_cash_diff(save, int(reward["value"]))
+    elif reward["type"] == "coins":
+        engine.apply_coins_diff(save, int(reward["value"]))
+    elif reward["type"] == "item_grant":
+        engine.storage_deposit(save, reward["item_name"], int(reward["quantity"]))
+    # "scratch_card" (another free play) is granted purely client-side (ScratchCardWindow.grantFreeCard()).
+
+def _build_scratch_card_tiles(win_tile: dict = None, near_miss_tile: dict = None) -> list:
+    tiles = []
+    if win_tile is not None:
+        tiles.extend([win_tile] * 3)
+    elif near_miss_tile is not None:
+        tiles.extend([near_miss_tile] * 2)
+
+    while len(tiles) < _SCRATCH_CARD_TILE_COUNT:
+        candidate = _scratch_card_tile(_pick_weighted(_SCRATCH_CARD_REWARDS))
+        # Cap at 2-of-a-kind so a filler tile can't accidentally complete an unintended 3-of-a-kind
+        # (onSlotClick's compareScratchObjects() would then call scratchAll() with no winEntry/almostWon set).
+        if sum(1 for tile in tiles if tile == candidate) < 2:
+            tiles.append(candidate)
+
+    random.shuffle(tiles)
+    return tiles
+
+# client ref.: src/Widgets/Windows/ScratchCardWindow.as (postLoadComplete/reloadDataFromBackend/onUnlock/onPlayAgain)
+# The win/lose outcome (and its reward) is decided here, at "unlock" time, rather than deferred to the
+# separate ScratchCardService.grantReward call the client fires once the player finishes scratching - simpler,
+# and equivalent in effect since a bought card's outcome is already fixed before the reveal animation.
+def scratch_card_get_data(UID: str, unlock: bool) -> dict:
+    save = session(UID)
+
+    data = {
+        "mysteryGifts": [{"value": get_item_by_name(name)["code"]} for name in _SCRATCH_CARD_MYSTERY_PRIZES],
+        "price_per_card": _SCRATCH_CARD_PRICE,
+        "card": None,
+        "almostWon": None,
+        "winEntry": None,
+    }
+
+    if not unlock:
+        return data
+
+    outcome = random.random()
+    win_tile = near_miss_tile = None
+
+    if outcome < _SCRATCH_CARD_WIN_CHANCE:
+        reward = _pick_weighted(_SCRATCH_CARD_REWARDS)
+        win_tile = _scratch_card_tile(reward)
+        data["winEntry"] = win_tile
+        _apply_scratch_card_reward(save, reward)
+    elif outcome < _SCRATCH_CARD_WIN_CHANCE + _SCRATCH_CARD_NEAR_MISS_CHANCE:
+        near_miss_tile = _scratch_card_tile(_pick_weighted(_SCRATCH_CARD_REWARDS))
+        data["almostWon"] = near_miss_tile
+
+    data["card"] = _build_scratch_card_tiles(win_tile, near_miss_tile)
+    return data
+
+# client ref.: src/Widgets/Windows/Pigo/PigoWindow.as, src/Widgets/Slots/Pigo/PigoPrizeSlot.as
+# The 6 physical prize-peg slots (mysteryId 0-5) plus the "set bonus" slot (mysteryId -1) are, again,
+# server-authored data (items_opt.amf's pigov2game item references a "pigov2" lootTable name, but that table's
+# actual contents are nowhere in any recovered client asset) - invented substitute using real giftable items.
+# winCount is real, persisted per-player progress (save["pigoState"][gameTokenName][itemName]), incremented by
+# PigoService.grantReward; the set-bonus slot's winCount is derived (1 once all 6 regular slots are >=1) rather
+# than stored separately, since PigoWindow only ever *reads* it (checkForSetBonus()'s local grant never calls
+# the server) and it's a pure function of the other 6 counts.
+_PIGO_PRIZE_ITEMS = ["chicken", "duck", "goat", "goose", "pig", "rabbit"]
+_PIGO_SET_BONUS_ITEM = "sheep"
+
+_PIGO_TOKEN_ITEM_NAME = "consume_pigo_game_token"  # PigoWindow.TOKEN_CONSUMABLE_ITEM_NAME
+_PIGO_TOKEN_PACKAGE_COUNT = 3  # PigoWindow.TOKEN_PACKAGE_COUNT
+
+def _pigo_win_counts(save: dict, game_token_name: str) -> dict:
+    return save.setdefault("pigoState", {}).setdefault(game_token_name, {})
+
+def pigo_get_game_settings(UID: str, game_token_name: str) -> list:
+    save = session(UID)
+    win_counts = _pigo_win_counts(save, game_token_name)
+
+    slots = [
+        {"mysteryId": mystery_id, "itemName": item_name, "winCount": win_counts.get(item_name, 0)}
+        for mystery_id, item_name in enumerate(_PIGO_PRIZE_ITEMS)
+    ]
+    has_set_bonus = all(win_counts.get(item_name, 0) > 0 for item_name in _PIGO_PRIZE_ITEMS)
+    slots.append({
+        "mysteryId": -1,
+        "itemName": _PIGO_SET_BONUS_ITEM,
+        "winCount": 1 if has_set_bonus else 0,
+    })
+    return slots
+
+def pigo_buy_token(UID: str) -> str:
+    save = session(UID)
+    engine.storage_deposit(save, _PIGO_TOKEN_ITEM_NAME, 1)
+    return "success"
+
+def pigo_buy_token_package(UID: str) -> str:
+    save = session(UID)
+    engine.storage_deposit(save, _PIGO_TOKEN_ITEM_NAME, _PIGO_TOKEN_PACKAGE_COUNT)
+    return "success"
+
+def pigo_grant_reward(UID: str, game_token_name: str, item_name: str) -> dict:
+    save = session(UID)
+    win_counts = _pigo_win_counts(save, game_token_name)
+    win_counts[item_name] = win_counts.get(item_name, 0) + 1
+    engine.storage_deposit(save, item_name, 1)
+    engine.storage_withdrawal(save, _PIGO_TOKEN_ITEM_NAME, 1)
+    return {"complete": True}
