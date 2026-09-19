@@ -310,6 +310,7 @@
         }
     ],
     "neighbors": null,
+    "pigoState": {},
     "locale": "en_US",
     "userLocale": "en_US",
     "crossPromos": null,

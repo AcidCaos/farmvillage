@@ -34,4 +34,10 @@ def migrate_loaded_save(save: dict):
             save["flashHotParams"]["CARNIVAL_PROMO_DEFAULT"] = "Carnival_Coming_Soon"
             print("[!] Added Carnival Booth flashHotParams")
 
+        # client ref.: src/Widgets/Windows/Pigo/PigoWindow.as - per-token, per-prize win counts.
+        if "pigoState" not in save:
+            _changed = True
+            save["pigoState"] = {}
+            print("[!] Added pigoState")
+
     return _changed

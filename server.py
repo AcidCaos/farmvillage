@@ -368,6 +368,38 @@ def flashservices_gateway():
             response["data"] = commands.slot_spin(UID)
             resps.append(response)
 
+        elif reqq.functionName == 'ScratchCardService.getScratchCardData':
+            unlock = reqq['params'][0]
+            response["data"] = commands.scratch_card_get_data(UID, unlock)
+            resps.append(response)
+
+        elif reqq.functionName == 'ScratchCardService.clearCard':
+            # No-op: the win/lose outcome is already resolved (and applied) inside getScratchCardData.
+            resps.append(response)
+
+        elif reqq.functionName == 'ScratchCardService.grantReward':
+            # No-op: ditto - the reward was already applied inside getScratchCardData.
+            resps.append(response)
+
+        elif reqq.functionName == 'PigoService.getGameSettings':
+            gameTokenName = reqq['params'][0]
+            response["data"] = commands.pigo_get_game_settings(UID, gameTokenName)
+            resps.append(response)
+
+        elif reqq.functionName == 'PigoService.buyToken':
+            response["data"] = commands.pigo_buy_token(UID)
+            resps.append(response)
+
+        elif reqq.functionName == 'PigoService.buyTokenPackage':
+            response["data"] = commands.pigo_buy_token_package(UID)
+            resps.append(response)
+
+        elif reqq.functionName == 'PigoService.grantReward':
+            gameTokenName = reqq['params'][0]
+            itemName = reqq['params'][1]
+            response["data"] = commands.pigo_grant_reward(UID, gameTokenName, itemName)
+            resps.append(response)
+
         elif reqq.functionName == 'WatchToEarnRewardGrantService.getUserZid':
             response["data"] = commands.w2e_get_user_zid(UID)
             resps.append(response)
