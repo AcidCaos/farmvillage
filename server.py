@@ -164,6 +164,18 @@ def toolbar32x32():
 def assets(path):
     return send_from_directory(ASSETS_DIR, path)
 
+@app.route("/masterysigns/v1/masterysign_items.amf.gz", methods=['GET'])
+def stub_masterysign_items():
+    # Return empty gzipped response for mastery signs (feature unavailable)
+    # Prevents config load error when masterysign data isn't available
+    import gzip
+    import io
+    gzipped = io.BytesIO()
+    with gzip.GzipFile(fileobj=gzipped, mode='wb') as gz:
+        gz.write(b'')
+    gzipped.seek(0)
+    return Response(gzipped.read(), mimetype='application/x-amf', headers={'Content-Encoding': 'gzip'})
+
 # Dynamic endpoints
 
 @app.route("/report_exception.php", methods=['POST'])
@@ -403,6 +415,11 @@ def flashservices_gateway():
             gameTokenName = reqq['params'][0]
             itemName = reqq['params'][1]
             response["data"] = commands.pigo_grant_reward(UID, gameTokenName, itemName)
+            resps.append(response)
+
+        elif reqq.functionName == 'FarmService.buyConsumablePackage':
+            package_name = reqq['params'][0]
+            response["data"] = commands.buy_consumable_package(UID, package_name)
             resps.append(response)
 
         elif reqq.functionName == 'WatchToEarnRewardGrantService.getUserZid':
