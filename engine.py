@@ -4,6 +4,7 @@ import json
 import zlib
 import constants
 from game_settings import xp_to_level, level_to_xp
+from items import get_item_by_name, item_has_feature
 
 # Utils
 
@@ -62,6 +63,23 @@ def world_update_or_add_object(world_objects: list, new_object: dict) -> None:
     replaced = world_replace_object(world_objects, new_object)
     if not replaced:
         world_objects.append(new_object)
+
+# client ref.: src/Classes/FeatureComponents/ExpandFManager.as (loadObject -> refreshPartData)
+# Every building carrying an "expand" feature is loaded through ExpandFManager, and refreshPartData()
+# reads data.expansionParts[partCode] for each part of the next expansion level without checking that
+# the field is there. No client-side getSaveObject() ever writes it - expansionParts was the original
+# server's to own - so a world object stored verbatim from the client has none, and reading a property
+# off that undefined throws TypeError #1010 in the middle of the world load: the farm never finishes
+# loading. Building expansions are not implemented server-side, so an empty map ("no parts collected")
+# is both the fix and the truthful value.
+def world_object_ensure_expansion_parts(world_object: dict) -> bool:
+    if "expansionParts" in world_object or not world_object.get("itemName"):
+        return False
+    item_data = get_item_by_name(world_object["itemName"])
+    if item_data is None or not item_has_feature(item_data, "expand"):
+        return False
+    world_object["expansionParts"] = {}
+    return True
 
 # XP and Levels
 

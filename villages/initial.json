@@ -221,10 +221,8 @@
     },
     "___####___npcs": [
         {
-            "id": "1000",
-            "__comment1__": "DEFAULT_MODEL_FARM_ID",
-            "type": "modelfarm",
-            "__comment2__": "TYPE_MODELFARM",
+            "id": "1000", "__comment1__": "DEFAULT_MODEL_FARM_ID",
+            "type": "modelfarm", "__comment2__": "TYPE_MODELFARM",
             "name": "NPC",
             "stat": "",
             "gamemode": null,
@@ -236,8 +234,7 @@
         },
         {
             "id": "1001",
-            "type": "normal",
-            "__comment1__": "TYPE_NORMAL",
+            "type": "normal", "__comment1__": "TYPE_NORMAL",
             "name": "NPC2",
             "stat": "",
             "gamemode": null,
