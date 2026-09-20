@@ -224,6 +224,17 @@ def migrate_loaded_save(save: dict):
             _changed = True
             print("[!] Added expansionParts to {} world object(s)".format(_fixed_expansion_parts))
 
+        # client ref.: src/Classes/ZItem/ChangeFarmItem.as (onBuy), gameSettingsCMS.xml (farming key
+        # "farmSize" = 50) - the world grid size has to be one of the land expansions' `squares` values or
+        # the farm can never be expanded: onBuy() walks the expansion list looking for the item matching the
+        # current size and refuses with "CantExpandFarm" when it finds none. 35 was never one of them; the
+        # base home farm is farm12, squares=50 (and the only expansion item with buyable="false").
+        if save["world"]["sizeX"] == 35 and save["world"]["sizeY"] == 35:
+            _changed = True
+            save["world"]["sizeX"] = 50
+            save["world"]["sizeY"] = 50
+            print("[!] Resized farm from 35x35 to the base 50x50 (object positions are kept)")
+
         # Fix storage format
         # client ref.: src/Classes/Player.as (loadInventoryFromStorageData)
         _fix_storage = 0

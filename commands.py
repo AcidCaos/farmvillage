@@ -975,6 +975,68 @@ def pigo_grant_reward(UID: str, game_token_name: str, item_name: str) -> dict:
         storage.store_deposit_item_by_name(save, _PIGO_SET_BONUS_ITEM, 1, group=storage.GIFTBOX_ID)
     return {"complete": True}
 
+# Farm expansion
+
+# client ref.: src/Classes/ZItem/ChangeFarmItem.as (get saleCash)
+# For an expand_farm item saleCash is hard-coded to 1, and TExpandFarm.onComplete subtracts
+# realCashCost (which is saleCash), so in the recovered build a Farm Cash expansion really does cost
+# 1 FC whatever items_opt.amf's `cash` says. The server has to charge the same amount the client
+# already took off the HUD, so it mirrors the constant rather than the item's price.
+EXPAND_FARM_CASH_COST = 1
+
+# client ref.: src/Transactions/TExpandFarm.as, src/Classes/ZItem/ChangeFarmItem.as (onBuy),
+# src/Classes/ExpansionAreaMapTrigger.as (onWindowClose)
+# Land expansions are ordinary market items (type change_farm / subtype expand_farm, market category
+# landExpansion/expansion) whose `squares` attribute *is* the new world grid size - the whole farm is
+# reloaded at that size. Which one the player may buy next is decided client-side in onBuy() by walking
+# the expansion list sorted by squares and requiring the bought item to be the one right after the
+# current grid size, so the server only has to honour the request and keep the save in step.
+# Like neighborAct and quest rewards this is an optimistic action: onComplete already subtracted the
+# price from Global.player before reading the response, so the server must apply exactly the same
+# amount or the HUD drifts from the save.
+def expand_farm(UID: str, item_name: str, currency_unit: str) -> dict:
+    save = session(UID)
+    world = save["world"]
+    item = get_item_by_name(item_name)
+
+    if item is None or item.get("subtype") != "expand_farm" or not item.get("squares"):
+        print(f" * expandFarm: '{item_name}' is not a land expansion, ignoring")
+        return world
+
+    squares = int(item["squares"])
+    if squares <= int(world["sizeX"]) or squares <= int(world["sizeY"]):
+        # Never shrink the farm: the client only ever asks for the next size up, and onComplete's own
+        # `squares == sizeX && squares == sizeY` check makes an unchanged world a no-op on its side.
+        print(f" * expandFarm: '{item_name}' ({squares}) is not larger than the current farm, ignoring")
+        return world
+
+    if currency_unit == "cash":
+        engine.apply_cash_diff(save, -EXPAND_FARM_CASH_COST)
+        print(f" * Expand farm to {squares}x{squares} for {EXPAND_FARM_CASH_COST} CASH")
+    else:
+        # client ref.: src/Classes/Player.as (updateWorldCurrency) - "coins"/"gold" is the ordinary coin
+        # balance. The other world currencies belong to the themed farms, which a save does not model.
+        if currency_unit not in ("coins", "gold"):
+            print(f" * expandFarm: un-modelled currency '{currency_unit}', charging coins instead")
+        cost = int(item["cost"]) if item.get("cost") else 0
+        engine.apply_coins_diff(save, -cost)
+        print(f" * Expand farm to {squares}x{squares} for {cost} COINS")
+
+    world["sizeX"] = squares
+    world["sizeY"] = squares
+
+    # The response is fed straight to FarmGameWorld.loadObject(), which reloads the farm from
+    # objectsArray at the new size - so it is the world payload itself, not a wrapper around it.
+    return world
+
+# client ref.: src/Display/ExpandFarm.as (onCloseClick)
+# How many times the "you can expand your farm" nag dialog has been dismissed. Nothing in the recovered
+# client ever reads it back (the dialog is only constructed with a hard-coded 0), but it is player state
+# the original server kept, so it is stored rather than dropped.
+def set_seen_expand_farm(UID: str, amount: int) -> None:
+    session(UID)["userInfo"]["player"]["seenExpandFarm"] = int(amount)
+    return
+
 # client ref.: src/Transactions/TBuyConsumables.as
 def buy_consumable_package(UID: str, package_name: str) -> dict:
     save = session(UID)

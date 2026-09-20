@@ -518,6 +518,20 @@ def flashservices_gateway():
             response["data"] = commands.pigo_grant_reward(UID, gameTokenName, itemName)
             resps.append(response)
 
+        elif reqq.functionName == 'FarmService.expandFarm':
+            # client ref.: src/Transactions/TExpandFarm.as
+            # The response *is* the new world payload: onComplete checks its sizeX/sizeY against the
+            # bought item's `squares` and then hands it to Global.world.loadObject().
+            item_name = reqq['params'][0]
+            currency_unit = reqq['params'][1]
+            response["data"] = commands.expand_farm(UID, item_name, currency_unit)
+            resps.append(response)
+
+        elif reqq.functionName == 'UserService.setSeenExpandFarm':
+            amount = reqq['params'][0]
+            commands.set_seen_expand_farm(UID, amount)
+            resps.append(response)
+
         elif reqq.functionName == 'FarmService.buyConsumablePackage':
             package_name = reqq['params'][0]
             response["data"] = commands.buy_consumable_package(UID, package_name)
