@@ -19,10 +19,12 @@ CACHE_QUESTS_JSON = os.path.join(CACHE_DIR, "gz_v855098_questSettings_0.json")
 
 # Bumped whenever the decoded shape below changes, so an existing cache from an older server build is
 # rebuilt instead of silently missing fields. (cache/ is disposable - deleting it forces a re-decode too.)
-CACHE_VERSION:int = 2
+CACHE_VERSION:int = 3
 
 _cached_quests: dict = None       # quest name -> quest definition
 _startable_quests: list = None    # names of quests whose prerequisites the server can decide (see below)
+_replayable_chains: dict = None   # quest name -> the name of the first quest of its replayable chain
+_max_active_replayable_quests: int = 0
 
 # client ref.: src/Classes/Constants/QuestConstants.as
 NEW_QUEST:int = 1
@@ -127,27 +129,57 @@ def _cache_quests() -> None:
             ],
         }
 
+    # client ref.: src/Classes/Quest/FarmQuestSettingsInit.as (parseQuestManager / cacheQuestManagerQuestChain)
+    # The <questManager> node names the first quest of each chain the Quest Manager window can replay; the
+    # chain itself is found by walking children from there. Flattened to the same quest -> chain head map
+    # questManagerGetNameOfFirstQuestInReplayableChain() looks things up in.
+    quest_manager = arr["questSettings"].get("questManager") or {}
+    replayable_quests = quest_manager.get("replayableQuests") or {}
+    chains = {}
+
+    def _cache_chain(name:str, first_quest_name:str) -> None:
+        # the client recurses without a visited set; guarding costs nothing and cannot change the result
+        if not name or name not in quests or name in chains:
+            return
+        chains[name] = first_quest_name
+        for child in quests[name]["children"]:
+            _cache_chain(child, first_quest_name)
+
+    for node in _as_list(replayable_quests.get("replayableQuest")):
+        first_quest_name = node.get("@firstQuestName")
+        if first_quest_name:
+            _cache_chain(first_quest_name, first_quest_name)
+
     # Save to cache as JSON
     if not os.path.exists(CACHE_DIR):
         os.makedirs(CACHE_DIR)
-    json.dump({"version": CACHE_VERSION, "quests": quests}, open(CACHE_QUESTS_JSON, 'w'))
+    json.dump({
+        "version": CACHE_VERSION,
+        "quests": quests,
+        "replayableChains": chains,
+        # client ref.: FarmQuestSettingsInit.getMaxActiveReplayableQuests / FarmQuestManager.hasReachedMaxActiveReplayableQuests
+        "maxActiveReplayableQuests": int(replayable_quests.get("@maxActiveReplayableQuests") or 0),
+    }, open(CACHE_QUESTS_JSON, 'w'))
 
 def _load_quests_cache() -> dict:
     try:
         cached = json.load(open(CACHE_QUESTS_JSON, 'r'))
         if cached.get("version") == CACHE_VERSION:
-            return cached["quests"]
+            return cached
         print(" * Quests cache is from an older server build. Re-caching quests...")
     except (OSError, ValueError, KeyError, AttributeError):
         print(" * No usable quests cache found. Caching quests...")
     _cache_quests()
-    return json.load(open(CACHE_QUESTS_JSON, 'r'))["quests"]
+    return json.load(open(CACHE_QUESTS_JSON, 'r'))
 
 def load_quests() -> None:
     # Load cache, (re)building it if it is missing or was written by an older build
     print(" * Loading quests cache...")
-    global _cached_quests
-    _cached_quests = _load_quests_cache()
+    cached = _load_quests_cache()
+    global _cached_quests, _replayable_chains, _max_active_replayable_quests
+    _cached_quests = cached["quests"]
+    _replayable_chains = cached["replayableChains"]
+    _max_active_replayable_quests = cached["maxActiveReplayableQuests"]
 
     # Narrow the 3233 quests down to the ones that can ever be handed out (see _quest_is_startable), so
     # assigning quests is a scan over a few hundred entries instead of the whole file.
@@ -156,7 +188,8 @@ def load_quests() -> None:
         (name for name, quest in _cached_quests.items() if _quest_is_startable(quest)),
         key=_assignment_order,
     )
-    print(f" * {len(_startable_quests)} of {len(_cached_quests)} quests are startable")
+    print(f" * {len(_startable_quests)} of {len(_cached_quests)} quests are startable, "
+          f"{len(_replayable_chains)} belong to a replayable chain")
 
 def get_quests() -> dict:
     global _cached_quests
@@ -242,11 +275,35 @@ def _assignment_order(name:str) -> tuple:
     trackable = all(task["action"] in TRACKED_TASK_ACTIONS for task in quest["tasks"])
     return (0 if continues_chain else 1, 0 if trackable else 1, quest["priority"], name)
 
+# Replayable chains
+
+# client ref.: src/Classes/Quest/FarmQuestSettingsInit.as (questManagerGetNameOfFirstQuestInReplayableChain)
+def replayable_chain_head(quest_name:str) -> str:
+    return (_replayable_chains or {}).get(quest_name)
+
+def _is_replayable_chain_head(quest_name:str) -> bool:
+    return replayable_chain_head(quest_name) == quest_name
+
+# Every quest of the chain quest_name belongs to. The client reaches for the same set the long way round,
+# by walking children and parents (prepForStart/EndReplayableQuestChain -> questManagerGetListOf*Quests),
+# which comes to the same thing on these chains because they are linear.
+def _replayable_chain_quests(quest_name:str) -> list:
+    head = replayable_chain_head(quest_name)
+    if head is None:
+        return []
+    return [name for name, chain_head in _replayable_chains.items() if chain_head == head]
+
 # A quest the server could hand out at some point: every prerequisite is one we can decide, and it has tasks
 # to make progress on. Computed once at load time, so it deliberately only looks at the quest definition and
 # never at a save.
 def _quest_is_startable(quest:dict) -> bool:
     if not quest["tasks"]:
+        return False
+    # client ref.: src/Widgets/Windows/QuestManager/QMWReplayableQuestsBaseSlot.as (onStartQuestButtonClicked)
+    # The first quest of a replayable chain is the player's to start, from the Quest Manager window - never
+    # ours to hand out, or its Start/End buttons would mean nothing. The rest of the chain is ordinary: once
+    # the head is done, each link unlocks through its quest_complete prerequisite like any other.
+    if _is_replayable_chain_head(quest["name"]):
         return False
     return all(prereq["type"] in SUPPORTED_PREREQS for prereq in quest["prereqs"])
 
@@ -257,6 +314,7 @@ def _quest_is_startable(quest:dict) -> bool:
 #                                "announced": bool}},   # only on the speech-bubble quests below
 #     "completed": [questName, ...],   # finished, and so unlocks whatever depends on quest_complete
 #     "retired":   [questName, ...],   # dismissed by the player, never handed out again
+#     "replayed":  {firstQuestName: {"count": int, "lastCompleted": timestamp}},   # replayable chains
 # }
 
 def _quest_state(save:dict) -> dict:
@@ -331,12 +389,15 @@ def refresh_active_quests(save:dict) -> None:
     # Fill the free slots, best candidate first. Quests flagged ignoreSlotLimit are handed out whether or
     # not there is room and never take a slot from one that needs it - without that, the invisible trackers
     # a low-level farm qualifies for would hold every slot and the story chains could never start.
-    used_slots = sum(1 for n in active if not _cached_quests[n].get("ignoreSlotLimit"))
+    used_slots = sum(1 for n in active
+                     if not _cached_quests[n].get("ignoreSlotLimit") and replayable_chain_head(n) is None)
     for name in _startable_quests:
         if name in active or name in completed or name in state["retired"]:
             continue
         quest = _cached_quests[name]
-        takes_a_slot = not quest.get("ignoreSlotLimit")
+        # A replayable chain the player opened by hand has its own budget client-side
+        # (maxActiveReplayableQuests), so it does not compete with the story quests for these slots either.
+        takes_a_slot = not quest.get("ignoreSlotLimit") and replayable_chain_head(name) is None
         if takes_a_slot and used_slots >= MAX_ACTIVE_QUESTS:
             continue
         if all(_prereq_met(save, prereq, completed) for prereq in quest["prereqs"]):
@@ -432,8 +493,22 @@ def complete_quest(save:dict, quest_name:str) -> None:
     if quest_name not in state["completed"]:
         state["completed"].append(quest_name)
     _grant_rewards(save, quest)
+    _record_replayable_chain_completion(save, quest)
     print(f" * Completed quest {quest_name}")
     refresh_active_quests(save)
+
+# client ref.: src/Widgets/Windows/QuestManager/QMWReplayableQuestsCompletedSlotFrame.as
+# A replayable chain counts as run once the player finishes its last quest - the one with no children -
+# and the Quest Manager's completed tab is keyed by the *head* of that chain.
+def _record_replayable_chain_completion(save:dict, quest:dict) -> None:
+    head = replayable_chain_head(quest["name"])
+    if head is None or quest["children"]:
+        return
+    replayed = _quest_state(save)["replayed"]
+    entry = replayed.setdefault(head, {"count": 0, "lastCompleted": 0})
+    entry["count"] += 1
+    entry["lastCompleted"] = timestamp_now()
+    print(f" * Replayable quest chain {head} completed x{entry['count']}")
 
 # client ref.: src/Transactions/Quests/TKillQuest.as, src/Transactions/Quests/TPauseQuest.as,
 # src/Classes/Quest/FarmQuestManager.as (onKillQuest / onPauseQuest)
@@ -464,6 +539,45 @@ def mark_view_dialog_task_done(save:dict, quest_name:str) -> None:
     if all(state["progress"][i] >= task["total"] for i, task in enumerate(quest["tasks"])):
         complete_quest(save, quest_name)
 
+# client ref.: src/Widgets/Windows/QuestManager/QMWReplayableQuestsBaseSlot.as (onStartQuestButtonClicked),
+# src/Classes/Quest/FarmQuestManager.as (prepForStartReplayableQuestChain)
+# The Quest Manager window's Start button. The client has just wiped the whole chain out of its own
+# m_activeQuests and m_sessionCompletedQuests, so the server forgets it too - that is what "replayable"
+# means here, a chain the player has already finished can be run again from the top - and then activates
+# the head. The transaction's callback only closes the window, so the response carries no data.
+def start_replayable_quest_chain(save:dict, first_quest_name:str) -> None:
+    quest = get_quest_by_name(first_quest_name)
+    if quest is None or not _is_replayable_chain_head(first_quest_name):
+        print(f" * Warning: {first_quest_name} is not the head of a replayable quest chain")
+        return
+    _forget_replayable_chain(save, first_quest_name)
+    state = _quest_state(save)
+    state["active"][first_quest_name] = {"progress": [0 for _ in quest["tasks"]], "new": NEW_QUEST}
+    print(f" * Started replayable quest chain {first_quest_name}")
+    refresh_active_quests(save)
+
+# client ref.: src/Widgets/Windows/QuestManager/QMWReplayableQuestsBaseSlot.as (onHandleEndQuestPrompt),
+# src/Classes/Quest/FarmQuestManager.as (prepForEndReplayableQuestChain)
+# The same window's End button: the player drops the chain. Its quests are only forgotten, not retired -
+# the head is not something refresh_active_quests hands out, so the chain simply goes back to being one the
+# Quest Manager offers to start again.
+def end_replayable_quest_chain(save:dict, quest_name:str) -> None:
+    if replayable_chain_head(quest_name) is None:
+        print(f" * Warning: {quest_name} does not belong to a replayable quest chain")
+        return
+    _forget_replayable_chain(save, quest_name)
+    print(f" * Ended replayable quest chain {replayable_chain_head(quest_name)}")
+    refresh_active_quests(save)
+
+def _forget_replayable_chain(save:dict, quest_name:str) -> None:
+    state = _quest_state(save)
+    for name in _replayable_chain_quests(quest_name):
+        state["active"].pop(name, None)
+        if name in state["completed"]:
+            state["completed"].remove(name)
+        if name in state["retired"]:
+            state["retired"].remove(name)
+
 # client ref.: src/Transactions/Quests/TSkipQuestTask.as, src/Widgets/Slots/GenericQuestTaskSlot.as
 # Paying cash to finish a task outright. The client checks canBuyCash() and subtracts the price from
 # Global.player.cash before queueing this, so the save has to lose the same amount - the price being
@@ -484,6 +598,23 @@ def increment_generic_farm_task(save:dict, task_action:str) -> None:
 # client ref.: src/Transactions/TPostInit.as (setPreviouslyCompletedQuests), src/Classes/Quest/FarmQuestManager.as
 # postInit's completedQuests, which the client resolves through getNamedQuestsFromMemstoreIds() - so it is a
 # list of the XML's memStoreId values, not of quest names.
+# client ref.: src/Transactions/TPostInit.as (completedReplayableQuests), src/Classes/Quest/ReplayableFarmQuestData.as
+# postInit's completedReplayableQuests: a map keyed by the chain head's memStoreId (TPostInit copies the key
+# into the entry as memStoreId), which the Quest Manager's completed tab lists so the chain can be run
+# again. hideFromQuestManagerComplete is what would keep one off that tab, so it is always false here.
+def completed_replayable_quests(save:dict) -> dict:
+    result = {}
+    for head, entry in _quest_state(save)["replayed"].items():
+        quest = get_quest_by_name(head)
+        if quest is None or quest["memStoreId"] is None:
+            continue
+        result[str(quest["memStoreId"])] = {
+            "completion_count": entry["count"],
+            "completion_date": entry["lastCompleted"],
+            "hideFromQuestManagerComplete": False,
+        }
+    return result
+
 def completed_quest_memstore_ids(save:dict) -> list:
     ids = []
     for name in _quest_state(save)["completed"]:

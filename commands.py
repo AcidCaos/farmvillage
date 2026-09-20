@@ -121,7 +121,8 @@ def post_init_user(UID: str) -> dict:
         "bestSellers": None,
         # client ref.: src/Transactions/TPostInit.as (setPreviouslyCompletedQuests) - memStoreIds, not names
         "completedQuests": quests.completed_quest_memstore_ids(session(UID)),
-        "completedReplayableQuests": None,
+        # client ref.: src/Classes/Quest/ReplayableFarmQuestData.as - the Quest Manager's completed tab
+        "completedReplayableQuests": quests.completed_replayable_quests(session(UID)),
         "pricingTests": None,
         "buildingActions": None,
         "bingoNums": None,
@@ -780,3 +781,10 @@ def skip_quest_task(UID: str, quest_name: str, task_index: int) -> None:
 # client ref.: src/Transactions/Quests/TIncrementGenericFarmTask.as
 def increment_generic_farm_task(UID: str, task_action: str) -> None:
     quests.increment_generic_farm_task(session(UID), task_action)
+
+# client ref.: src/Widgets/Windows/QuestManager/QMWReplayableQuestsBaseSlot.as (Start / End buttons)
+def start_replayable_quest_chain(UID: str, first_quest_name: str) -> None:
+    quests.start_replayable_quest_chain(session(UID), first_quest_name)
+
+def end_replayable_quest_chain(UID: str, quest_name: str) -> None:
+    quests.end_replayable_quest_chain(session(UID), quest_name)

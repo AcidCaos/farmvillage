@@ -157,8 +157,15 @@ def migrate_loaded_save(save: dict):
         # response's metadata.QuestComponent is empty and no quest ever reaches the HUD.
         if not isinstance(save.get("questState"), dict):
             _changed = True
-            save["questState"] = {"active": {}, "completed": [], "retired": []}
+            save["questState"] = {"active": {}, "completed": [], "retired": [], "replayed": {}}
             print("[!] Added questState")
+
+        # client ref.: src/Classes/Quest/ReplayableFarmQuestData.as - how many times each replayable quest
+        # chain has been run, which postInit's completedReplayableQuests is built from.
+        if "replayed" not in save["questState"]:
+            _changed = True
+            save["questState"]["replayed"] = {}
+            print("[!] Added questState.replayed")
 
         # Fix storage format
         # client ref.: src/Classes/Player.as (loadInventoryFromStorageData)
