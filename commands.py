@@ -397,15 +397,31 @@ def world_perform_action(UID: str, actionName: str, m_save: dict, params: list) 
             print(" * Applying buy XP: {}".format(realXp))
             engine.apply_xp_increment(save, realXp)
             quests.record_action(save, "buyItemByCode", item_data["code"])
-        # TODO: largeCropXp - check conditions: isBigPlot
-        # if "largeCropXp" in m_save and m_save["largeCropXp"] is not None:
-        #     print(" * Applying large crop XP: {}".format(m_save["largeCropXp"]))
-        #     engine.apply_xp_increment(save, m_save["largeCropXp"])
+        # largeCropXp is not a placement reward: Plot.doHarvestDropOff() adds it when a plot that is
+        # flagged isBigPlot is *harvested*, so it is applied in the 'harvest' branch below instead.
     
     elif actionName == 'harvest':
         # Apply production reward
         item_data = get_item_by_name(m_save["itemName"])
         engine.apply_item_yield_reward(save, item_data)
+        # client ref.: src/Classes/Plot.as (doHarvestDropOff)
+        # Harvest XP does not come from the seed: no seed item in items_opt.amf carries an xpYield, so
+        # everything the client adds comes from the two flags the plot itself is carrying. Both are part
+        # of Plot.getSaveObject(), and both are still set in the snapshot that arrives here - harvest()
+        # builds THarvest before doHarvestDropOff() clears them.
+        # The coin side needs nothing extra: fertilizeHarvestCoinMult is 1 in the recovered settings, and
+        # the organic-certification / super-plot / power-hour multipliers are all experiment-gated, so
+        # with no experiments served every one of them resolves to 1 and coinYield is already final.
+        if m_save.get("isBigPlot") and item_data.get("largeCropXp") is not None:
+            print(" * Applying large crop XP: {}".format(item_data["largeCropXp"]))
+            engine.apply_xp_increment(save, int(item_data["largeCropXp"]))
+        if m_save.get("isJumbo"):
+            # Fertilized ("jumbo") plot. Organic fertilizer is the other way a plot gets here, and it pays
+            # organicFertilizerXPGain instead - but that flag lives in the world's extraItemFlags bitfield,
+            # which no transaction ever sends back, so the server cannot tell the two apart and treats
+            # every jumbo plot as ordinarily fertilized.
+            print(" * Applying fertilized harvest XP")
+            engine.apply_xp_increment(save, get_farming_int("fertilizeHarvestXpGain", 1))
         quests.record_action(save, "harvestByCode", item_data["code"])
         # Replace the object (probably a Plow) with the new one (usually with status "fallow")
         engine.world_update_or_add_object(session(UID)["world"]["objectsArray"], m_save)
