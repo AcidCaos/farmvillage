@@ -7,6 +7,7 @@ import engine
 from items import get_item_by_name
 from game_settings import level_to_xp, get_farming_int
 import storage
+import quests
 
 def _pick_weighted(pool: list) -> dict:
     return random.choices(pool, weights=[entry["weight"] for entry in pool])[0]
@@ -52,6 +53,10 @@ def init_user(UID: str) -> dict:
     ts_now = timestamp_now()
     is_new = bool(user_info["is_new"])
     first_day = ts_now - user_info["firstDayTimestamp"] < 86400
+    # client ref.: src/Transactions/TInitUser.as (isInitTransaction), src/ZQuest/Managers/QuestManager.as
+    # Quests are handed out before the response snapshot is taken: initUser is the transaction that seeds
+    # the client's active quest list, so whatever is not in this refresh has no HUD icon until the next one.
+    quests.refresh_active_quests(save)
     # Persisted state: the session that just started is no longer the player's first one.
     user_info["is_new"] = False
     user_info["firstDay"] = first_day
@@ -114,7 +119,8 @@ def post_init_user(UID: str) -> dict:
         "breedingState": None,
         "w2wState": None,
         "bestSellers": None,
-        "completedQuests": [],
+        # client ref.: src/Transactions/TPostInit.as (setPreviouslyCompletedQuests) - memStoreIds, not names
+        "completedQuests": quests.completed_quest_memstore_ids(session(UID)),
         "completedReplayableQuests": None,
         "pricingTests": None,
         "buildingActions": None,
@@ -268,6 +274,7 @@ def world_perform_action(UID: str, actionName: str, m_save: dict, params: list) 
         engine.apply_gold_diff(save, -15)
         # Increase 1 xp
         engine.apply_xp_increment(save, 1)
+        quests.record_action(save, "plowPlot")
 
     elif actionName == 'place':
         item_data = get_item_by_name(m_save["itemName"])
@@ -305,6 +312,7 @@ def world_perform_action(UID: str, actionName: str, m_save: dict, params: list) 
         if m_save["state"] == "planted" and "plantXp" in item_data and item_data["plantXp"] is not None:
             print(" * Applying plant XP: {}".format(item_data["plantXp"]))
             engine.apply_xp_increment(save, item_data["plantXp"])
+            quests.record_action(save, "plantCropByCode", item_data["code"])
         # Assume is bought object
         elif must_apply_costs:
             realXp = 0
@@ -314,6 +322,7 @@ def world_perform_action(UID: str, actionName: str, m_save: dict, params: list) 
                 realXp = int(item_data["cost"]) // 100
             print(" * Applying buy XP: {}".format(realXp))
             engine.apply_xp_increment(save, realXp)
+            quests.record_action(save, "buyItemByCode", item_data["code"])
         # TODO: largeCropXp - check conditions: isBigPlot
         # if "largeCropXp" in m_save and m_save["largeCropXp"] is not None:
         #     print(" * Applying large crop XP: {}".format(m_save["largeCropXp"]))
@@ -323,6 +332,7 @@ def world_perform_action(UID: str, actionName: str, m_save: dict, params: list) 
         # Apply production reward
         item_data = get_item_by_name(m_save["itemName"])
         engine.apply_item_yield_reward(save, item_data)
+        quests.record_action(save, "harvestByCode", item_data["code"])
         # Replace the object (probably a Plow) with the new one (usually with status "fallow")
         engine.world_update_or_add_object(session(UID)["world"]["objectsArray"], m_save)
 
@@ -334,6 +344,7 @@ def world_perform_action(UID: str, actionName: str, m_save: dict, params: list) 
         storage_group_id = params[0]["storageId"]
         count = params[0]["itemCount"]
         storage.consume_by_name(save, item_name, count, storage_group_id)
+        quests.record_action(save, "useItemByCode", get_item_by_name(item_name)["code"], count)
 
     elif actionName == 'neighborAct':
         # client ref.: src/Transactions/NeighborActions/TBaseNeighborAction.as (perform)
@@ -722,3 +733,50 @@ def consume_water_packages(UID: str, action_type: str, amount: int) -> dict:
     # Remove the water item from the player's gift storage
     storage.remove_gift_by_code(save, "3YG", amount)
     return {}
+
+# Quests
+
+# client ref.: src/ZQuest/Managers/QuestManager.as (onTransactionComplete),
+# src/Classes/Quest/FarmQuestManager.as (handleWorldLoadQuestRefresh)
+# metadata.QuestComponent for one gateway response. The world loads are the exception: with client
+# prediction on (it always is - FarmQuestComponent always passes a questUtility) the client keeps its own
+# task progress and ignores ours everywhere except there, where handleWorldLoadQuestRefresh overwrites the
+# active quest with whatever the server sent. The server only recounts part of the task actions
+# (quests.record_action), so sending the list there would walk a session's progress backwards on the way
+# home from a neighbour's farm. An empty Array is still truthy in AS3, so the client just finds nothing to
+# apply. New quests and completions still reach it through every other response.
+_QUEST_COMPONENT_SKIPPED_COMMANDS = ("WorldService.loadOwnWorld", "WorldService.loadNeighborWorld")
+
+def quest_component(UID: str, function_name: str) -> list:
+    save = session(UID)
+    if save is None or function_name in _QUEST_COMPONENT_SKIPPED_COMMANDS:
+        return []
+    return quests.quest_component(save)
+
+# client ref.: src/Transactions/Quests/TFullQuestRefresh.as
+def full_quest_refresh(UID: str) -> None:
+    quests.refresh_active_quests(session(UID))
+
+# client ref.: src/Transactions/TMarkQuestAsViewed.as
+def interacted_with_quest(UID: str, quest_name: str) -> None:
+    quests.interacted_with_quest(session(UID), quest_name)
+
+# client ref.: src/Transactions/Quests/TShareQuestLoot.as
+def update_recently_completed_quests(UID: str, quest_name: str, should_generate_friend_reward: bool) -> dict:
+    return quests.update_recently_completed_quests(session(UID), quest_name, should_generate_friend_reward)
+
+# client ref.: src/Transactions/Quests/TKillQuest.as, src/Transactions/Quests/TPauseQuest.as
+def retire_quest(UID: str, quest_name: str) -> None:
+    quests.retire_quest(session(UID), quest_name)
+
+# client ref.: src/Transactions/Quests/TUserTaskSeen.as
+def mark_view_dialog_task_done(UID: str, quest_name: str) -> None:
+    quests.mark_view_dialog_task_done(session(UID), quest_name)
+
+# client ref.: src/Transactions/Quests/TSkipQuestTask.as
+def skip_quest_task(UID: str, quest_name: str, task_index: int) -> None:
+    quests.skip_task(session(UID), quest_name, int(task_index))
+
+# client ref.: src/Transactions/Quests/TIncrementGenericFarmTask.as
+def increment_generic_farm_task(UID: str, task_action: str) -> None:
+    quests.increment_generic_farm_task(session(UID), task_action)

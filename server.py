@@ -29,6 +29,10 @@ print(" [+] Loading items...")
 from items import load_items
 load_items()
 
+print(" [+] Loading quests...")
+from quests import load_quests
+load_quests()
+
 print (" [+] Loading players...")
 from player import load_saves, load_static_villages, all_saves_info, all_saves_uids, save_info, new_village, social_network_friends
 load_saves()
@@ -159,12 +163,12 @@ def assethash_path(path):
 def xml(path):
     return send_from_directory(XML_DIR, path, mimetype='text/xml')
 
-# @app.route("/assets/Environment/grass_themeBackground_7.swf", methods=['GET'])
-# def stub_grass_themeBackground_7():
-#     return send_from_directory(ASSETS_DIR, "Environment/02de7becb766242e421e1430176f55a2.swf", mimetype='text/xml')
+@app.route("/assets/Environment/grass_themeBackground_7.swf", methods=['GET'])
+def stub_grass_themeBackground_7():
+    return send_from_directory(ASSETS_DIR, "Environment/df0a488eac94bee5d6eca26fd6114603.swf", mimetype='text/xml')
 
 @app.route("/assets/Environment/grass_themeBackground_8.25.swf", methods=['GET'])
-def stub_grass_themeBackground_7():
+def stub_grass_themeBackground_825():
     return send_from_directory(ASSETS_DIR, "Environment/df0a488eac94bee5d6eca26fd6114603.swf", mimetype='text/xml')
 
 @app.route("/assets/decorations/toolbar32x32.png", methods=['GET'])
@@ -269,8 +273,10 @@ def flashservices_gateway():
             "isDST": 0,
             "sequenceNumber": reqq["sequence"],
             "worldTime": timestamp_now(),
+            # client ref.: src/ZQuest/Managers/QuestManager.as (onTransactionComplete)
+            # Filled in after the command ran, so a call that changes the quest list answers with the new one.
             "metadata": {
-                "QuestComponent": {},
+                "QuestComponent": [],
             },
             # "zySig": {
             #     "zy_user": resp_msg.bodies[0][1].body[0]["zy_user"],
@@ -467,10 +473,54 @@ def flashservices_gateway():
             response["data"] = commands.w2e_generate_daily_tokens()
             resps.append(response)
 
+        # client ref.: src/Transactions/Quests/*.as, src/Transactions/TMarkQuestAsViewed.as
+        # These carry no data of their own - what the client acts on is the refreshed quest list that every
+        # response ships in metadata.QuestComponent (see the end of this loop).
+
+        elif reqq.functionName == 'FarmQuestService.fullQuestRefresh':
+            commands.full_quest_refresh(UID)
+            resps.append(response)
+
+        elif reqq.functionName == 'FarmQuestService.interactedWithQuest':
+            quest_name = reqq['params'][0]
+            commands.interacted_with_quest(UID, quest_name)
+            resps.append(response)
+
+        elif reqq.functionName == 'FarmQuestService.updateRecentlyCompletedQuests':
+            quest_name = reqq['params'][0]
+            should_generate_friend_reward = reqq['params'][1]
+            response["data"] = commands.update_recently_completed_quests(UID, quest_name, should_generate_friend_reward)
+            resps.append(response)
+
+        elif reqq.functionName in ('FarmQuestService.userKillQuest', 'FarmQuestService.userPauseQuest'):
+            quest_name = reqq['params'][0]
+            commands.retire_quest(UID, quest_name)
+            resps.append(response)
+
+        elif reqq.functionName == 'FarmQuestService.markViewDialogTaskDone':
+            quest_name = reqq['params'][0]
+            commands.mark_view_dialog_task_done(UID, quest_name)
+            resps.append(response)
+
+        elif reqq.functionName == 'FarmQuestService.skipTask':
+            quest_name = reqq['params'][0]
+            task_index = reqq['params'][1]
+            commands.skip_quest_task(UID, quest_name, task_index)
+            resps.append(response)
+
+        elif reqq.functionName == 'FarmQuestService.incrementGenericFarmTask':
+            task_action = reqq['params'][0]
+            commands.increment_generic_farm_task(UID, task_action)
+            resps.append(response)
+
         else:
             log_unhandled_command(reqq.functionName, reqq['params'])
             resps.append(response)
-    
+
+        # The response object is the one already in resps, so this reaches the client. It runs here rather
+        # than where the dict is built so that the quest list reflects whatever the command just did.
+        response["metadata"]["QuestComponent"] = commands.quest_component(UID, reqq.functionName)
+
     assert len(resps) == len(reqs)
 
     save_session(UID)
