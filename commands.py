@@ -176,6 +176,14 @@ def increment_action_count(UID: str, action: str) -> None:
         save["userInfo"]["player"]["actionCounts"][action] += 1
     return
 
+# client ref.: src/Classes/Player.as (setActionCount), src/Widgets/Windows/Promotions/EmailCampaignWindow.as
+# Unlike incrementActionCount, the client sends the counter's new absolute value (an
+# arbitrary int: EmailCampaignWindow stores a subscription status code in it, not a count).
+def set_action_count(UID: str, action: str, value: int) -> None:
+    save = session(UID)
+    save["userInfo"]["player"]["actionCounts"][action] = int(value)
+    return
+
 def reset_action_count(UID: str, action: str) -> None:
     save = session(UID)
     if action in save["userInfo"]["player"]["actionCounts"]:
@@ -446,6 +454,113 @@ def world_perform_action(UID: str, actionName: str, m_save: dict, params: list) 
         neighbor_act(UID, params[0]["hostId"], params[0]["actionType"], m_save)
 
     return object_id
+
+# Equipment (tractor / seeder / harvester / combine)
+
+# client ref.: src/Transactions/TEquipmentAction.as (perform/onComplete), src/AvatarMode/AMMultiPlotAction.as
+# A vehicle pass is a single call covering every plot it drove over, instead of one
+# WorldService.performAction per plot. What arrives per plot is usually *not* a save object: only a plot
+# the client had to invent (a brand-new one, still carrying a temporary id) is serialized whole - every
+# plot the server already knows about comes as {id, position} and nothing more. So the post-action state
+# is rebuilt here off our own stored copy, mirroring what Plot.executePlow()/harvest()/plant() just did
+# client-side, and then handed to world_perform_action so a vehicle action costs, pays and records for
+# quests exactly like the single-plot one - all of it is applied optimistically client-side before the
+# transaction is even queued, so the amounts have to match.
+# Fuel is deliberately not spent: Equipment.getEnergyCost() is a flat 1 per plot, but nothing in the
+# recovered client ever refills Global.player.energy - that was the original server's job and none of it
+# survives - so a server that charged fuel would strand the player at zero. The single-plot path ignores
+# the energyCost it *is* sent for the same reason.
+def equipment_use(UID: str, action: str, plots, item_name: str, metadata: dict):
+    save = session(UID)
+    # The bundle is keyed by the plot's index in the vehicle's sweep and only holds the plots the action
+    # succeeded on, so the keys can be sparse - sort them back into sweep order, which is the order
+    # TEquipmentAction.onComplete walks the response in.
+    entries = [plots[key] for key in sorted(plots.keys(), key=int)] if isinstance(plots, dict) else list(plots)
+
+    if action == "combine":
+        # client ref.: src/AvatarMode/AMMultiPlotAction.as (multiCombine)
+        # The combine runs all three passes over the same plots - harvest, then plow, then plant - and each
+        # one overwrites the same bundle entry, so which of them ran on a given plot is not in the payload:
+        # it follows from the state the plot was in, the same way the client's own isHarvestable() /
+        # isPlowable() / isPlantable() decided it. The response mirrors the three passes, each an array
+        # indexed like the bundle with a null for a plot that pass skipped.
+        passes = {"harvest": [], "plow": [], "place": []}
+        for entry in entries:
+            state = (_equipment_plot_object(save, entry) or {}).get("state")
+            # A harvest leaves the plot fallow, which is exactly what the plow pass then picks up.
+            if state in ("planted", "grown"):
+                applies = ("harvest", "plow", "place")
+            elif state in ("fallow", "withered"):
+                applies = ("plow", "place")
+            else:
+                applies = ("place",)
+            for name in passes:
+                passes[name].append(_equipment_apply(UID, name, entry, item_name) if name in applies else None)
+        return {name: {"data": [_equipment_envelope(d, metadata) for d in datas]} for name, datas in passes.items()}
+
+    return [_equipment_envelope(_equipment_apply(UID, action, entry, item_name), metadata) for entry in entries]
+
+# client ref.: src/Transactions/TEquipmentAction.as (onComplete), src/Engine/Transactions/Transaction.as (onAmfComplete)
+# The client unpacks the response by feeding every element back through its own onAmfComplete, so each
+# element has to look like a whole gateway response: one without an errorType is read as an error and
+# raises a fault instead. They all share the response's metadata dict because the last element read is
+# what ends up as the transaction's rawResult - which is where QuestManager looks for the QuestComponent.
+def _equipment_envelope(data: dict, metadata: dict) -> dict:
+    if data is None:
+        return None
+    return {"errorType": 0, "errorData": None, "metadata": metadata, "data": data}
+
+def _equipment_plot_object(save: dict, entry: dict) -> dict:
+    world_objects = save["world"]["objectsArray"]
+    stored = engine.get_world_object_by_id(world_objects, entry["id"])
+    if stored is None and engine.world_object_id_is_temporary(entry["id"]):
+        # A plot created earlier in this same session whose real id the client has not been told yet, so
+        # it is still calling it by the temporary one world_perform_action kept alongside.
+        stored = next((obj for obj in world_objects if obj.get("tempId") == entry["id"]), None)
+    return stored
+
+def _equipment_apply(UID: str, action: str, entry: dict, item_name: str) -> dict:
+    save = session(UID)
+
+    if action == "plotRemove":
+        # client ref.: src/Classes/Plot.as (remove)
+        # The plot is deleted outright, for a plow's coin cost and no XP. There is no single-plot
+        # equivalent to delegate to - TClear's "clear" action is still unhandled - so it is done here.
+        stored = _equipment_plot_object(save, entry)
+        if stored is None:
+            print(" * Equipment 'plotRemove' on unknown plot {}: skipped.".format(entry.get("id")))
+            return None
+        engine.world_remove_object(save["world"]["objectsArray"], stored["id"])
+        engine.apply_coins_diff(save, -get_farming_int("plowCost", 15))
+        return {"id": stored["id"]}
+
+    if "className" in entry:
+        # The brand-new plot case: the client serialized it whole, already in its post-action state
+        # (getSaveObject() is taken after Plot.plow() ran), so it goes through as it arrived.
+        m_save = entry
+    else:
+        stored = _equipment_plot_object(save, entry)
+        if stored is None:
+            print(" * Equipment '{}' on unknown plot {}: skipped.".format(action, entry.get("id")))
+            return None
+        m_save = dict(stored)
+        if action == "plow":
+            # client ref.: src/Classes/Plot.as (executePlow)
+            m_save.update({"state": "plowed", "isJumbo": False, "isBigPlot": False, "isProduceItem": False})
+        elif action == "place":
+            # client ref.: src/Classes/Plot.as (plant -> initPlantTime)
+            # Global.worldTime is our own worldTime in milliseconds (WorldManager.syncWorldTime), so "now"
+            # is the plant time the client just wrote. initPlantTime's head start for an active harvest
+            # helper is not reproduced - bushels are not modelled server-side - so a crop planted under one
+            # grows from scratch again after a reload.
+            m_save.update({"itemName": item_name, "state": "planted", "plantTime": timestamp_now() * 1000})
+        elif action == "harvest":
+            # client ref.: src/Classes/Plot.as (harvest, doHarvestDropOff)
+            # isBigPlot/isJumbo stay on the snapshot on purpose: world_perform_action reads the harvest XP
+            # off them, exactly as it does from THarvest's pre-harvest snapshot on the single-plot path.
+            m_save.update({"state": "fallow", "plantTime": 0})
+
+    return {"id": world_perform_action(UID, action, m_save, [])}
 
 # Neighbours
 

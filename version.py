@@ -226,13 +226,13 @@ def migrate_loaded_save(save: dict):
 
         # Fix storage format
         # client ref.: src/Classes/Player.as (loadInventoryFromStorageData)
-        _fix_storage = False
+        _fix_storage = 0
         storage = save["userInfo"]["player"]["storageData"]
         for sid in storage.keys():
             for itemCode in storage[sid].keys():
                 metadata: list = storage[sid][itemCode]
                 if len(metadata) != 3:
-                    _fix_storage = True
+                    _fix_storage += 1
                     storage[sid][itemCode] = [
                         metadata[0] if len(metadata) > 0 else 1,
                         metadata[1] if len(metadata) > 1 else [],
@@ -240,7 +240,7 @@ def migrate_loaded_save(save: dict):
                     ]
         if _fix_storage:
             _changed = True
-            print("[!] Fixed storage format")
+            print("[!] Fixed storage format for {} world object(s)".format(_fix_storage))
 
         # save["version"] = "0.02a"
         # _changed = True

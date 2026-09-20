@@ -374,6 +374,12 @@ def flashservices_gateway():
             commands.increment_action_count(UID, action)
             resps.append(response)
         
+        elif reqq.functionName == 'UserService.setActionCount':
+            action = reqq['params'][0]
+            value = reqq['params'][1]
+            commands.set_action_count(UID, action, value)
+            resps.append(response)
+
         elif reqq.functionName == 'UserService.resetActionCount':
             action = reqq['params'][0]
             commands.reset_action_count(UID, action)
@@ -431,6 +437,16 @@ def flashservices_gateway():
             # This infroms the client of the new (non-temporary) object ID
             response["id"] = object_id
             response["data"] = {"id": object_id} # onMultiComplete and onComplete treat this differently. This is a temporary workaround
+            resps.append(response)
+
+        elif reqq.functionName == 'EquipmentWorldService.onUseEquipment':
+            action = reqq['params'][0]
+            equipment = reqq['params'][1] # The vehicle itself ({id, key}) - nothing server-side is keyed off it
+            plots = reqq['params'][2]
+            item_name = reqq['params'][3]
+            # The response is an Array (or, for 'combine', one per sub-action) built by commands.py - every
+            # element is a mini envelope of its own, see commands.equipment_use.
+            response["data"] = commands.equipment_use(UID, action, plots, item_name, response["metadata"])
             resps.append(response)
         
         elif reqq.functionName == 'WorldService.loadOwnWorld':
