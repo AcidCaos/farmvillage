@@ -384,6 +384,15 @@ def world_perform_action(UID: str, actionName: str, m_save: dict, params: list) 
         # Withdrawal from storage
         if isStorageWithdrawal:
             storage.store_withdraw_item_by_name(save, m_save["itemName"], 1)
+        # Placing a gift: the client already took it out of the gift box optimistically
+        # (client ref.: src/Transactions/TDecorationPlace.as, TAnimalPlace.as, TBuildingPlace.as ->
+        # Global.player.removeGift()), so the server has to do the same or the gift comes back on the
+        # next login. TBuildingPlace/TUGCItemPlace also name the exact extraData slot they consumed.
+        if isGift:
+            meta_index = -1
+            if params and len(params) > 0 and "giftMetadataIndex" in params[0]:
+                meta_index = int(params[0]["giftMetadataIndex"])
+            storage.remove_gift_by_code(save, item_data["code"], 1, meta_index)
         # TODO: Inventory withdrawal
         # Check if must apply costs
         must_apply_costs = True

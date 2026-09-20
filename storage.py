@@ -62,7 +62,17 @@ def get_inventory_group_name_by_id(inventory_id) -> str:
     return n.replace("_ID", "").replace("_", " ")
 
 
-def store_deposit_item_by_name(save: dict, item_name: str, amount: int = 1, group: int = HOME_INVENTORY_ID) -> bool:
+def _adjust_quantity(entry: list, delta: int, trim_extra_data: bool = True) -> None:
+    # client ref.: src/Classes/storage/StorageItem.as (adjustQuantity)
+    # extraData holds one entry per unit, so a drop in quantity throws the oldest ones away from the front.
+    entry[METADATA_INDEX_QUANTITY] += delta
+    if trim_extra_data:
+        extra_data = entry[METADATA_INDEX_EXTRADATA]
+        while extra_data and len(extra_data) > entry[METADATA_INDEX_QUANTITY]:
+            extra_data.pop(0)
+
+
+def store_deposit_item_by_name(save: dict, item_name: str, amount: int = 1, group: int = HOME_INVENTORY_ID, sender: str = "0") -> bool:
     assert amount > 0
 
     item_data = get_item_by_name(item_name)
@@ -79,6 +89,11 @@ def store_deposit_item_by_name(save: dict, item_name: str, amount: int = 1, grou
     else:
         storage[group_key][item_code] = [amount, [], []] # client ref.: src/Classes/Player.as (loadInventoryFromStorageData)
 
+    # client ref.: src/Classes/Player.as (addGift) - one sender id per gift, not per unit, and "0" means
+    # "not from a player" (the gift box then shows the generic FarmVille sender).
+    if sender != "0":
+        storage[group_key][item_code][METADATA_INDEX_SENDER_IDS].append(sender)
+
     print(" * Stored: {}x {} (code {}) to {}".format(amount, item_name, item_code, get_inventory_group_name_by_id(group)))
     return True
 
@@ -87,22 +102,25 @@ def store_withdraw_item_by_name(save: dict, item_name: str, amount: int = 1, gro
     return store_withdraw_item_by_code(save, get_item_by_name(item_name)["code"], amount, group)
 
 
-def store_withdraw_item_by_code(save: dict, item_code: str, amount: int = 1, group: int = HOME_INVENTORY_ID) -> bool:
-    item_name = get_item_by_code(item_code)["name"]
+def store_withdraw_item_by_code(save: dict, item_code: str, amount: int = 1, group: int = HOME_INVENTORY_ID, trim_extra_data: bool = True) -> bool:
     storage = save["userInfo"]["player"]["storageData"]
     group_key = str(group)
-    for code in storage[group_key]:
-        if code == item_code:
-            storage[group_key][code][METADATA_INDEX_QUANTITY] -= amount
-            if storage[group_key][code][METADATA_INDEX_QUANTITY] <= 0:
-                del storage[group_key][code]
-            else:
-                # client ref.: src/Classes/Player.as: removeGiftWithKey() -> shiftSenderId()
-                # TODO storage[group_key][code][METADATA_INDEX_SENDER_IDS] = storage[group_key][code][METADATA_INDEX_SENDER_IDS][1:]
-                pass
-            print(" * Storage Withdrawal: {}x {} (code {}) from {}".format(amount, item_name, item_code, get_inventory_group_name_by_id(group)))
-            return True
-    return False
+    entry = storage.get(group_key, {}).get(item_code)
+    if entry is None:
+        return False
+
+    _adjust_quantity(entry, -amount, trim_extra_data)
+    if entry[METADATA_INDEX_QUANTITY] <= 0:
+        del storage[group_key][item_code]
+    elif entry[METADATA_INDEX_SENDER_IDS]:
+        # client ref.: src/Classes/Player.as (removeGiftWithKey -> shiftSenderId): exactly one sender id
+        # goes, however many units were taken, and only while the entry survives.
+        entry[METADATA_INDEX_SENDER_IDS].pop(0)
+
+    item_data = get_item_by_code(item_code)
+    item_name = item_data["name"] if item_data else item_code
+    print(" * Storage Withdrawal: {}x {} (code {}) from {}".format(amount, item_name, item_code, get_inventory_group_name_by_id(group)))
+    return True
 
 
 def consume_by_name(save: dict, item_name: str, count, group):
@@ -121,10 +139,17 @@ def consume_by_name(save: dict, item_name: str, count, group):
         raise Exception("Not Implemented consume", item_name)
             
 
-def remove_gift_by_code(save: dict, code: str, amount: int = 1, meta_index=-1):
+def remove_gift_by_code(save: dict, code: str, amount: int = 1, meta_index=-1) -> bool:
+    # client ref.: src/Classes/Player.as (removeGiftWithKey)
+    if meta_index < 0:
+        return store_withdraw_item_by_code(save, item_code=code, amount=amount, group=GIFTBOX_ID)
 
-    store_withdraw_item_by_code(save, item_code=code, amount=amount, group=GIFTBOX_ID)
-
-    if meta_index >= 0:
-        #TODO: removeExtraData(meta_index)
-        pass
+    # A meta_index names one exact unit (a bred animal's mutable state, a UGC item's uuid): the client
+    # splices that entry out of extraData instead of trimming the front, so trimming stays off here.
+    entry = save["userInfo"]["player"]["storageData"].get(str(GIFTBOX_ID), {}).get(code)
+    extra_data = entry[METADATA_INDEX_EXTRADATA] if entry else []
+    result = store_withdraw_item_by_code(save, item_code=code, amount=amount, group=GIFTBOX_ID,
+                                         trim_extra_data=False)
+    if result and meta_index < len(extra_data):
+        extra_data.pop(meta_index)
+    return result
