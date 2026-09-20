@@ -293,6 +293,11 @@ def _replayable_chain_quests(quest_name:str) -> list:
         return []
     return [name for name, chain_head in _replayable_chains.items() if chain_head == head]
 
+# How many distinct chains the player currently has on the go, which is what the window's limit counts
+def _active_replayable_chain_count(save:dict) -> int:
+    heads = {replayable_chain_head(name) for name in _quest_state(save)["active"]}
+    return len(heads - {None})
+
 # A quest the server could hand out at some point: every prerequisite is one we can decide, and it has tasks
 # to make progress on. Computed once at load time, so it deliberately only looks at the quest definition and
 # never at a save.
@@ -528,6 +533,8 @@ def _record_replayable_chain_completion(save:dict, quest:dict) -> None:
 # either: both retire the quest. Retired is kept separate from completed so a quest the player walked away
 # from does not satisfy its children's quest_complete prerequisite.
 def retire_quest(save:dict, quest_name:str) -> None:
+    if get_quest_by_name(quest_name) is None:
+        return
     state = _quest_state(save)
     if quest_name in state["active"]:
         del state["active"][quest_name]
@@ -547,7 +554,7 @@ def mark_view_dialog_task_done(save:dict, quest_name:str) -> None:
     for index, task in enumerate(quest["tasks"]):
         if task["action"] == "viewDialog":
             _advance_task(save, quest_name, index, task["total"])
-    if all(state["progress"][i] >= task["total"] for i, task in enumerate(quest["tasks"])):
+    if all(progress >= task["total"] for progress, task in zip(state["progress"], quest["tasks"])):
         complete_quest(save, quest_name)
 
 # client ref.: src/Widgets/Windows/QuestManager/QMWReplayableQuestsBaseSlot.as (onStartQuestButtonClicked),
@@ -560,6 +567,12 @@ def start_replayable_quest_chain(save:dict, first_quest_name:str) -> None:
     quest = get_quest_by_name(first_quest_name)
     if quest is None or not _is_replayable_chain_head(first_quest_name):
         print(f" * Warning: {first_quest_name} is not the head of a replayable quest chain")
+        return
+    # client ref.: src/Classes/Quest/FarmQuestManager.as (hasReachedMaxActiveReplayableQuests)
+    # The Start button is already greyed out at this point client-side; checked again here so a request
+    # that arrives anyway cannot put the player over the config's own limit.
+    if _active_replayable_chain_count(save) >= _max_active_replayable_quests:
+        print(f" * Warning: already running {_max_active_replayable_quests} replayable quest chains")
         return
     _forget_replayable_chain(save, first_quest_name)
     state = _quest_state(save)
@@ -592,12 +605,15 @@ def _forget_replayable_chain(save:dict, quest_name:str) -> None:
 # client ref.: src/Transactions/Quests/TSkipQuestTask.as, src/Widgets/Slots/GenericQuestTaskSlot.as
 # Paying cash to finish a task outright. The client checks canBuyCash() and subtracts the price from
 # Global.player.cash before queueing this, so the save has to lose the same amount - the price being
-# FarmTask.cashValue, which quest_component() feeds from the task's authored @cashValue.
+# FarmTask.cashValue, which reads the baseCashValue quest_component() sent. It only sends that for quests
+# with an icon, so the price has to be read back under the same condition: charging the XML's @cashValue
+# for a quest we priced at nothing would take cash off the save that the client never took off the HUD.
 def skip_task(save:dict, quest_name:str, task_index:int) -> None:
     quest = get_quest_by_name(quest_name)
     if quest is None or task_index >= len(quest["tasks"]):
         return
-    engine.apply_cash_diff(save, -quest["tasks"][task_index]["cashValue"])
+    cash_value = quest["tasks"][task_index]["cashValue"] if quest["icon"] != "none" else 0
+    engine.apply_cash_diff(save, -cash_value)
     _advance_task(save, quest_name, task_index, quest["tasks"][task_index]["total"])
 
 # client ref.: src/Transactions/Quests/TIncrementGenericFarmTask.as
@@ -606,9 +622,6 @@ def skip_task(save:dict, quest_name:str, task_index:int) -> None:
 def increment_generic_farm_task(save:dict, task_action:str) -> None:
     record_action(save, task_action)
 
-# client ref.: src/Transactions/TPostInit.as (setPreviouslyCompletedQuests), src/Classes/Quest/FarmQuestManager.as
-# postInit's completedQuests, which the client resolves through getNamedQuestsFromMemstoreIds() - so it is a
-# list of the XML's memStoreId values, not of quest names.
 # client ref.: src/Transactions/TPostInit.as (completedReplayableQuests), src/Classes/Quest/ReplayableFarmQuestData.as
 # postInit's completedReplayableQuests: a map keyed by the chain head's memStoreId (TPostInit copies the key
 # into the entry as memStoreId), which the Quest Manager's completed tab lists so the chain can be run
@@ -626,6 +639,9 @@ def completed_replayable_quests(save:dict) -> dict:
         }
     return result
 
+# client ref.: src/Transactions/TPostInit.as (setPreviouslyCompletedQuests), src/Classes/Quest/FarmQuestManager.as
+# postInit's completedQuests, which the client resolves through getNamedQuestsFromMemstoreIds() - so it is a
+# list of the XML's memStoreId values, not of quest names.
 def completed_quest_memstore_ids(save:dict) -> list:
     ids = []
     for name in _quest_state(save)["completed"]:

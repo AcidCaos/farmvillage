@@ -3,6 +3,7 @@ import sys
 import json
 import copy
 import uuid
+from urllib.parse import quote
 #from flask import session
 
 from engine import timestamp_now
@@ -138,12 +139,31 @@ def neighbor_uids(UID: str) -> list:
     # (that lived on Facebook), and the client only ever sees the list the server hands it.
     return [uid for uid in all_uids() if uid != UID]
 
+def profile_pic(UID: str) -> str:
+    # client ref.: src/Classes/util/FacebookSocialNetwork.as (toSocialNetworkUser), src/Classes/Friend.as
+    # The picture is just a url the client hands to a Loader, and the originals were Facebook CDN ones that
+    # were never recovered - so each save/village carries its own in `userInfo.attr.profilePic` (empty means
+    # "no picture", which is FriendBarSlot's embedded no-profile-pic art). Either a local file dropped in
+    # templates/img/profile/ ("/img/profile/<file>") or any remote url.
+    # client ref.: src/Engine/Classes/ResourceLoader.as (m_context.checkPolicyFile = true)
+    # A remote url cannot be handed to the client as-is: Flash asks its host for a crossdomain.xml first and
+    # fails with a SecurityError when there is none (no modern CDN serves one). It goes through server.py's
+    # /proxy instead, which re-serves it from our own origin.
+    save = village(UID)
+    if save is None:
+        return ""
+    pic = save["userInfo"].get("attr", {}).get("profilePic") or ""
+    if pic.startswith(("http://", "https://")):
+        pic = "/proxy?url=" + quote(pic, safe="")
+    return pic
+
 def neighbor_metadata(UID: str) -> list:
     # client ref.: src/Classes/Friend.as (setMetaData) - one entry per neighbour, holding exactly the fields
     # Friend reads. `stats` is left out on purpose: FriendBarSlot only draws the stats card when the object
     # has ribbons/medals/masteries/collections/buildings, and we have nothing truthful to put in them.
     # `name`/`profilePic` are overwritten from the SN user (Friend's snUser setter) for anyone the JS
-    # getFriendData() in templates/play.html also reports, and are the fallback for anyone it does not.
+    # getFriendData() in templates/play.html also reports, and are the fallback for anyone it does not -
+    # so both halves must serve the same profile_pic(), or the empty one wins by being assigned last.
     result = []
     for uid in neighbor_uids(UID):
         save = village(uid)
@@ -159,7 +179,7 @@ def neighbor_metadata(UID: str) -> list:
             "level": xp_to_level(xp),
             "worldScores": player.get("worldScores"),
             "avatar": save["userInfo"].get("avatar"),
-            "profilePic": "",
+            "profilePic": profile_pic(uid),
             "worldName": "farm", # client ref.: src/Classes/Constants/WorldsConstants.as (WORLD_ID_HOME)
             "isNeighbor": True,
             "community": 0, # Not a community (non-network) neighbour: these are all real, visitable saves
@@ -185,7 +205,7 @@ def save_info(UID: str) -> dict:
     save = __saves[UID]
     name = save["userInfo"]["attr"]["name"]
     xp = save["userInfo"]["player"]["xp"]
-    return{"uid": UID, "name": name, "xp": xp}
+    return{"uid": UID, "name": name, "xp": xp, "profilePic": profile_pic(UID)}
 
 def all_saves_info() -> list:
     saves_info = []
@@ -198,8 +218,10 @@ def social_network_friends(UID: str) -> list:
     # The client asks JavaScript for its social graph (templates/play.html's getFriendData()) before it asks
     # the gateway for anything. These uids must match neighbor_metadata()'s exactly: FriendManager only
     # promotes a neighbour into the friend bar when it can pair the two halves by uid.
-    # `pic_square` is left empty on purpose - the originals were Facebook CDN urls and were never recovered,
-    # and FriendBarSlot.setupOccupiedSpot() already falls back to its embedded no-profile-pic art.
+    # `pic_square` is the half that actually decides the picture: Friend's constructor runs setMetaData()
+    # first and then the snUser setter, which overwrites profilePic with whatever this reports, and
+    # FriendBarSlot.setupOccupiedSpot() reads snUser.picture directly (falling back to its embedded
+    # no-profile-pic art when it is empty).
     friends = []
     for uid in neighbor_uids(UID):
         save = village(uid)
@@ -210,7 +232,7 @@ def social_network_friends(UID: str) -> list:
             "uid": uid,
             "first_name": name,
             "name": name,
-            "pic_square": "",
+            "pic_square": profile_pic(uid),
             "sex": "",
         })
     return friends

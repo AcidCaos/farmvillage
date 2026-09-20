@@ -3,7 +3,8 @@
     "userInfo": {
         "currentWorldType": "farm",
         "attr": {
-            "name": "Farmer"
+            "name": "Farmer",
+            "profilePic": ""
         },
         "player": {
             "userId": null,
@@ -21,8 +22,16 @@
             "storageData": {
                 "-1": {},
                 "-2": {
-                    "SB": [2, [], []],
-                    "KB": [1, [], []]
+                    "SB": [
+                        2,
+                        [],
+                        []
+                    ],
+                    "KB": [
+                        1,
+                        [],
+                        []
+                    ]
                 }
             },
             "hasVisitFriend": false,
@@ -212,22 +221,29 @@
     },
     "___####___npcs": [
         {
-            "id": "1000", "__comment1__": "DEFAULT_MODEL_FARM_ID",
-            "type": "modelfarm", "__comment2__": "TYPE_MODELFARM",
+            "id": "1000",
+            "__comment1__": "DEFAULT_MODEL_FARM_ID",
+            "type": "modelfarm",
+            "__comment2__": "TYPE_MODELFARM",
             "name": "NPC",
             "stat": "",
             "gamemode": null,
-            "assets": { "asset": [] },
+            "assets": {
+                "asset": []
+            },
             "world": "",
             "motd": ""
         },
         {
             "id": "1001",
-            "type": "normal", "__comment1__": "TYPE_NORMAL",
+            "type": "normal",
+            "__comment1__": "TYPE_NORMAL",
             "name": "NPC2",
             "stat": "",
             "gamemode": null,
-            "assets": { "asset": [] },
+            "assets": {
+                "asset": []
+            },
             "world": "",
             "motd": ""
         }
@@ -237,7 +253,9 @@
     "locale": "en_US",
     "userLocale": "en_US",
     "crossPromos": null,
-    "witherOn": { "farm": true },
+    "witherOn": {
+        "farm": true
+    },
     "isFarmvilleFan": false,
     "fanPageStatuses": [],
     "subscriptionStatus": "",
