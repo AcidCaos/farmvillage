@@ -62,3 +62,12 @@ def get_item_by_code(code:str) -> dict:
         if item["code"] == code:
             return item
     return None
+
+def item_has_feature(item_data: dict, feature_name: str) -> bool:
+    # A single-feature item decodes to a plain dict instead of a one-element list.
+    features = (item_data.get("features") or {}).get("feature")
+    if features is None:
+        return False
+    if isinstance(features, dict):
+        features = [features]
+    return any(feature.get("name") == feature_name for feature in features)

@@ -338,6 +338,10 @@ def world_perform_action(UID: str, actionName: str, m_save: dict, params: list) 
     if "buildTime" in m_save and m_save["buildTime"] and type(m_save["buildTime"]) in [int, float] and math.isnan(m_save["buildTime"]):
         m_save["buildTime"] = None
 
+    # An expandable building's save object needs an expansionParts map or the client's world load throws
+    # on it - the client never sends one (see engine.world_object_ensure_expansion_parts).
+    engine.world_object_ensure_expansion_parts(m_save)
+
     # Some checks
     if ("itemName" not in m_save or m_save["itemName"] is None) and ("className" in m_save and m_save["className"] != "Plow"):
         print(" * Warning: no item name. World object id: {}".format(object_id))

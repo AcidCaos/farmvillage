@@ -1,4 +1,6 @@
 
+import engine
+
 version_code = "0.01a"
 version_name = "alpha " + version_code
 
@@ -210,6 +212,17 @@ def migrate_loaded_save(save: dict):
             _changed = True
             save["userInfo"]["attr"]["profilePic"] = ""
             print("[!] Added attr.profilePic")
+
+        # client ref.: src/Classes/FeatureComponents/ExpandFManager.as (loadObject -> refreshPartData)
+        # An expandable building stored without an expansionParts map aborts the client's world load with a
+        # TypeError, and the farm never finishes loading. See engine.world_object_ensure_expansion_parts.
+        _fixed_expansion_parts = 0
+        for _world_object in save["world"]["objectsArray"]:
+            if engine.world_object_ensure_expansion_parts(_world_object):
+                _fixed_expansion_parts += 1
+        if _fixed_expansion_parts:
+            _changed = True
+            print("[!] Added expansionParts to {} world object(s)".format(_fixed_expansion_parts))
 
         # Fix storage format
         # client ref.: src/Classes/Player.as (loadInventoryFromStorageData)
