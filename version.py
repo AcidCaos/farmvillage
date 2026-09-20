@@ -150,6 +150,16 @@ def migrate_loaded_save(save: dict):
                 player[_mastery_key] = {}
                 print(f"[!] Cleared seeded player.{_mastery_key}")
 
+        # client ref.: src/ZQuest/Managers/QuestManager.as, src/Classes/Quest/FarmQuestManager.as
+        # Quest state (server/quests.py): which quests the player has been handed and how far each task
+        # got, which ones are finished (they unlock their children through the quest_complete prerequisite
+        # and become postInit's completedQuests) and which ones the player dismissed. Without it every
+        # response's metadata.QuestComponent is empty and no quest ever reaches the HUD.
+        if not isinstance(save.get("questState"), dict):
+            _changed = True
+            save["questState"] = {"active": {}, "completed": [], "retired": []}
+            print("[!] Added questState")
+
         # Fix storage format
         # client ref.: src/Classes/Player.as (loadInventoryFromStorageData)
         _fix_storage = False
@@ -167,5 +177,9 @@ def migrate_loaded_save(save: dict):
         if _fix_storage:
             _changed = True
             print("[!] Fixed storage format")
+
+        # save["version"] = "0.02a"
+        # _changed = True
+        # print("[!] Bump version to save")
 
     return _changed

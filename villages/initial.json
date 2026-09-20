@@ -254,5 +254,10 @@
     "friendUnwithered": 0,
     "geoip": null,
     "purchaseHistory": [],
-    "req_initUserStartTimestamp": 0
+    "req_initUserStartTimestamp": 0,
+    "questState": {
+        "active": {},
+        "completed": [],
+        "retired": []
+    }
 }
