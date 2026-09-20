@@ -89,6 +89,13 @@ def get_farming_int(key: str, default: int = 0) -> int:
     value = (_cached_farming or {}).get(key)
     return default if value is None else int(value)
 
+# client ref.: src/Managers/FarmGameSettingsManager.as (getNumber/getAttribute)
+# The same table as get_farming_int, for the entries that are not whole numbers (buyXpGainRatio is "0.01").
+def get_farming_number(key: str, default: float = 0.0) -> float:
+    global _cached_farming
+    value = (_cached_farming or {}).get(key)
+    return default if value is None else float(value)
+
 # XP levels functions
 
 def _xp_level_map_init() -> None:

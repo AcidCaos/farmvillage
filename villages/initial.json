@@ -243,9 +243,9 @@
     "subscriptionStatus": "",
     "promos": [],
     "socialActions": null,
-    "systemNotifications": true,
-    "dynamicSystemNotifications": true,
-    "hasValidUnwitherClock": 1,
+    "systemNotifications": null,
+    "dynamicSystemNotifications": null,
+    "hasValidUnwitherClock": 0,
     "errorPopupEnabled": 1,
     "suppressDialogs": false,
     "qaPopupBlock": false,
@@ -260,5 +260,12 @@
         "completed": [],
         "retired": [],
         "replayed": {}
+    },
+    "avatarState": {
+        "unlocked": [],
+        "configurations": {
+            "male": {},
+            "female": {}
+        }
     }
 }

@@ -373,6 +373,17 @@ def _announce_view_dialog_quest(quest:dict, state:dict) -> bool:
 
 # Assignment
 
+# client ref.: src/Transactions/TInitUser.as (isInitTransaction), src/ZQuest/Managers/QuestManager.as
+# Called once per session, from UserService.initUser. "announced" is session state, not save state: the
+# client starts every session with an empty m_activeQuests, so a speech bubble the last session never got
+# round to popping has to be offered again. Without this reset it is announced once, ever - and since only
+# the client coming back through markViewDialogTaskDone retires one, it would sit in active forever holding
+# a slot, which on a farm whose slots are all bubbles means no quest can ever start again.
+def start_session(save:dict) -> None:
+    for state in _quest_state(save)["active"].values():
+        state.pop("announced", None)
+    refresh_active_quests(save)
+
 # Also what FarmQuestService.fullQuestRefresh runs: FarmQuestManager's refresh timer queues it when a quest
 # window is due to open or close, and the refreshed list rides back in metadata.QuestComponent.
 def refresh_active_quests(save:dict) -> None:
