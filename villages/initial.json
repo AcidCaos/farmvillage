@@ -145,15 +145,15 @@
     "world": {
         "id": 1,
         "uid": "1",
-        "sizeX": 35,
-        "sizeY": 35,
+        "sizeX": 50,
+        "sizeY": 50,
         "objectsArray": [
             {
                 "deleted": false,
                 "position": {
-                    "x": 17,
+                    "x": 25,
                     "z": 0,
-                    "y": 17
+                    "y": 25
                 },
                 "state": "built",
                 "instanceDataStoreKey": null,
