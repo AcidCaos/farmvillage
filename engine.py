@@ -59,6 +59,13 @@ def world_replace_object(world_objects: list, new_object: dict) -> bool:
             break
     return replaced
 
+def world_remove_object(world_objects: list, object_id: int) -> bool:
+    for i in range(len(world_objects)):
+        if world_objects[i]["id"] == object_id:
+            del world_objects[i]
+            return True
+    return False
+
 def world_update_or_add_object(world_objects: list, new_object: dict) -> None:
     replaced = world_replace_object(world_objects, new_object)
     if not replaced:
