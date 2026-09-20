@@ -203,6 +203,14 @@ def migrate_loaded_save(save: dict):
             save["avatarState"] = {"unlocked": [], "configurations": {"male": {}, "female": {}}}
             print("[!] Added avatarState")
 
+        # client ref.: src/Classes/util/FacebookSocialNetwork.as (toSocialNetworkUser), src/Classes/Friend.as
+        # The profile picture url served to the JS social hooks and to initUser's `neighbors` blob.
+        # Empty means "no picture", i.e. FriendBarSlot's embedded no-profile-pic art. See player.profile_pic().
+        if "profilePic" not in save["userInfo"]["attr"]:
+            _changed = True
+            save["userInfo"]["attr"]["profilePic"] = ""
+            print("[!] Added attr.profilePic")
+
         # Fix storage format
         # client ref.: src/Classes/Player.as (loadInventoryFromStorageData)
         _fix_storage = False

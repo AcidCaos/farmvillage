@@ -68,7 +68,8 @@ def init_user(UID: str) -> dict:
     # client ref.: src/Transactions/TInitUser.as (isInitTransaction), src/ZQuest/Managers/QuestManager.as
     # Quests are handed out before the response snapshot is taken: initUser is the transaction that seeds
     # the client's active quest list, so whatever is not in this refresh has no HUD icon until the next one.
-    quests.refresh_active_quests(save)
+    # This is also where the per-session quest state is reset - see quests.start_session().
+    quests.start_session(save)
     # Persisted state: the session that just started is no longer the player's first one.
     user_info["is_new"] = False
     user_info["firstDay"] = first_day

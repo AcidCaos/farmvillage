@@ -2537,8 +2537,8 @@
                     locale: "en_US",
                     is_app_user: true,
                     allowed_restrictions: false,
-                    pic_square: "",
-                    pic_big: ""
+                    pic_square: {{ user.profilePic|tojson }},
+                    pic_big: {{ user.profilePic|tojson }}
                 };
                 return userInfo;
             }

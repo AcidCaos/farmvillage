@@ -44,6 +44,7 @@ print (" [+] Loading static villages...")
 load_static_villages()
 
 print (" [+] Loading server...")
+import requests
 from flask import Flask, render_template, send_from_directory, request, Response, redirect, session
 from flask.debughelpers import attach_enctype_error_multidict
 from werkzeug.utils import safe_join
@@ -101,7 +102,9 @@ def play():
         debug="true",
         user={
             "uid": UID,
-            "name": save_info(UID)["name"]
+            "name": save_info(UID)["name"],
+            # Served to getUserInfo()'s pic_square/pic_big - see player.profile_pic()
+            "profilePic": save_info(UID)["profilePic"]
         },
         save_info=save_info(UID),
         # Served to the client's getFriendData()/getAppFriendIds() JS hooks - see player.social_network_friends()
@@ -125,7 +128,9 @@ def play_ruffle():
         debug="true",
         user={
             "uid": UID,
-            "name": save_info(UID)["name"]
+            "name": save_info(UID)["name"],
+            # Served to getUserInfo()'s pic_square/pic_big - see player.profile_pic()
+            "profilePic": save_info(UID)["profilePic"]
         },
         save_info=save_info(UID),
         # Served to the client's getFriendData()/getAppFriendIds() JS hooks - see player.social_network_friends()
@@ -140,6 +145,32 @@ def new():
 @app.route("/img/<path:path>", methods=['GET'])
 def img(path):
     return send_from_directory(TEMPLATES_DIR + "/img", path)
+
+# client ref.: src/Engine/Classes/ResourceLoader.as (m_context.checkPolicyFile = true)
+# Every LoadingManager.loadFromUrl() request demands a crossdomain.xml from the url's host, which no modern
+# CDN serves - so Flash fails a remote image with a SecurityError before it even requests it. This re-serves
+# an arbitrary url from our own origin (which does serve a policy file), so a profile picture can point
+# anywhere. See player.profile_pic(), which rewrites remote urls to /proxy?url=<urlencoded>.
+_proxy_cache = {}
+PROXY_CACHE_MAX_ENTRIES = 64
+
+@app.route("/proxy", methods=['GET'])
+def proxy():
+    url = request.args.get("url", "")
+    if not url.startswith(("http://", "https://")):
+        return Response("Only http(s) urls can be proxied.", status=400)
+    if url not in _proxy_cache:
+        try:
+            response = requests.get(url, timeout=10)
+            response.raise_for_status()
+        except requests.RequestException as e:
+            print(f"[!] Proxy could not fetch {url}: {e}")
+            return Response("Could not fetch the requested url.", status=502)
+        if len(_proxy_cache) >= PROXY_CACHE_MAX_ENTRIES:
+            _proxy_cache.clear()
+        _proxy_cache[url] = (response.headers.get("Content-Type", "application/octet-stream"), response.content)
+    content_type, content = _proxy_cache[url]
+    return Response(content, mimetype=content_type)
 
 @app.route("/css/<path:path>")
 def css(path):
