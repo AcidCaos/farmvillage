@@ -513,6 +513,19 @@ def flashservices_gateway():
             commands.increment_generic_farm_task(UID, task_action)
             resps.append(response)
 
+        # client ref.: src/Transactions/TGenericTransaction.as - the Quest Manager window's Start/End
+        # buttons, which send through TGenericTransaction rather than a T*.as of their own.
+
+        elif reqq.functionName == 'FarmQuestService.questManagerStartReplayableQuestChain':
+            first_quest_name = reqq['params'][0]
+            commands.start_replayable_quest_chain(UID, first_quest_name)
+            resps.append(response)
+
+        elif reqq.functionName == 'FarmQuestService.questManagerEndReplayableQuestChain':
+            quest_name = reqq['params'][0]
+            commands.end_replayable_quest_chain(UID, quest_name)
+            resps.append(response)
+
         else:
             log_unhandled_command(reqq.functionName, reqq['params'])
             resps.append(response)

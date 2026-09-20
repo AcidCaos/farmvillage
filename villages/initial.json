@@ -258,6 +258,7 @@
     "questState": {
         "active": {},
         "completed": [],
-        "retired": []
+        "retired": [],
+        "replayed": {}
     }
 }
