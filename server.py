@@ -304,7 +304,12 @@ def flashservices_gateway():
             resps.append(response)
 
         elif reqq.functionName == 'FriendSetService.getBatchFriendSetData':
-            response["data"] = []
+            # client ref.: src/Transactions/TBatchInitializeFriendSets.as (onComplete)
+            # The response is indexed by friend-set code (result[friendSet.code].uids/.pending), so the
+            # "nothing to hand back" answer is an empty map, not an empty list. Friend sets are not
+            # modelled server-side: no set ever initializes, which only leaves each one at 0 friends
+            # (nothing retries and nothing blocks on FriendSet.initialized).
+            response["data"] = {}
             resps.append(response)
         
         elif reqq.functionName == 'UserService.r2InterstitialPostInit':
@@ -356,6 +361,7 @@ def flashservices_gateway():
             resps.append(response)
 
         elif reqq.functionName == 'UserService.resetSystemNotifications':
+            commands.reset_system_notifications(UID)
             resps.append(response)
         
         elif reqq.functionName == 'UserContentService.onCreateImage':
@@ -441,11 +447,13 @@ def flashservices_gateway():
             resps.append(response)
 
         elif reqq.functionName == 'PigoService.buyToken':
-            response["data"] = commands.pigo_buy_token(UID)
+            gameTokenName = reqq['params'][0]
+            response["data"] = commands.pigo_buy_token(UID, gameTokenName)
             resps.append(response)
 
         elif reqq.functionName == 'PigoService.buyTokenPackage':
-            response["data"] = commands.pigo_buy_token_package(UID)
+            gameTokenName = reqq['params'][0]
+            response["data"] = commands.pigo_buy_token_package(UID, gameTokenName)
             resps.append(response)
 
         elif reqq.functionName == 'PigoService.grantReward':

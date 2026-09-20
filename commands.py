@@ -38,6 +38,17 @@ _FC_SLOT_MACHINE_MYSTERY_PRIZES = [
 ]
 
 _FC_SLOT_MACHINE_WIN_CHANCE = 0.35
+_FC_SLOT_MACHINE_SPIN_COST = 3          # FCSlotMachineWindow.SPIN_COST (Farm Cash)
+_FC_SLOT_MACHINE_INITIAL_FREE_SPINS = 1 # FCSlotMachineWindow.INITIAL_FREE_SPINS
+
+# client ref.: src/Widgets/Windows/FCSlotMachineWindow.as (getFreeSpins/setFreeSpins/onFreeSpin/onPaidSpin)
+# SlotService.spin carries no "was this spin free?" flag, so the server has to keep the same count the
+# client does or the cash it deducted in onPaidSpin comes back on the next login. The client's count is
+# FeatureOptionsManager's SLOT_MACHINE/SLOT_MACHINE_FREESPINS option, which is only ever set, never
+# saved (setFeatureOption without save(), and UserService.saveFeatureOptions isn't handled), so it is
+# per-session state that starts at INITIAL_FREE_SPINS - mirrored here in memory, keyed by uid, and
+# reset in init_user. Spin buttons stay disabled until the reels stop, so the two can't race.
+_fc_slot_machine_free_spins = {}
 
 # client ref.: src/Transactions/TInitUser.as (onComplete), src/Classes/Player.as (newPlayer/isFirstDay/accountAge)
 # The save doubles as the initUser response, so this is also where the "brand new player" state gets consumed:
@@ -61,6 +72,9 @@ def init_user(UID: str) -> dict:
     user_info["is_new"] = False
     user_info["firstDay"] = first_day
     user_info["worldSummaryData"]["farm"]["lastLoaded"] = ts_now
+    # A fresh session also resets the FC Slot Machine's free spins, exactly as the client's own
+    # (never-saved) FeatureOptionsManager count does - see _fc_slot_machine_free_spins.
+    _fc_slot_machine_free_spins.pop(UID, None)
     # Response: shallow copies, so the flags this session reports don't get persisted back into the save.
     data = dict(save)
     data["userInfo"] = dict(user_info)
@@ -79,6 +93,12 @@ def init_user(UID: str) -> dict:
     data["neighbors"] = engine.compress_and_encode(neighbor_metadata(UID))
     data["userInfo"]["player"] = dict(user_info["player"])
     data["userInfo"]["player"]["neighbors"] = neighbor_uids(UID)
+    # client ref.: src/Engine/Managers/TransactionManager.as (setSequenceID/getSequenceID)
+    # TInitUser.onComplete feeds this straight into setSequenceID, which tags every later batch with it.
+    # What the original server put here is unknown and the gateway ignores the value anyway, so hand
+    # back the client's own initial "0" - without it the field is null and every request carries a null
+    # sequenceID instead of a string.
+    data["sequenceId"] = "0"
     return data
 
 def post_init_user(UID: str) -> dict:
@@ -428,11 +448,21 @@ def load_neighbor_world(UID: str, neighbor_id: str) -> dict:
     if neighbor is None:
         return {"isNeighborMissing": True}
     return {
+        # client ref.: src/Transactions/TFarmTransaction.as (updateWorldTimeFromServer)
+        # While visiting, the client ignores the envelope's top-level worldTime and syncs off
+        # data.neighborWorldTime instead, so without this the world clock never resyncs during a visit.
+        "neighborWorldTime": timestamp_now(),
         "user": {
             # `id` is filled in client-side from the uid that was visited; firstName titles the farm.
             "currentWorldType": "farm",
             "firstName": neighbor["userInfo"].get("attr", {}).get("name", "Farmer"),
             "avatar": neighbor["userInfo"].get("avatar"),
+            # client ref.: src/Managers/NeighborUnwitherManager.as (offerFullFarmUnwither)
+            # When the host's farm has withered plots, the visitor is offered a free full-farm unwither
+            # if the host has been away for "unwitherNeighborFarmForFreeIfInactiveDays" days. That is
+            # measured against this timestamp; missing, it reads as NaN -> 0 days and the offer never
+            # shows. The last time the host loaded their farm is the closest thing a save records.
+            "lastWorldAction": neighbor["userInfo"].get("worldSummaryData", {}).get("farm", {}).get("lastLoaded", 0),
             "ugcItemData": None,
             "instanceDataStore": None,
         },
@@ -440,6 +470,18 @@ def load_neighbor_world(UID: str, neighbor_id: str) -> dict:
         # Crafting crews are not implemented; an empty crew just means "you are not a member of theirs".
         "neighborCraftingCrew": [],
     }
+
+# client ref.: src/Transactions/TResetSystemNotifications.as,
+# src/Managers/SystemNotificationManager.as (displayPendingNotifications/resetNotifications)
+# The client sends this once it has actually shown the notifications initUser handed it, so they must
+# not come back on the next login. Both lists are read straight off initUser's top level
+# (TInitUser.onComplete), and "nothing pending" there is null - an empty list is still truthy in AS3,
+# which would make the manager load and re-arm m_needReset every session.
+def reset_system_notifications(UID: str) -> None:
+    save = session(UID)
+    save["systemNotifications"] = None
+    save["dynamicSystemNotifications"] = None
+    return
 
 def update_feature_frequency_timestamp(UID: str, feature: str) -> None:
     save = session(UID)
@@ -490,7 +532,7 @@ def w2e_generate_daily_tokens() -> dict:
     # through to oninitW2e("") and hides the watch-to-earn HUD icon.
     return {"success": True, "Tokens": []}
 
-def _apply_fc_slot_machine_reward(save: dict, reward: dict) -> None:
+def _apply_fc_slot_machine_reward(UID: str, save: dict, reward: dict) -> None:
     quantity = int(reward["quantity"])
     if reward["type"] == "cash":
         engine.apply_cash_diff(save, quantity)
@@ -499,21 +541,31 @@ def _apply_fc_slot_machine_reward(save: dict, reward: dict) -> None:
     elif reward["type"] == "turbo_charger":
         engine.apply_turbo_chargers_diff(save, quantity)
     elif reward["type"] == "item_grant":
-        storage.store_deposit_item_by_name(save, reward["value"], quantity)
-    # "free_spin" is tracked purely client-side (FeatureOptionsManager's SLOT_MACHINE/
-    # SLOT_MACHINE_FREESPINS option, bumped locally by FCSlotMachineWindow.grantReward) - there is
-    # nothing to mirror server-side for it yet, since UserService.saveFeatureOptions isn't handled.
+        # grantReward()'s item_grant case is Global.player.addGift(), i.e. the gift box, not the
+        # farm's storage - the client's own copy of the prize lands in m_gifts.
+        storage.store_deposit_item_by_name(save, reward["value"], quantity, group=storage.GIFTBOX_ID)
+    elif reward["type"] == "free_spin":
+        _fc_slot_machine_free_spins[UID] = _fc_slot_machine_free_spins.get(UID, 0) + quantity
 
 # client ref.: src/Widgets/Windows/FCSlotMachineWindow.as (spin/onSpinTransactionComplete/stopSpin/grantReward)
 def slot_spin(UID: str) -> dict:
     save = session(UID)
+
+    # onPaidSpin() takes SPIN_COST off Global.player.cash before queueing the transaction (onFreeSpin
+    # spends a free spin instead), so the same has to come off the save.
+    free_spins = _fc_slot_machine_free_spins.get(UID, _FC_SLOT_MACHINE_INITIAL_FREE_SPINS)
+    if free_spins > 0:
+        _fc_slot_machine_free_spins[UID] = free_spins - 1
+    else:
+        _fc_slot_machine_free_spins[UID] = 0
+        engine.apply_cash_diff(save, -_FC_SLOT_MACHINE_SPIN_COST)
 
     won = random.random() < _FC_SLOT_MACHINE_WIN_CHANCE
     if won:
         reward = _pick_weighted(_FC_SLOT_MACHINE_REWARDS)
         pay_out = reward
         slots = [reward, reward, reward]
-        _apply_fc_slot_machine_reward(save, reward)
+        _apply_fc_slot_machine_reward(UID, save, reward)
     else:
         pay_out = None
         # 3 reel results that aren't all identical, so the client's own compareSlots() (which decides
@@ -540,17 +592,15 @@ def get_motd(UID: str, motd_seen_flag: str) -> dict:
     # Record that this MOTD was seen
     save["motdSeenFlags"][motd_seen_flag] = timestamp_now()
 
-    # Return a basic MOTD response. The client expects motdData to have at least:
-    # motdSeenFlag, dialog, icon, text. Most actual MOTDs are config-driven from client XML
-    # (MarketData.xml, gameSettingsCMS.xml, etc.); this is a placeholder server-side MOTD.
-    motd_data = {
-        "motdSeenFlag": motd_seen_flag,
-        "dialog": "MotdNormal",
-        "icon": "MOTD_ICON",
-        "text": "motd_default_message",
-    }
-
-    return {"motdData": motd_data}
+    # MOTD bodies were server-authored campaign content (icon/text/title/buttonText are localization
+    # keys picked per campaign) and none of it was recovered, so there is no MOTD to hand back for any
+    # flag. Every caller's onGetMOTD is null-safe (`if(Boolean(motdData) && motdData.hasOwnProperty(
+    # "motdSeenFlag"))` in MOTDMapTrigger/MotdOnCustomInit/FeatureQueuedIcon/..., `if(result)` in
+    # SuperPlotManager/MessageBoardManager), so a null motdData is the clean "no MOTD for this flag":
+    # the trigger stays detached and nothing pops. Inventing one instead put an untranslated popup
+    # ("motd_default_message", straight through ZLocUtils.t_pk) in front of the player every time.
+    # Answering with the motdData key still present keeps TGetMOTD off its error branches.
+    return {"motdData": None}
 
 # client ref.: src/Widgets/Windows/ScratchCardWindow.as (loadItemIconWithScratchData, grantUserReward's
 # equivalent cases in UserRewardUtil.as). Like the FC Slot Machine, the reward pool/odds/card price are
@@ -590,7 +640,10 @@ def _apply_scratch_card_reward(save: dict, reward: dict) -> None:
     elif reward["type"] == "coins":
         engine.apply_coins_diff(save, int(reward["value"]))
     elif reward["type"] == "item_grant":
-        storage.store_deposit_item_by_name(save, reward["item_name"], int(reward["quantity"]))
+        # client ref.: src/Classes/util/UserRewardUtil.as (grantUserRewards, REWARD_GRANT_ITEM) -
+        # Global.player.addGift(), so the prize belongs in the gift box, not the farm's storage.
+        storage.store_deposit_item_by_name(save, reward["item_name"], int(reward["quantity"]),
+                                           group=storage.GIFTBOX_ID)
     # "scratch_card" (another free play) is granted purely client-side (ScratchCardWindow.grantFreeCard()).
 
 def _build_scratch_card_tiles(win_tile: dict = None, near_miss_tile: dict = None) -> list:
@@ -628,6 +681,11 @@ def scratch_card_get_data(UID: str, unlock: bool) -> dict:
     if not unlock:
         return data
 
+    # onUnlockReturned/onPlayAgainReturned take price_per_card off Global.player.cash, and `unlock` is
+    # exactly the flag the client sets when it is about to do so (onPlayAgain sends !m_freeCard, and
+    # only deducts when m_freeCard is false), so a paid card has to be charged here too.
+    engine.apply_cash_diff(save, -_SCRATCH_CARD_PRICE)
+
     outcome = random.random()
     win_tile = near_miss_tile = None
 
@@ -655,7 +713,25 @@ _PIGO_PRIZE_ITEMS = ["chicken", "duck", "goat", "goose", "pig", "rabbit"]
 _PIGO_SET_BONUS_ITEM = "sheep"
 
 _PIGO_TOKEN_ITEM_NAME = "consume_pigo_game_token"  # PigoWindow.TOKEN_CONSUMABLE_ITEM_NAME
-_PIGO_TOKEN_PACKAGE_COUNT = 3  # PigoWindow.TOKEN_PACKAGE_COUNT
+_PIGO_TOKEN_PACKAGE_COUNT = 3     # PigoWindow.TOKEN_PACKAGE_COUNT
+_PIGO_TOKEN_PACKAGE_DISCOUNT = 0.1 # PigoWindow.TOKEN_PACKAGE_DISCOUNT
+
+# client ref.: src/Widgets/Windows/Pigo/PigoWindow.as (initTokenPricing)
+# A token costs the *game* item's cash price (m_tokenPrice = m_gameItem.cash - 10 FC for pigov2game),
+# and the 3-token package that price times the count less a 10% discount, rounded up. The client
+# takes both off Global.player.cash itself in buyToken()/buyTokenPackage() before queueing the
+# transaction, so the save has to be charged the same or the tokens come out free on the next login.
+# (The formula checks out against items_opt.amf: pigov2game cash 10 -> 30 - ceil(3) = 27 = pkg_pigo_token.)
+def _pigo_token_price(game_token_name: str) -> int:
+    game_item = get_item_by_name(game_token_name)
+    if game_item is None or game_item.get("cash") is None:
+        print(f" * Unknown pigo game item '{game_token_name}': charging nothing for its token.")
+        return 0
+    return int(game_item["cash"])
+
+def _pigo_token_package_price(game_token_name: str) -> int:
+    full_price = _pigo_token_price(game_token_name) * _PIGO_TOKEN_PACKAGE_COUNT
+    return full_price - math.ceil(full_price * _PIGO_TOKEN_PACKAGE_DISCOUNT)
 
 def _pigo_win_counts(save: dict, game_token_name: str) -> dict:
     return save.setdefault("pigoState", {}).setdefault(game_token_name, {})
@@ -676,22 +752,38 @@ def pigo_get_game_settings(UID: str, game_token_name: str) -> list:
     })
     return slots
 
-def pigo_buy_token(UID: str) -> str:
+# Tokens live in the gift box: buyToken()/buyTokenPackage() add them with Global.player.addGift() and
+# dropToken() takes one back out with removeGiftWithKey(), which is the gift box on both ends - and the
+# count the window opens with is getGiftCountForItem(TOKEN_CONSUMABLE_ITEM_NAME), i.e. the gift box too.
+def pigo_buy_token(UID: str, game_token_name: str) -> str:
     save = session(UID)
-    storage.store_deposit_item_by_name(save, _PIGO_TOKEN_ITEM_NAME, 1)
+    engine.apply_cash_diff(save, -_pigo_token_price(game_token_name))
+    storage.store_deposit_item_by_name(save, _PIGO_TOKEN_ITEM_NAME, 1, group=storage.GIFTBOX_ID)
     return "success"
 
-def pigo_buy_token_package(UID: str) -> str:
+def pigo_buy_token_package(UID: str, game_token_name: str) -> str:
     save = session(UID)
-    storage.store_deposit_item_by_name(save, _PIGO_TOKEN_ITEM_NAME, _PIGO_TOKEN_PACKAGE_COUNT)
+    engine.apply_cash_diff(save, -_pigo_token_package_price(game_token_name))
+    storage.store_deposit_item_by_name(save, _PIGO_TOKEN_ITEM_NAME, _PIGO_TOKEN_PACKAGE_COUNT,
+                                       group=storage.GIFTBOX_ID)
     return "success"
 
 def pigo_grant_reward(UID: str, game_token_name: str, item_name: str) -> dict:
     save = session(UID)
     win_counts = _pigo_win_counts(save, game_token_name)
+    had_set_bonus = all(win_counts.get(name, 0) > 0 for name in _PIGO_PRIZE_ITEMS)
     win_counts[item_name] = win_counts.get(item_name, 0) + 1
-    storage.store_deposit_item_by_name(save, item_name, 1)
-    storage.store_withdraw_item_by_name(save, _PIGO_TOKEN_ITEM_NAME, 1)
+    # Both the prize and the token are gift box items client-side (grantReward's addGift(), dropToken's
+    # removeGiftWithKey()).
+    storage.store_deposit_item_by_name(save, item_name, 1, group=storage.GIFTBOX_ID)
+    storage.store_withdraw_item_by_name(save, _PIGO_TOKEN_ITEM_NAME, 1, group=storage.GIFTBOX_ID)
+    # client ref.: src/Widgets/Windows/Pigo/PigoWindow.as (grantReward -> checkForSetBonus)
+    # Completing all 6 prize slots also grants the set bonus item, once. The client hands it to itself
+    # with addGift() and never tells the server, so the server has to spot the same transition (it is
+    # the one keeping the win counts) or the bonus animal is gone on the next login.
+    if not had_set_bonus and all(win_counts.get(name, 0) > 0 for name in _PIGO_PRIZE_ITEMS):
+        print(" * Pigo set bonus completed")
+        storage.store_deposit_item_by_name(save, _PIGO_SET_BONUS_ITEM, 1, group=storage.GIFTBOX_ID)
     return {"complete": True}
 
 # client ref.: src/Transactions/TBuyConsumables.as
