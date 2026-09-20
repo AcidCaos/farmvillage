@@ -179,6 +179,30 @@ def migrate_loaded_save(save: dict):
                 save[_notif_key] = None
                 print(f"[!] Cleared non-list save.{_notif_key}")
 
+        # client ref.: src/Transactions/TInitUser.as (if(result["hasValidUnwitherClock"] == 1)),
+        # src/Classes/FarmGameWorld.as (growAllPlots)
+        # This is "the player has an unwither clock running", and a 1 makes the client call growAllPlots()
+        # on every login, which revives every withered plot and re-matures every grown one. Seeded as 1, it
+        # handed out a free full-farm unwither on each session and cancelled out withering entirely
+        # (witherOn is on). Nothing server-side grants or tracks an unwither clock, so the truthful value
+        # is 0 - crops wither again, and an unwither has to come from the consumable like it used to.
+        if save.get("hasValidUnwitherClock") != 0:
+            _changed = True
+            save["hasValidUnwitherClock"] = 0
+            print("[!] Cleared hasValidUnwitherClock (free full-farm unwither on every login)")
+
+        # client ref.: src/Classes/Avatar/AvatarItemState.as (initAvatarStateFromInitUser),
+        # src/Classes/FarmGameWorld.as (displayAvatarCustomizationScreen)
+        # The avatar wardrobe: which premium clothing items the player has bought (a free item is never in
+        # there - grantItem() throws on one) and the last-worn item per category per gender, which the
+        # editor's "recently worn" row is rebuilt from. postInit's avatarState is built out of this, and
+        # until that response carries an "unlocked" key the client leaves avatarState.inventoryInitialized
+        # false - which silently blocks the avatar editor window from ever opening.
+        if not isinstance(save.get("avatarState"), dict):
+            _changed = True
+            save["avatarState"] = {"unlocked": [], "configurations": {"male": {}, "female": {}}}
+            print("[!] Added avatarState")
+
         # Fix storage format
         # client ref.: src/Classes/Player.as (loadInventoryFromStorageData)
         _fix_storage = False

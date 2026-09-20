@@ -8,6 +8,7 @@ from items import get_item_by_name
 from game_settings import level_to_xp, get_farming_int
 import storage
 import quests
+import avatar
 
 def _pick_weighted(pool: list) -> dict:
     return random.choices(pool, weights=[entry["weight"] for entry in pool])[0]
@@ -135,7 +136,7 @@ def post_init_user(UID: str) -> dict:
         "crossGameGiftingState": None,
         "marketView": None,
         "marketViewCraftingSkills": None,
-        "avatarState": None,
+        "avatarState": avatar_state(UID),
         "breedingState": None,
         "w2wState": None,
         "bestSellers": None,
@@ -236,11 +237,63 @@ def save_avatar(UID: str, customization_data: dict, gender: str) -> None:
     for slot, item in (customization_data or {}).items():
         if isinstance(item, dict) and item.get("itemId") is not None:
             items[slot] = {"itemId": item["itemId"]}
+    gender = gender if gender in ("male", "female") else "female"
     save["userInfo"]["avatar"] = {
         "version": "fv_1",
-        "gender": gender if gender in ("male", "female") else "female",
+        "gender": gender,
         "items": items,
     }
+
+    # client ref.: src/Transactions/TSaveAvatar.as (rememberRecentlySavedConfig),
+    # src/Classes/Avatar/AvatarItemState.as (rememberConfigurationItem)
+    # The editor's "recently worn" row, which the client rebuilds from postInit's avatarState. It is keyed
+    # by the item's own category in avatar.xml, not by the slot the client sends it under, and items that
+    # are not in the config are dropped, exactly as rememberConfigurationItem() drops them.
+    configurations = save["avatarState"]["configurations"].setdefault(gender, {})
+    for item in items.values():
+        item_data = avatar.get_item_by_id(item["itemId"])
+        if item_data is not None:
+            configurations[item_data["category"]] = item_data["itemId"]
+    return
+
+# client ref.: src/Classes/Avatar/AvatarItemState.as (initAvatarStateFromInitUser),
+# src/Transactions/TPostInit.as (result["avatarState"])
+# The avatar wardrobe, as postInit hands it back. Only the keys of "unlocked" are read (each is looked up
+# in avatar.xml and kept as an AvatarItem), and this object *must* carry the key at all: without it
+# avatarState.inventoryInitialized stays false and FarmGameWorld.displayAvatarCustomizationScreen()
+# silently refuses to open the avatar editor.
+def avatar_state(UID: str) -> dict:
+    save = session(UID)
+    return {
+        "unlocked": {item_id: True for item_id in save["avatarState"]["unlocked"]},
+        "configurations": save["avatarState"]["configurations"],
+    }
+
+# client ref.: src/Transactions/TBuyAvatarItem.as, src/Classes/Avatar/AvatarManager.as (buyAvatarItem)
+def buy_avatar_item(UID: str, item_id: str) -> None:
+    save = session(UID)
+    item_data = avatar.get_item_by_id(item_id)
+    if item_data is None:
+        print(" * Unknown avatar item: {}".format(item_id))
+        return
+
+    # AvatarManager.buyAvatarItem pays for the item and grants its XP client-side *before* queueing the
+    # transaction (the same optimistic pattern as neighborAct), so the server has to apply the very same
+    # amounts or the HUD drifts from the save. It only queues one at all once the payment went through,
+    # and only for a coins/cash item - a free (or marketless) one matches no case in its switch, and
+    # AvatarItemState.grantItem() throws outright on a free item, so neither is ever unlocked.
+    if item_data["market"] == "coins":
+        engine.apply_coins_diff(save, -item_data["cost"])
+    elif item_data["market"] == "cash":
+        engine.apply_cash_diff(save, -item_data["cost"])
+    else:
+        print(" * Avatar item {} is not for sale".format(item_data["name"]))
+        return
+    print(" * Bought avatar item {}: {} {}".format(item_data["name"], item_data["cost"], item_data["market"].upper()))
+    engine.apply_xp_increment(save, avatar.get_item_xp(item_data))
+
+    if item_data["itemId"] not in save["avatarState"]["unlocked"]:
+        save["avatarState"]["unlocked"].append(item_data["itemId"])
     return
 
 def world_perform_action(UID: str, actionName: str, m_save: dict, params: list) -> int:

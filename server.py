@@ -33,6 +33,10 @@ print(" [+] Loading quests...")
 from quests import load_quests
 load_quests()
 
+print(" [+] Loading avatar config...")
+from avatar import load_avatar
+load_avatar()
+
 print (" [+] Loading players...")
 from player import load_saves, load_static_villages, all_saves_info, all_saves_uids, save_info, new_village, social_network_friends
 load_saves()
@@ -376,6 +380,11 @@ def flashservices_gateway():
             customization_data = reqq['params'][0]
             gender = reqq['params'][1]
             commands.save_avatar(UID, customization_data, gender)
+            resps.append(response)
+
+        elif reqq.functionName == 'AvatarService.buyAvatarItem':
+            item_id = reqq['params'][0]
+            commands.buy_avatar_item(UID, item_id)
             resps.append(response)
 
         elif reqq.functionName == 'UserService.saveOptions':
