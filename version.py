@@ -167,6 +167,18 @@ def migrate_loaded_save(save: dict):
             save["questState"]["replayed"] = {}
             print("[!] Added questState.replayed")
 
+        # client ref.: src/Transactions/TInitUser.as (systemNotifications/dynamicSystemNotifications),
+        # src/Managers/SystemNotificationManager.as (load/displayPendingNotifications/resetNotifications)
+        # Both are lists of pending notifications (static ones are localization handles, dynamic ones are
+        # ready-made message strings), and "none pending" is null. They were seeded as the Boolean `true`,
+        # which is truthy but not iterable: the manager loaded, displayed nothing, armed m_needReset and
+        # fired a TResetSystemNotifications on every single login.
+        for _notif_key in ("systemNotifications", "dynamicSystemNotifications"):
+            if not isinstance(save.get(_notif_key), (list, type(None))):
+                _changed = True
+                save[_notif_key] = None
+                print(f"[!] Cleared non-list save.{_notif_key}")
+
         # Fix storage format
         # client ref.: src/Classes/Player.as (loadInventoryFromStorageData)
         _fix_storage = False
