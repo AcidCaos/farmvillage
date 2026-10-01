@@ -6,8 +6,9 @@ import argparse
 
 # Parsed before anything heavy loads, so --help/bad args answer immediately
 _argparser = argparse.ArgumentParser(description="FarmVille Server")
-_argparser.add_argument("--ip", "--host", dest="ip", default="127.0.0.1", help="IP address to bind to (default: 127.0.0.1)")
+_argparser.add_argument("--host", "--ip", dest="host", default="127.0.0.1", help="Host/IP address to bind to (default: 127.0.0.1)")
 _argparser.add_argument("--port", dest="port", type=int, default=5500, help="Port to listen on (default: 5500)")
+_argparser.add_argument("--public-url", dest="public_url", default=None, help="URL the client reaches the server at, e.g. when behind a reverse proxy (default: http://<host>:<port>)")
 _args = _argparser.parse_args()
 
 if os.name == 'nt':
@@ -45,7 +46,7 @@ load_static_villages()
 
 print (" [+] Loading server...")
 import requests
-from flask import Flask, render_template, send_from_directory, request, Response, redirect, session
+from flask import Flask, render_template, send_from_directory, request, Response, redirect, session, jsonify
 from flask.debughelpers import attach_enctype_error_multidict
 from werkzeug.utils import safe_join
 from pyamf import remoting
@@ -57,8 +58,9 @@ from version import version_name
 from bundle import BASE_DIR, ASSETS_DIR, EMBEDS_DIR, ASSETHASH_DIR, PATCHED_ASSETS_DIR, TEMPLATES_DIR, XML_DIR, UNHANDLED_LOG
 from player import save_session
 
-BIND_IP = _args.ip
+BIND_HOST = _args.host
 BIND_PORT = _args.port
+PUBLIC_URL = (_args.public_url or f"http://{BIND_HOST}:{BIND_PORT}").rstrip("/")
 
 app: Flask = Flask(__name__)
 
@@ -97,7 +99,7 @@ def play():
     print("[PLAY] UID:", UID)
     return render_template("play.html", 
         version=version_name,
-        base_url=f"http://{BIND_IP}:{BIND_PORT}",
+        base_url=PUBLIC_URL,
         server_time=timestamp_now(),
         debug="true",
         user={
@@ -123,7 +125,7 @@ def play_ruffle():
     print("[PLAY_RUFFLE] UID:", UID)
     return render_template("ruffle.html",
         version=version_name,
-        base_url=f"http://{BIND_IP}:{BIND_PORT}",
+        base_url=PUBLIC_URL,
         server_time=timestamp_now(),
         debug="true",
         user={
@@ -136,6 +138,10 @@ def play_ruffle():
         # Served to the client's getFriendData()/getAppFriendIds() JS hooks - see player.social_network_friends()
         friends=social_network_friends(UID)
     )
+
+@app.route("/health", methods=['GET'])
+def health():
+    return jsonify({"status": "ok", "version": version_name})
 
 @app.route("/new.html")
 def new():
@@ -643,4 +649,4 @@ if __name__ == '__main__':
     app.root_path = BASE_DIR
     app.template_folder = TEMPLATES_DIR
     app.static_folder = TEMPLATES_DIR
-    app.run(host=BIND_IP, port=BIND_PORT, debug=False, threaded=True)
+    app.run(host=BIND_HOST, port=BIND_PORT, debug=False, threaded=True)
