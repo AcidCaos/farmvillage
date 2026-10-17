@@ -647,6 +647,34 @@ def flashservices_gateway():
             commands.end_replayable_quest_chain(UID, quest_name)
             resps.append(response)
 
+        # client ref.: src/Managers/PostInitSettings.as - the expired events' end-of-event calls, see
+        # commands.feature_end_call. Only these methods: an event's other calls (sinkGold, redeemTask...)
+        # are bespoke per event and stay in unhandled.log. The calls seen so far:
+        #   AmsterdamInnovationService.grantBonus
+        #   AnimalSanctuaryV2Service.startQuest
+        #   BoatRushService.startQuest, BoatRushService.featureEnd
+        #   BoraBoraInnovationService.startQuest
+        #   CanadaInnovationService.startQuest
+        #   CocowonderlandInnovationService.startQuest
+        #   Dec19InnovationService.grantBonus
+        #   FarmersMarketInnovationService.startQuest, FarmersMarketInnovationService.onRedeemStarted
+        #   Halloween2019InnovationService.startQuest
+        #   IrelandInnovationService.startQuest, IrelandInnovationService.fetchDailyLimit,
+        #   IrelandInnovationService.getLeaderboardEntries, IrelandInnovationService.onRedeemStarted
+        #   IsraelInnovationService.grantBonus
+        #   RussiaInnovationService.grantBonus
+        #   SouthindiaInnovationService.grantBonus
+        #   TropicalMarketInnovationService.startQuest, TropicalMarketInnovationService.featureEnd,
+        #   TropicalMarketInnovationService.onRedeemStarted, TropicalMarketInnovationService.updateEscapeTokensCount,
+        #   TropicalMarketInnovationService.initializeTropicEscapeConnection
+        #   WinterRacingFeatureService.startQuest, WinterRacingFeatureService.featureEnd
+        #   WreathFestivalInnovationService.grantBonus
+        elif commands.is_feature_end_call(reqq.functionName):
+            method = reqq.functionName.split('.')[1]
+            feature_name = reqq['params'][0]
+            commands.feature_end_call(UID, method, feature_name)
+            resps.append(response)
+
         else:
             log_unhandled_command(reqq.functionName, reqq['params'])
             resps.append(response)

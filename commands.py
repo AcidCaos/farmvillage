@@ -730,6 +730,56 @@ def w2e_generate_daily_tokens() -> dict:
     # through to oninitW2e("") and hides the watch-to-earn HUD icon.
     return {"success": True, "Tokens": []}
 
+# client ref.: xml/gz/v855098/postInitSequence.xml (the forceGrant* userActions), src/Managers/PostInitSettings.as
+# Every limited-time event (the *InnovationService family, GiftRush2019, BoatRush2020...) ended before the
+# shutdown, and postInitSequence fires its end-of-event payout on every login while a feature option is 0.
+# A missing option counts as 0 (PrerequisiteUtility.isPrerequisiteMet_FeatureOption) and nothing client-side
+# ever persists one (FeatureOptionsManager.setFeatureOption is session-only, even for the forceGrantedLB the
+# managers set themselves), so the original server must have set it once the payout ran. This maps
+# (featureName, the call each forceGrant* action ends up sending) to the option that gates it.
+_FEATURE_END_GRANT_FLAGS = {
+    ("Halloween2019Innovation", "featureEnd"): "forceGranted",
+    ("CanadaInnovation", "featureEnd"): "forceGranted",
+    ("BoraBoraInnovation", "featureEnd"): "forceGranted",
+    ("BoraBoraInnovation", "onRedeemStarted"): "forceGrantedLB",
+    ("FarmersMarket2020Innovation", "featureEnd"): "farmersMarket_bonus_reward_granted",
+    ("FarmersMarket2020Innovation", "onRedeemStarted"): "forceGrantedLB",
+    ("TropicalMarketInnovation", "featureEnd"): "tropical_market_bonus_reward_granted",
+    ("TropicalMarketInnovation", "onRedeemStarted"): "forceGrantedLB",
+    ("GiftRush2019", "featureEnd"): "forceGranted",
+    ("BoatRush2020", "featureEnd"): "forceGranted",
+    ("RussiaInnovation", "grantBonus"): "forceGranted",
+    ("IsraelInnovation", "grantBonus"): "forceGranted",
+    ("SouthindiaInnovation", "grantBonus"): "forceGranted",
+    ("Dec19Innovation", "grantBonus"): "forceGranted",
+    ("AmsterdamInnovation", "grantBonus"): "forceGranted",
+    ("WreathFestivalInnovation", "grantBonus"): "forceGranted",
+    ("IrelandInnovation", "onRedeemStarted"): "xid_bonus",
+    ("WinternordInnovation", "onRedeemStarted"): "forceGrantedWeekly",
+    ("MadagascarInnovation", "onRedeemStarted"): "forceGrantedWeekly",
+    ("TwentiesInnovation", "onRedeemStarted"): "forceGrantedWeekly",
+    ("PumpkinPartyInnovation", "onRedeemStarted"): "forceGrantedWeekly",
+}
+
+_FEATURE_END_SERVICES = ("WinterRacingFeatureService", "BoatRushService", "AnimalSanctuaryV2Service")
+_FEATURE_END_METHODS = ("startQuest", "featureEnd", "grantBonus", "onRedeemStarted", "fetchDailyLimit",
+                        "getLeaderboardEntries", "updateEscapeTokensCount", "initializeTropicEscapeConnection")
+
+def is_feature_end_call(function_name: str) -> bool:
+    service, _, method = function_name.partition(".")
+    return (service.endswith("InnovationService") or service in _FEATURE_END_SERVICES) and method in _FEATURE_END_METHODS
+
+# client ref.: src/Transactions/TGenericTransaction.as, src/Managers/OrderBoard/*InnovationManager.as, src/Managers/*InnovationManager.as
+# The end-of-event calls those payouts (and the managers' own start-up) send, all with params[0] = featureName.
+# The response stays empty: every callback treats a null result as "nothing happened" (no board tasks, no
+# leaderboard, no reward). Rewards that do exist are granted client-side from the event's points
+# (onBonusGrantComplete), which nothing ever earned here, so there is nothing for the server to mirror.
+def feature_end_call(UID: str, method: str, feature_name: str) -> None:
+    option_name = _FEATURE_END_GRANT_FLAGS.get((feature_name, method))
+    if option_name:
+        save = session(UID)
+        save["userInfo"]["featureOptions"].setdefault(feature_name, {})[option_name] = 1
+
 def _apply_fc_slot_machine_reward(UID: str, save: dict, reward: dict) -> None:
     quantity = int(reward["quantity"])
     if reward["type"] == "cash":
