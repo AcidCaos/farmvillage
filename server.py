@@ -78,6 +78,9 @@ def login():
     if request.method == 'POST':
         session['UID'] = request.form['UID']
         print("[LOGIN] UID:", request.form['UID'])
+        # Ruffle checkbox: only sent when checked
+        if 'RUFFLE' in request.form:
+            return redirect("/ruffle.html")
         return redirect("/play.html")
     # Login page
     if request.method == 'GET':
@@ -586,10 +589,31 @@ def flashservices_gateway():
             commands.mark_view_dialog_task_done(UID, quest_name)
             resps.append(response)
 
-        elif reqq.functionName == 'FarmQuestService.skipTask':
+        # client ref.: src/Classes/Quest/FarmTask.as (skip) - a few task actions skip through a TSkipQuestTask
+        # subclass of their own, with the same (questName, taskIndex) params and the same price. Their onComplete
+        # then changes the world client-side only (TSkipBuildingConstruction finishes the construction site,
+        # TSkipExpandStorageBuilding expands the building, TSkipRewardCreditTask adds the credits), with no
+        # transaction of its own, so those changes are not in the save and are gone on the next login; the
+        # server does not model construction or building expansion yet. TSkipGetBushels only adds bushels when
+        # the response carries bushelsAdded, which is left out for the same reason.
+        elif reqq.functionName in ('FarmQuestService.skipTask',
+                                   'FarmQuestService.skipConstructionBuildingTask',
+                                   'FarmQuestService.skipExpandStorageBuildingTask',
+                                   'FarmQuestService.skipRewardCreditsTask',
+                                   'FarmQuestService.skipGetBushelsTask',
+                                   'FarmQuestService.skipCompleteFriendSetTask'):
             quest_name = reqq['params'][0]
             task_index = reqq['params'][1]
             commands.skip_quest_task(UID, quest_name, task_index)
+            resps.append(response)
+
+        # client ref.: src/Transactions/Quests/TAskForQuestItem.as, src/Classes/Quest/helperactions/AskForItemByFeedHelperAction.as
+        # The quest task "Ask friends" button. The server was supposed to answer with a Facebook feed post
+        # (data + ts) for the client to publish, and friends answered it through Facebook, which is gone. A
+        # response without data is the case onComplete already treats as "no feed to post" (it only logs a stat).
+        # recordQuestItemRequest (TRecordQuestItemRequest.as) follows a published post, so it can never be sent
+        # here; it is acknowledged for completeness.
+        elif reqq.functionName in ('FarmQuestService.askForQuestItem', 'FarmQuestService.recordQuestItemRequest'):
             resps.append(response)
 
         elif reqq.functionName == 'FarmQuestService.incrementGenericFarmTask':
