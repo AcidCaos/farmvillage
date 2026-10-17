@@ -165,6 +165,120 @@
                 "buildTime": 0,
                 "plantTime": null,
                 "itemName": "barn"
+            },
+            {
+                "deleted": false,
+                "position": {
+                    "x": 27,
+                    "z": 0,
+                    "y": 13
+                },
+                "state": "fallow",
+                "instanceDataStoreKey": null,
+                "direction": 0,
+                "components": {},
+                "className": "Plot",
+                "isJumbo": false,
+                "isBigPlot": false,
+                "isProduceItem": false,
+                "id": 2,
+                "plantTime": 0,
+                "itemName": null
+            },
+            {
+                "deleted": false,
+                "position": {
+                    "x": 27,
+                    "z": 0,
+                    "y": 9
+                },
+                "state": "fallow",
+                "instanceDataStoreKey": null,
+                "direction": 0,
+                "components": {},
+                "className": "Plot",
+                "isJumbo": false,
+                "isBigPlot": false,
+                "isProduceItem": false,
+                "id": 3,
+                "plantTime": 0,
+                "itemName": null
+            },
+            {
+                "deleted": false,
+                "position": {
+                    "x": 19,
+                    "z": 0,
+                    "y": 9
+                },
+                "state": "grown",
+                "instanceDataStoreKey": null,
+                "direction": 0,
+                "components": {},
+                "className": "Plot",
+                "isJumbo": false,
+                "isBigPlot": false,
+                "isProduceItem": false,
+                "id": 4,
+                "plantTime": 0,
+                "itemName": "eggplant"
+            },
+            {
+                "deleted": false,
+                "position": {
+                    "x": 19,
+                    "z": 0,
+                    "y": 13
+                },
+                "state": "grown",
+                "instanceDataStoreKey": null,
+                "direction": 0,
+                "components": {},
+                "className": "Plot",
+                "isJumbo": false,
+                "isBigPlot": false,
+                "isProduceItem": false,
+                "id": 5,
+                "plantTime": 0,
+                "itemName": "eggplant"
+            },
+            {
+                "deleted": false,
+                "position": {
+                    "x": 23,
+                    "z": 0,
+                    "y": 9
+                },
+                "state": "plowed",
+                "instanceDataStoreKey": null,
+                "direction": 0,
+                "components": {},
+                "className": "Plot",
+                "isJumbo": false,
+                "isBigPlot": false,
+                "isProduceItem": false,
+                "id": 6,
+                "plantTime": 0,
+                "itemName": null
+            },
+            {
+                "deleted": false,
+                "position": {
+                    "x": 23,
+                    "z": 0,
+                    "y": 13
+                },
+                "state": "plowed",
+                "instanceDataStoreKey": null,
+                "direction": 0,
+                "components": {},
+                "className": "Plot",
+                "isJumbo": false,
+                "isBigPlot": false,
+                "isProduceItem": false,
+                "id": 7,
+                "plantTime": 0,
+                "itemName": null
             }
         ],
         "messageManager": []
