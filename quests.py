@@ -30,6 +30,12 @@ _max_active_replayable_quests: int = 0
 NEW_QUEST:int = 1
 NON_NEW_QUEST:int = 0
 
+# client ref.: src/Classes/Quest/FarmQuest.as (SKIP_ALL_DISCOUNT), src/Classes/Quest/FarmQuestSettingsInit.as
+# (DEFAULT_TASK_CASH_VALUE) - the entire-quest skip price. Every <replayableQuest> in the recovered XML sets
+# defaultTaskCashValue="10" as well, so the client default is also the per-chain value.
+SKIP_ALL_DISCOUNT:int = 10
+DEFAULT_TASK_CASH_VALUE:int = 10
+
 # How many quests the player is given at once. The number itself is not in any recovered file -
 # questSettings.xml only caps the quest manager's replayable slots (maxActiveReplayableQuests="6") - so this
 # is an invented cap, kept low enough not to bury the HUD's icon queue. That there is a slot budget at all
@@ -333,6 +339,17 @@ def _quest_state(save:dict) -> dict:
 # @cashValue makes the skip button charge what the XML says instead of being free.
 def quest_component(save:dict) -> list:
     component = []
+    # Quests skip_entire_quest just finished, announced once as complete (see there). Popped in the same
+    # request that set it, so it never ends up in a stored save.
+    for name in _quest_state(save).pop("skipped", []):
+        quest = get_quest_by_name(name)
+        component.append({
+            "name": name,
+            "progress": [task["total"] for task in quest["tasks"]],
+            "complete": True,
+            "expired": False,
+            "new": NON_NEW_QUEST,
+        })
     for name, state in _quest_state(save)["active"].items():
         quest = get_quest_by_name(name)
         if quest is None:
@@ -615,6 +632,35 @@ def skip_task(save:dict, quest_name:str, task_index:int) -> None:
     cash_value = quest["tasks"][task_index]["cashValue"] if quest["icon"] != "none" else 0
     engine.apply_cash_diff(save, -cash_value)
     _advance_task(save, quest_name, task_index, quest["tasks"][task_index]["total"])
+
+# client ref.: src/Classes/Quest/FarmQuest.as (skipQuest / getSkipQuestCashCost / getCashSkipDiscount),
+# src/ZQuest/Managers/QuestManager.as (onTransactionComplete), src/Classes/Quest/FarmQuestManager.as (onQuestComplete)
+# Paying cash to finish a whole quest. The client subtracts getSkipQuestCashCost() from Global.player.cash,
+# marks every task complete and drops the quest from its m_activeQuests, but grants nothing itself: a quest
+# it no longer has is exactly the case where QuestManager dispatches COMPLETED for a complete entry in
+# QuestComponent, and that is what grants the rewards and opens the reward dialog. So the quest is completed
+# here (rewards, children) and announced complete in this response only - the reward dialog's
+# updateRecentlyCompletedQuests afterwards finds it no longer active and does nothing.
+# The price is the sum of the unfinished tasks' cashValue (as priced by quest_component), less 10% when more
+# than one is left outside a replayable chain. Which tasks are unfinished is judged on the server's progress,
+# which only recounts TRACKED_TASK_ACTIONS - a task the client already predicted complete may still be charged.
+def skip_entire_quest(save:dict, quest_name:str) -> None:
+    quest = get_quest_by_name(quest_name)
+    state = _quest_state(save)["active"].get(quest_name)
+    if quest is None or state is None:
+        return
+    default_cash_value = DEFAULT_TASK_CASH_VALUE if replayable_chain_head(quest_name) is not None else 0
+    unfinished = [task for progress, task in zip(state["progress"], quest["tasks"]) if progress < task["total"]]
+    cost = 0
+    if quest["icon"] != "none":
+        cost = sum(task["cashValue"] if task["cashValue"] > 0 else default_cash_value for task in unfinished)
+    if len(unfinished) > 1 and replayable_chain_head(quest_name) is None:
+        # AS3 Math.round rounds halves up
+        cost = int(cost * (100 - SKIP_ALL_DISCOUNT) / 100 + 0.5)
+    engine.apply_cash_diff(save, -cost)
+    print(f" * Skipped quest {quest_name} for {cost} cash")
+    complete_quest(save, quest_name)
+    _quest_state(save).setdefault("skipped", []).append(quest_name)
 
 # client ref.: src/Transactions/Quests/TIncrementGenericFarmTask.as
 # A task action the client cannot infer from any other transaction (watching an ad, opening the quest map),

@@ -1130,6 +1130,10 @@ def mark_view_dialog_task_done(UID: str, quest_name: str) -> None:
 def skip_quest_task(UID: str, quest_name: str, task_index: int) -> None:
     quests.skip_task(session(UID), quest_name, int(task_index))
 
+# client ref.: src/Classes/Quest/FarmQuest.as (skipQuest)
+def skip_entire_quest(UID: str, quest_name: str) -> None:
+    quests.skip_entire_quest(session(UID), quest_name)
+
 # client ref.: src/Transactions/Quests/TIncrementGenericFarmTask.as
 def increment_generic_farm_task(UID: str, task_action: str) -> None:
     quests.increment_generic_farm_task(session(UID), task_action)

@@ -629,6 +629,13 @@ def flashservices_gateway():
             commands.start_replayable_quest_chain(UID, first_quest_name)
             resps.append(response)
 
+        # client ref.: src/Classes/Quest/FarmQuest.as (skipQuest) - the "complete now" button, also through
+        # TGenericTransaction with no callback.
+        elif reqq.functionName == 'FarmQuestService.skipEntireQuest':
+            quest_name = reqq['params'][0]
+            commands.skip_entire_quest(UID, quest_name)
+            resps.append(response)
+
         elif reqq.functionName == 'FarmQuestService.questManagerEndReplayableQuestChain':
             quest_name = reqq['params'][0]
             commands.end_replayable_quest_chain(UID, quest_name)
