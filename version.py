@@ -235,6 +235,36 @@ def migrate_loaded_save(save: dict):
             save["world"]["sizeY"] = 50
             print("[!] Resized farm from 35x35 to the base 50x50 (object positions are kept)")
 
+        # client ref.: src/Classes/ZItem/FarmItem.as (checkIncrementalGate), src/Classes/MapResource.as
+        # Indexed by gate code; on the number 0 that lookup throws #1069 for every gated item (farm26,
+        # farm28, cow_tuscan, lights_unlimited). An empty map means "not gated".
+        if not isinstance(save["userInfo"]["player"].get("incrementalGateArray"), dict):
+            _changed = True
+            save["userInfo"]["player"]["incrementalGateArray"] = {}
+            print("[!] Fixed incrementalGateArray format")
+
+        # client ref.: src/Classes/Player.as (isSuperCropUnlocked) - indexOf() on null throws #1009.
+        if not isinstance(save["userInfo"]["player"].get("superCropsStatus"), list):
+            _changed = True
+            save["userInfo"]["player"]["superCropsStatus"] = []
+            print("[!] Fixed superCropsStatus format")
+
+        # client ref.: src/Managers/MiniDartsManager.as - its constructor JSON-decodes this unconditionally
+        # (PrerequisiteUtility / MysteryBoxBalloonDialog instantiate it). An already-expired runtime keeps the
+        # feature hidden (isFeatureActive() is false).
+        if "MINIDARTS" not in save["flashHotParams"]:
+            _changed = True
+            save["flashHotParams"]["MINIDARTS"] = '{"CURRENCY_ITEM":"","THROTTLE":0,"CONSUMABLE":"consume_mystery_game_revamp_dart","END_DATE":"01/01/2010","VERSION":1,"CONSUMABLE_COST":15}'
+            print("[!] Added MINIDARTS flashHotParams")
+
+        # client ref.: src/Display/UI.as (displayImpulseBuyPopup) - without SHOW_FC_POPUP, the "not enough
+        # Farm Cash" path shows this message, and an absent one crashes displayMessage() (#1009). The
+        # original text was not recovered.
+        if "FC_POPUP_MESSAGE" not in save["flashHotParams"]:
+            _changed = True
+            save["flashHotParams"]["FC_POPUP_MESSAGE"] = "You do not have enough Farm Cash for that item."
+            print("[!] Added FC_POPUP_MESSAGE flashHotParams")
+
         # Fix storage format
         # client ref.: src/Classes/Player.as (loadInventoryFromStorageData)
         _fix_storage = 0

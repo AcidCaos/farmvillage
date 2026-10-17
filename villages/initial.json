@@ -65,13 +65,13 @@
             "lastHorseStableSendTime": 0,
             "lastFrenchChateauSendTime": 0,
             "lastNurserySendTime": 0,
-            "incrementalGateArray": 0,
+            "incrementalGateArray": {},
             "progressBarData": null,
             "neighborPlumbingAddExcludeList": null,
             "pendingNeighbors": 1,
             "lastSocialPlumbingTime": 0,
             "m_adoptedAnimals": {},
-            "superCropsStatus": null,
+            "superCropsStatus": [],
             "lotteryTickets": [],
             "lonelyAnimalCode": "",
             "currentMOTD": null,
@@ -316,7 +316,9 @@
         "REALITEMNAME_ENABLED": true,
         "MARKET_REPOP_BLACKLIST": "",
         "CARNIVAL_PROMOS_ACTIVE": 6,
-        "CARNIVAL_PROMO_DEFAULT": "Carnival_Coming_Soon"
+        "CARNIVAL_PROMO_DEFAULT": "Carnival_Coming_Soon",
+        "MINIDARTS": "{\"CURRENCY_ITEM\":\"\",\"THROTTLE\":0,\"CONSUMABLE\":\"consume_mystery_game_revamp_dart\",\"END_DATE\":\"01/01/2010\",\"VERSION\":1,\"CONSUMABLE_COST\":15}",
+        "FC_POPUP_MESSAGE": "You do not have enough Farm Cash for that item."
     },
     "wishData": {
         "wishSenders": null,
