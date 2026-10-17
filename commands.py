@@ -1046,6 +1046,16 @@ def set_seen_expand_farm(UID: str, amount: int) -> None:
     session(UID)["userInfo"]["player"]["seenExpandFarm"] = int(amount)
     return
 
+# client ref.: src/Transactions/TGrantEmailPermission.as, src/Managers/EmailManager.as (parseEmailBits)
+# play.html's checkForPublishPermission reports email permission as granted, so on every login where
+# userInfo.player.hasReceivedGiftForEmailPermissions is unset, parseEmailBits auto-accepts as
+# EMAIL_PROACTIVE_USER (source "6") - a "thanks" popup plus this call. Storing the flag is what stops it.
+# The gift itself (`giftName`) was never recovered, so none is granted: without `receivedEmailGift`
+# onComplete adds nothing.
+def grant_email_permission(UID: str) -> dict:
+    session(UID)["userInfo"]["player"]["hasReceivedGiftForEmailPermissions"] = 1
+    return {}
+
 # client ref.: src/Transactions/TBuyConsumables.as
 def buy_consumable_package(UID: str, package_name: str) -> dict:
     save = session(UID)

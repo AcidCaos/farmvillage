@@ -541,6 +541,12 @@ def flashservices_gateway():
             commands.set_seen_expand_farm(UID, amount)
             resps.append(response)
 
+        elif reqq.functionName in ('ZAPIClientService.grantEmailPermissionWithGift',
+                                   'ZAPIClientService.grantEmailPermission'):
+            # client ref.: src/Transactions/TGrantEmailPermission.as
+            response["data"] = commands.grant_email_permission(UID)
+            resps.append(response)
+
         elif reqq.functionName == 'FarmService.buyConsumablePackage':
             package_name = reqq['params'][0]
             response["data"] = commands.buy_consumable_package(UID, package_name)
