@@ -8,7 +8,8 @@ from urllib.parse import quote
 
 from engine import timestamp_now
 from bundle import VILLAGES_DIR, SAVES_DIR
-from game_settings import xp_to_level
+from game_settings import xp_to_level, get_farming_number
+from items import get_item_by_name
 from version import migrate_loaded_save
 
 __villages = {}  # ALL static neighbors
@@ -103,6 +104,15 @@ def new_village() -> str:
     village["userInfo"]["is_new"] = True
     village["userInfo"]["firstDay"] = True
     village["userInfo"]["firstDayTimestamp"] = ts_now
+    # client ref.: src/Classes/TutController.as (calcPlot), src/Classes/HarvestableResource.as (getGrowTime)
+    # The starter plots are what the first-time tutorial points at (harvest -> plow -> plant). The grown ones
+    # are planted exactly one grow time ago (ms, like Global.worldTime): ripe now, and far from the
+    # growTime * witherMultiplier (2.2) the client withers them at.
+    for obj in village["world"]["objectsArray"]:
+        if obj["className"] == "Plot" and obj["state"] == "grown":
+            grow_days = float(get_item_by_name(obj["itemName"])["growTime"])
+            grow_seconds = grow_days * get_farming_number("inGameDaySeconds") * get_farming_number("growMultiplier", 1.0)
+            obj["plantTime"] = int((ts_now - grow_seconds) * 1000)
     # Migrate it if needed
     migrate_loaded_save(village)
     # Memory saves
