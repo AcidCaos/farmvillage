@@ -1,0 +1,25 @@
+--- a/core/src/player.rs
++++ b/core/src/player.rs
+@@ -3142,6 +3142,22 @@
+         // Finalize configuration and load the movie.
+         let mut player_lock = player.lock().unwrap();
+ 
++        // FarmVillage's recovered catalog leaves millions of live AVM nodes.
++        // On wasm32, the default node-count sleep allowance and marking pace
++        // can exhaust the linear heap before collection completes. Begin sooner
++        // and perform four times the incremental work per unit of debt.
++        // Install before player globals, while the initial arena is still small.
++        #[cfg(target_family = "wasm")]
++        player_lock.gc_arena.borrow().metrics().set_pacing(gc_arena::metrics::Pacing {
++            sleep_factor: 0.05,
++            min_sleep: 256,
++            mark_factor: 0.025,
++            trace_factor: 0.1,
++            keep_factor: 0.0125,
++            drop_factor: 0.05,
++            free_factor: 0.075,
++        });
++
+         #[cfg(feature = "default_font")]
+         if self.default_font {
+             use crate::font::FontFileData;

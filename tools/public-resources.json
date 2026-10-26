@@ -1,0 +1,256 @@
+{
+  "schema": 1,
+  "upstream": {
+    "repository": "AcidCaos/farmvillage",
+    "revision": "2dc25ca24032041a8b68d299b861eb2d4d449653",
+    "files": [
+      {
+        "path": "assethash/v9/assethash.master.amf.gz",
+        "bytes": 7416629,
+        "gitBlob": "8b690064d4016fda135f543e15f9bb2f59ee641a"
+      },
+      {
+        "path": "embeds/Flash/v855097-855094/FV_Preloader.swf",
+        "bytes": 76845,
+        "gitBlob": "629b1a89f2efc7e7c90f5a6302fe85976858b372"
+      },
+      {
+        "path": "embeds/Flash/v855097-855094/FarmGame.swf",
+        "bytes": 10414942,
+        "gitBlob": "3d93631f2e0948f6984f0393f8d127077a289d31"
+      },
+      {
+        "path": "patched/FV_Preloader_mod.swf",
+        "bytes": 78412,
+        "gitBlob": "cece442ccc6885a8aa9003a7f3e18c6aae30eb8d"
+      },
+      {
+        "path": "templates/img/56ee415db138d387034b663ca4b15eca.png",
+        "bytes": 3129,
+        "gitBlob": "e7e9d0856217ee03d6b80f9067bdd5dcd17f7b17"
+      },
+      {
+        "path": "templates/img/901ef319c6b41d44a5891368dfd80931.png",
+        "bytes": 4953,
+        "gitBlob": "e3886790fb84cb44266e1cc78f85995ce6b249d8"
+      },
+      {
+        "path": "templates/img/favicon.gif",
+        "bytes": 172,
+        "gitBlob": "edec933678dff01b6d7f3a8bca6b411e6861623c"
+      },
+      {
+        "path": "templates/img/game_bar/15509e6078e7b7da47c0cd1bf5c643bd9b2ddb64.png",
+        "bytes": 14254,
+        "gitBlob": "a3f269d8f55982bc64374aaa2cf80efaf5efdad7"
+      },
+      {
+        "path": "templates/img/game_bar/2d9375ecade3323f674d30aa2060f304ff36456a.png",
+        "bytes": 1209,
+        "gitBlob": "89fcba2f405346ed08b7b2645fe0ae984cd86c7a"
+      },
+      {
+        "path": "templates/img/game_bar/8bba081e4b32e771144af4a7404209007dff7756.png",
+        "bytes": 4824,
+        "gitBlob": "ac9766cdf57cc6de84ad19eb40182af128f3a58e"
+      },
+      {
+        "path": "templates/img/game_bar/a8e4cf2a4842f3dec98ec268d66475c8173b8026.png",
+        "bytes": 3884,
+        "gitBlob": "d496982fed00e65ae1675cfaccc7273abb040325"
+      },
+      {
+        "path": "templates/img/game_bar/b1bb2f3b3104f295aa5349b78a77f8eaf5313d7c.png",
+        "bytes": 4261,
+        "gitBlob": "47c50029be5974bc76c02037862568866fec2603"
+      },
+      {
+        "path": "templates/img/game_bar/c7ae80613dbb3a1aa848ddf6fb3baea29c233ec6.png",
+        "bytes": 8150,
+        "gitBlob": "30bbcbd5afb838eb16907e9ce3fe84532a684cac"
+      },
+      {
+        "path": "templates/img/game_bar/c82d6a5be3328edc136a4f5f2ba7f3ed6228f7b4.png",
+        "bytes": 9330,
+        "gitBlob": "60ca6ad074124fd1bea379bea15ea0c2f15c0edd"
+      },
+      {
+        "path": "templates/img/game_bar/db55c5639428cd3f20f517053c60229fa4f1d78f.png",
+        "bytes": 9373,
+        "gitBlob": "aa1cd254526510b1d81e9d4c092d020d52e64c39"
+      },
+      {
+        "path": "templates/img/game_bar/ecb8d4257f9af29b38f1a10c4ccb322c4ebb2e8c.png",
+        "bytes": 2747,
+        "gitBlob": "8069a360b3fb1f93f8dd8e7885194e7db880ed4f"
+      },
+      {
+        "path": "templates/img/game_bar/fb98c926d5cb2a763cf3695fc9d774330224fca6.png",
+        "bytes": 5965,
+        "gitBlob": "0157ad4efd426a1186c5ba4c1459ef45e03b8362"
+      },
+      {
+        "path": "templates/img/logo.jpg",
+        "bytes": 32384,
+        "gitBlob": "b5eaf15ea34f2a6b867ec3ff330520316f1e86d2"
+      },
+      {
+        "path": "templates/img/profile/unk.48.png",
+        "bytes": 2108,
+        "gitBlob": "6d9a2d97546e93d3edbe192ebe1fcb66eff93e14"
+      },
+      {
+        "path": "villages/initial.json",
+        "bytes": 12799,
+        "gitBlob": "41ce69c61bbc96675fa54c2658dc879f56793c29"
+      },
+      {
+        "path": "xml/gz/v855038/items_opt.amf",
+        "bytes": 6437031,
+        "gitBlob": "a7417add02d0ddf9de12c8f867971af587b57614"
+      },
+      {
+        "path": "xml/gz/v855098/AnimalBreeding.xml.gz",
+        "bytes": 16299,
+        "gitBlob": "6c733dcce9b2a6a3fabad3c461f64ccd795acaec"
+      },
+      {
+        "path": "xml/gz/v855098/FarmConfig.swf",
+        "bytes": 2677056,
+        "gitBlob": "1150c16d694cac2e7f714a78ccd86099083ac25f"
+      },
+      {
+        "path": "xml/gz/v855098/MarketData.xml.gz",
+        "bytes": 65556,
+        "gitBlob": "fca23eda4849652d881deb60909184dd22087269"
+      },
+      {
+        "path": "xml/gz/v855098/assethash.min.amf.gz",
+        "bytes": 3770806,
+        "gitBlob": "97843c70a2b9f83bb0b76d7507e9ba77d96d9a14"
+      },
+      {
+        "path": "xml/gz/v855098/avatar.xml.gz",
+        "bytes": 24972,
+        "gitBlob": "1734a9736bba2157390472e2e7be88580f9da637"
+      },
+      {
+        "path": "xml/gz/v855098/collections.xml.gz",
+        "bytes": 5069,
+        "gitBlob": "229842d75df1cd164561ee47d6d23bb51e93e0a6"
+      },
+      {
+        "path": "xml/gz/v855098/crafting.xml.gz",
+        "bytes": 210982,
+        "gitBlob": "9881aa73d2c44c30d6af7b2e328e7eed4fee7585"
+      },
+      {
+        "path": "xml/gz/v855098/crosspromo.xml.gz",
+        "bytes": 2138,
+        "gitBlob": "b7fa09ffaf7b503aed27e065f7a0026cbc2da35d"
+      },
+      {
+        "path": "xml/gz/v855098/dialogs.xml.gz",
+        "bytes": 5047,
+        "gitBlob": "01b518330b87e5f1f2f91202699e3c1dde7c03e1"
+      },
+      {
+        "path": "xml/gz/v855098/doobers.xml.gz",
+        "bytes": 529,
+        "gitBlob": "f3d14c3d76ee086fe7bb0d468b76d634de268315"
+      },
+      {
+        "path": "xml/gz/v855098/en_US.swf",
+        "bytes": 14578999,
+        "gitBlob": "63589636be8c9917a3b3bece3948fd9a3ad9bb67"
+      },
+      {
+        "path": "xml/gz/v855098/gameSettings.xml.gz",
+        "bytes": 315627,
+        "gitBlob": "ab9521d636ab22484229b3c68b1126e624699370"
+      },
+      {
+        "path": "xml/gz/v855098/gameSettingsCMS.xml.gz",
+        "bytes": 866695,
+        "gitBlob": "92fd4497ba3cd3350396bde01427bb3522845c8e"
+      },
+      {
+        "path": "xml/gz/v855098/labBuildings.xml.gz",
+        "bytes": 1118,
+        "gitBlob": "a93026b1f8b4a7e1ed5200e556a2c60c66bc8855"
+      },
+      {
+        "path": "xml/gz/v855098/leaderboards.xml.gz",
+        "bytes": 43369,
+        "gitBlob": "16c46a538706c86ec7c106e991aabc183168a001"
+      },
+      {
+        "path": "xml/gz/v855098/postInitSequence.xml.gz",
+        "bytes": 10747,
+        "gitBlob": "51457106f7e7f6d078635d7aa909c962972d85f9"
+      },
+      {
+        "path": "xml/gz/v855098/questSettings_0.xml.gz",
+        "bytes": 394340,
+        "gitBlob": "1f32ec6f41148dffe79a4d63fe0722278561af1c"
+      },
+      {
+        "path": "xml/gz/v855098/storageConfig.amf.gz",
+        "bytes": 401624,
+        "gitBlob": "b4b7751e711ccea5db3d681e2df29f20d21cd4ca"
+      },
+      {
+        "path": "xml/gz/v855098/terrain.xml.gz",
+        "bytes": 1086,
+        "gitBlob": "2dc532923ffab977d40e552474f5d501b261baaf"
+      },
+      {
+        "path": "xml/gz/v855098/worldScore.amf.gz",
+        "bytes": 68642,
+        "gitBlob": "93199e8ab070738312362ba4721880029b8d6d29"
+      },
+      {
+        "path": "xml/gz/v855098/worldSettings.xml.gz",
+        "bytes": 26745,
+        "gitBlob": "f708fe8cf6590064524e24dfb0b56b6ed3bc52cc"
+      },
+      {
+        "path": "xml/gz/v855098/yimf.xml.gz",
+        "bytes": 3135,
+        "gitBlob": "d423d07c65f3bb9b4cfccb1e81fee456b8d5548d"
+      },
+      {
+        "path": "xml/gz/v855098/zapcampaign.xml.gz",
+        "bytes": 300,
+        "gitBlob": "fb4a8e22eaa5148edf1711ba715d31da225ecc49"
+      }
+    ]
+  },
+  "archiveBase": "https://archive.org/download/original-farmville/",
+  "archives": [
+    {
+      "name": "urls-bluepload.unstable.life-farmvilleassets.txt-shallow-20201225-045045-5762m-00000.warc.gz",
+      "bytes": 5368746335,
+      "md5": "d9a36e44e5361e3db6ce1457f74ddf89",
+      "sha1": "11e51509b048d56e358e5e4c572e201e6f7e5356"
+    },
+    {
+      "name": "urls-bluepload.unstable.life-farmvilleassets.txt-shallow-20201225-045045-5762m-00001.warc.gz",
+      "bytes": 5368752844,
+      "md5": "54a8d13a5dfe0b12b5a3e17e39167a1e",
+      "sha1": "d8943deab371e5c0abea8407c6172ec644459c3d"
+    },
+    {
+      "name": "urls-bluepload.unstable.life-farmvilleassets.txt-shallow-20201225-045045-5762m-00002.warc.gz",
+      "bytes": 5368737099,
+      "md5": "04938bcbc6585858f88962e9af6232b1",
+      "sha1": "2ddf7bddc9a9b7a58d2df86d5c5d7a81017e7c3a"
+    },
+    {
+      "name": "urls-bluepload.unstable.life-farmvilleassets.txt-shallow-20201225-045045-5762m-00003.warc.gz",
+      "bytes": 3019875117,
+      "md5": "4bb8d8f949f2ecfdab395cd35c9a47e6",
+      "sha1": "d6f275f7a6377398247d9a63c3206d773c061b22"
+    }
+  ]
+}

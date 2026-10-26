@@ -1,0 +1,53 @@
+{
+  "build": {
+    "features": [
+      "upstream web defaults",
+      "jpegxr"
+    ],
+    "llvm": "23.1.1",
+    "node": "24.19.0",
+    "npm": "11.0.0",
+    "profiles": [
+      "web-wasm-extensions",
+      "web-wasm-mvp"
+    ],
+    "rust": "1.99.1",
+    "rust_commit": "58cf8f9c35b355199727627d07ae34a4e2846d67",
+    "target": "wasm32-unknown-unknown",
+    "version_seal_sha256": "e31f5d3d95f93dc508f2921263917950907ca616a16f63ba7fbb0a6656f4db5a",
+    "wasm_bindgen": "0.2.127",
+    "wasm_opt": false
+  },
+  "cargo_lock_sha256": "c63981977750d740c24a70fdd1582f9f4b40f9bb8bf18fd8ed2790e576628e0d",
+  "channel": "farmvillage",
+  "distribution_version": "0.7.1-farmvillage-gc1",
+  "files": {
+    "50c5ac40cece24645a25.wasm": "ede8abc7e3ab46c3577ebcb26ca7fa6100166f8d17f7dde57812733e10c851ab",
+    "LICENSE_APACHE": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+    "LICENSE_MIT": "4de9338a7879c68e911742a7d691f0797ff1ef8d8a6fb978b0c711e258fe959c",
+    "README.md": "cdbeefd04e27a2fe80f735210fa4c054e376802eb43a16d9b6eeae78500f2bde",
+    "core.ruffle.111f79d1d37e42b33f83.js": "96c1c46808cb9078aade04d9a65f16d1f7fbe474d3ed2bd984a4c7bba221744a",
+    "core.ruffle.111f79d1d37e42b33f83.js.map": "19a4449f0b07d70b585353bd2c7fd5d192138dfc1a9229dda2d884e350e54b0e",
+    "core.ruffle.96e20794604c98ade13f.js": "daa5189d74406cebe8a0d0642c9ada9f441efc2999e73b471be94a98dfa4c226",
+    "core.ruffle.96e20794604c98ade13f.js.map": "9ccef75f032b63091984503c57a7281ffecc7b1de416a89f2e36f9f841232893",
+    "e2ef7129cd00c9f192fd.wasm": "ad97d01729ed1f009da0ac3ad0a180a63e1b5820561223000d686ebc10c3a37a",
+    "package.json": "26e5620b5034aa28885f5bea1381a16cea21602024e12d1fec51c9c55c731d97",
+    "provenance/Cargo.lock": "c63981977750d740c24a70fdd1582f9f4b40f9bb8bf18fd8ed2790e576628e0d",
+    "provenance/README.md": "b2e67db750f0f34f1007a6762286e5b66afbb24c8c347f435f3306467ed557df",
+    "provenance/build-review.json": "ebd3ab7bcd9248b016dbe6ed941bd3615e09184955f1a39f0d868c1b0f03bd0b",
+    "provenance/build-runtime.py": "83e333c908de4035da03cf5798414547a479e98f6e6089967f2f6fdd81100f94",
+    "provenance/gc-pacing.patch": "502ad9492deb3b5904d1b09c535ec521345b86b17b8db16145de862046515d14",
+    "provenance/package-lock.json": "fff432c1cd6a43c1b907dca1ebe438d38f28748368060cd1769bb9cb5bf05147",
+    "provenance/runtime-files.json": "dbf47a0423d55d36e2201099f4922f9a4fe03417fc39c75809d14099f25f2e4c",
+    "provenance/validation.json": "7b286b2870f02447011329fa9b1cf720ea97a4aad16d4708bdc23585413b1c7e",
+    "provenance/version-seal.json": "e31f5d3d95f93dc508f2921263917950907ca616a16f63ba7fbb0a6656f4db5a",
+    "ruffle.js": "24a3ab197c7a42cd8333a6a8e20ce91d4204a62d752738ea9a48d0c159c4f428",
+    "ruffle.js.map": "c328bef50fbeabcecc51346583f6cd78cbd26a77fe5459f82257f04e73253a4b"
+  },
+  "npm_lock_sha256": "fff432c1cd6a43c1b907dca1ebe438d38f28748368060cd1769bb9cb5bf05147",
+  "runtime_id": "0.7.1-farmvillage-gc1",
+  "schema": 1,
+  "source_patch_sha256": "502ad9492deb3b5904d1b09c535ec521345b86b17b8db16145de862046515d14",
+  "upstream_commit": "89a7049965f3090e706265670df309a5128233ac",
+  "version": "0.7.1"
+}

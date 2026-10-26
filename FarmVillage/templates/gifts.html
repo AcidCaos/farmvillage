@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Free Gifts · FarmVille</title>
+  <style>
+    body { margin:0; color:#453622; background:#c7e8a1; font:17px/1.5 -apple-system,BlinkMacSystemFont,sans-serif; }
+    main { max-width:800px; margin:36px auto; padding:32px; border:7px solid #916139; border-radius:18px; background:#fff9df; box-shadow:0 12px 35px #35551c30; }
+    .logo { width:210px; max-width:80%; border-radius:10px; }
+    h1 { color:#486e29; margin:20px 0 8px; }
+    fieldset { border:0; padding:0; margin:24px 0; }
+    legend { font-weight:700; margin-bottom:12px; }
+    .basket { display:flex; flex-wrap:wrap; gap:12px; }
+    .gift { display:grid; gap:8px; padding:14px; min-width:100px; border:2px solid #b7c78d; border-radius:12px; text-align:center; background:#fffdf2; cursor:pointer; }
+    .gift:has(input:checked) { background:#e2f2c4; border-color:#527e2c; }
+    .gift img { width:70px; height:70px; object-fit:contain; margin:auto; }
+    .friend { display:block; padding:10px 0; }
+    button, .return { display:inline-block; border:0; border-radius:10px; padding:12px 20px; font:inherit; font-weight:650; cursor:pointer; }
+    button { background:#568230; color:white; }
+    .return { color:#456725; background:#edf0d4; text-decoration:none; }
+    .notice { background:#e7f4cc; border-left:5px solid #659338; padding:14px; }
+    @media(max-width:700px) { main { margin:12px; padding:20px; } }
+  </style>
+</head>
+<body><main>
+  <img class="logo" src="/img/logo.jpg" alt="FarmVille">
+  <h1>A little something for a neighbour</h1>
+  <p>Send a familiar farmyard friend to another local farm. Gifts wait patiently until your neighbour comes home.</p>
+  {% if message %}<p class="notice" role="status">{{ message }}</p>{% endif %}
+  {% if friends %}
+  <form method="post">
+    <input type="hidden" name="token" value="{{ token }}">
+    <fieldset><legend>Choose a free gift</legend><div class="basket">
+      {% for gift in gifts %}<label class="gift">
+        {% for image in gift.image if image.name == 'icon' %}<img src="/{{ image.url }}" alt="">{% endfor %}
+        <span>{{ gift.name|capitalize }}</span><input type="radio" name="item" value="{{ gift.name }}" {% if loop.first %}checked{% endif %} required>
+      </label>{% endfor %}
+    </div></fieldset>
+    <fieldset><legend>Choose your neighbours</legend>
+      {% for friend in friends %}<label class="friend"><input type="checkbox" name="recipients" value="{{ friend.uid }}"> {{ friend.name }}</label>{% endfor %}
+    </fieldset>
+    <button type="submit">Send a gift</button>
+    <a class="return" href="{{ play_url }}">Back to the farm</a>
+  </form>
+  {% else %}
+    <p>There are no other local player farms yet. Create another farm from the welcome screen to exchange gifts. Archived display farms can be visited.</p>
+    <a class="return" href="{{ play_url }}">Back to the farm</a>
+  {% endif %}
+</main></body>
+</html>

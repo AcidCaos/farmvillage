@@ -1,0 +1,289 @@
+{
+  "schema": 1,
+  "decision": "Owner dropped Enchanted Glen and Holiday Lights; current release is clean-start16 worlds. Source contracts are retained for explicit future work, not silently reactivated by release tests.",
+  "retiredWorlds": [
+    "glen",
+    "hlights"
+  ],
+  "sourceFiles": {
+    "test_glen_candidate.py": "935f3d038ab7f2d89383d1b017f6bcd637326ee9dfc46f28eb90a49c593f8d50",
+    "test_glen_harvest_score_projection.py": "0eb250a78e5b6ae7a56d51f28ac8f2b92a60f4f3ff383146aad8cc5fa41fc05e",
+    "test_session_b_hlights.py": "9da2f788ecbce5cee8e7372265b8ed8c052e266ef082365e837c0c01c5d0b8da",
+    "test_themed_worlds.py": "732fa1c4800b4cd0dfeff70595db0b6596e298b7d0ab1c2991ab939e9a63fa82"
+  },
+  "excludedCases": [
+    {
+      "id": "test_glen_candidate.GlenContractTests.test_all_thirtysix_expansion_objects_recorded_and_land_fenced",
+      "world": "glen",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_glen_candidate.GlenContractTests.test_derived_harvest_projection_only_removes_exact_original_pixie_reward",
+      "world": "glen",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_glen_candidate.GlenContractTests.test_exact_omissions_disclosed_theme_and_source_inventory",
+      "world": "glen",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_glen_candidate.GlenContractTests.test_exact_one_pixie_task_and_beat_fence_preserve_other_tracks",
+      "world": "glen",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_glen_candidate.GlenContractTests.test_imported_inventory_claims_remain_unchanged_on_rejection",
+      "world": "glen",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_glen_candidate.GlenContractTests.test_normalizing_missing_archive_fields_rejects_drift",
+      "world": "glen",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_glen_candidate.GlenContractTests.test_ordinary_catalog_is_twelve_seeds_two_decorations_and_thirtytwo_storage_buildings",
+      "world": "glen",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_glen_candidate.GlenContractTests.test_real_client_catalog_pipeline_preserves_server_records_and_source_bytes",
+      "world": "glen",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_glen_candidate.GlenGatewayTests.test_first_action_instant_grow_costs_four_cash_once_and_reloads",
+      "world": "glen",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_glen_candidate.GlenGatewayTests.test_paid_plow_plant_grow_harvest_replow_and_retry_survive_disk_and_travel",
+      "world": "glen",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_glen_candidate.GlenGatewayTests.test_paid_storage_deposit_disk_reload_roundtrip_withdraw_move_sale",
+      "world": "glen",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_glen_candidate.GlenGatewayTests.test_zero_capacity_cross_world_and_unsupported_actions_preserve_state_and_disk",
+      "world": "glen",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_glen_harvest_score_projection.GlenHarvestScoreProjectionTests.test_absent_glen_spec_is_a_noop_even_for_malformed_reward",
+      "world": "glen",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_glen_harvest_score_projection.GlenHarvestScoreProjectionTests.test_every_reward_field_drift_and_extra_fields_fail_without_mutation",
+      "world": "glen",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_glen_harvest_score_projection.GlenHarvestScoreProjectionTests.test_exact_twelve_raw_records_and_original_reward_shapes",
+      "world": "glen",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_glen_harvest_score_projection.GlenHarvestScoreProjectionTests.test_home_other_worlds_and_unknown_seed_names_keep_all_rewards",
+      "world": "glen",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_glen_harvest_score_projection.GlenHarvestScoreProjectionTests.test_missing_reward_fields_and_nonmapping_rewards_fail_without_mutation",
+      "world": "glen",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_glen_harvest_score_projection.GlenHarvestScoreProjectionTests.test_only_harvest_yield_is_removed_from_copied_records",
+      "world": "glen",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_glen_harvest_score_projection.GlenHarvestScoreProjectionTests.test_projection_is_idempotent_and_missing_reward_keeps_object_identity",
+      "world": "glen",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_glen_harvest_score_projection.GlenHarvestScoreProjectionTests.test_wrong_type_and_mixed_world_owners_fail_without_mutation",
+      "world": "glen",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_session_b_hlights.HlightsContractTests.test_exact_score_and_beat_presentation_projection",
+      "world": "hlights",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_session_b_hlights.HlightsContractTests.test_other_world_claims_and_orphan_ledgers_are_preserved_on_rejection",
+      "world": "hlights",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_session_b_hlights.HlightsContractTests.test_xml_drift_does_not_silently_normalize_conflicting_storage",
+      "world": "hlights",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_session_b_hlights.HlightsContractTests.test_xml_storage_conflict_and_disclosed_bounded_record",
+      "world": "hlights",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_session_b_hlights.HlightsGatewayTests.test_crop_first_action_after_reload_instant_grow_harvest_and_replow",
+      "world": "hlights",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_session_b_hlights.HlightsGatewayTests.test_empty_inventory_has_no_assumed_capacity",
+      "world": "hlights",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_session_b_hlights.HlightsGatewayTests.test_purchase_store_disk_reload_home_roundtrip_and_withdraw",
+      "world": "hlights",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_themed_worlds.ActivatedGlenTests.test_all_access_is_free_idempotent_and_survives_reload",
+      "world": "glen",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_themed_worlds.ActivatedGlenTests.test_decoration_is_placed_with_its_catalog_class_and_charged_once",
+      "world": "glen",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_themed_worlds.ActivatedGlenTests.test_expansion_past_the_initial_farm_is_refused_without_charge",
+      "world": "glen",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_themed_worlds.ActivatedGlenTests.test_incoming_special_plots_are_rejected_before_they_can_poison_the_save",
+      "world": "glen",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_themed_worlds.ActivatedGlenTests.test_placement_retry_is_free_and_never_recharged",
+      "world": "glen",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_themed_worlds.ActivatedGlenTests.test_plow_costs_home_rate_coins_once_and_retries_free",
+      "world": "glen",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_themed_worlds.ActivatedGlenTests.test_purchase_guard_rejects_unpaid_or_short_balance_without_debit",
+      "world": "glen",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_themed_worlds.ActivatedGlenTests.test_quest_score_and_currency_offers_are_rejected",
+      "world": "glen",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_themed_worlds.ActivatedGlenTests.test_rejections_leave_the_save_unchanged",
+      "world": "glen",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_themed_worlds.ActivatedGlenTests.test_seed_allow_list_bounds_and_single_purchase_charge",
+      "world": "glen",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_themed_worlds.ActivatedGlenTests.test_snapshot_guard_rejects_special_objects_and_wrong_tileset",
+      "world": "glen",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_themed_worlds.ActivatedGlenTests.test_travel_round_trip_and_reload",
+      "world": "glen",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_themed_worlds.ActivatedHlightsTests.test_all_access_is_free_idempotent_and_survives_reload",
+      "world": "hlights",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_themed_worlds.ActivatedHlightsTests.test_decoration_is_placed_with_its_catalog_class_and_charged_once",
+      "world": "hlights",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_themed_worlds.ActivatedHlightsTests.test_expansion_past_the_initial_farm_is_refused_without_charge",
+      "world": "hlights",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_themed_worlds.ActivatedHlightsTests.test_incoming_special_plots_are_rejected_before_they_can_poison_the_save",
+      "world": "hlights",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_themed_worlds.ActivatedHlightsTests.test_placement_retry_is_free_and_never_recharged",
+      "world": "hlights",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_themed_worlds.ActivatedHlightsTests.test_plow_costs_home_rate_coins_once_and_retries_free",
+      "world": "hlights",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_themed_worlds.ActivatedHlightsTests.test_purchase_guard_rejects_unpaid_or_short_balance_without_debit",
+      "world": "hlights",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_themed_worlds.ActivatedHlightsTests.test_quest_score_and_currency_offers_are_rejected",
+      "world": "hlights",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_themed_worlds.ActivatedHlightsTests.test_rejections_leave_the_save_unchanged",
+      "world": "hlights",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_themed_worlds.ActivatedHlightsTests.test_seed_allow_list_bounds_and_single_purchase_charge",
+      "world": "hlights",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_themed_worlds.ActivatedHlightsTests.test_snapshot_guard_rejects_special_objects_and_wrong_tileset",
+      "world": "hlights",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    },
+    {
+      "id": "test_themed_worlds.ActivatedHlightsTests.test_travel_round_trip_and_reload",
+      "world": "hlights",
+      "reason": "Archived dropped-world contract/play case; not an active16 release requirement."
+    }
+  ],
+  "activeWorlds": [
+    "atlantis",
+    "australia",
+    "candy",
+    "england",
+    "farm",
+    "fforest",
+    "fisherman",
+    "htown",
+    "meadows",
+    "mediterranean",
+    "oasis",
+    "oz",
+    "rainforest",
+    "sleepyhollow",
+    "storybook",
+    "toyland"
+  ]
+}

@@ -1,0 +1,203 @@
+// !$*UTF8*$!
+{
+    archiveVersion = 1;
+    classes = {};
+    objectVersion = 56;
+    objects = {
+/* Begin PBXBuildFile section */
+        F10000000000000000000001 = {isa = PBXBuildFile; fileRef = F20000000000000000000001; };
+        F10000000000000000000002 = {isa = PBXBuildFile; fileRef = F20000000000000000000002; };
+        F10000000000000000000003 = {isa = PBXBuildFile; fileRef = F20000000000000000000003; };
+        F10000000000000000000004 = {isa = PBXBuildFile; fileRef = F20000000000000000000004; };
+        F10000000000000000000005 = {isa = PBXBuildFile; fileRef = F20000000000000000000005; };
+        F10000000000000000000006 = {isa = PBXBuildFile; fileRef = F2000000000000000000000C; };
+        F10000000000000000000007 = {isa = PBXBuildFile; fileRef = F2000000000000000000000D; };
+        F10000000000000000000008 = {isa = PBXBuildFile; fileRef = F2000000000000000000000E; };
+/* End PBXBuildFile section */
+/* Begin PBXFileReference section */
+        F20000000000000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FarmVillageApp.swift; sourceTree = "<group>"; };
+        F20000000000000000000002 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuntimeController.swift; sourceTree = "<group>"; };
+        F20000000000000000000003 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameWebView.swift; sourceTree = "<group>"; };
+        F20000000000000000000004 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+        F20000000000000000000005 = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = FARMVILLAGE_NATIVE_ASSET_ROOT; };
+        F20000000000000000000006 = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+        F20000000000000000000007 = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FarmVillage.app; sourceTree = BUILT_PRODUCTS_DIR; };
+        F20000000000000000000008 = {isa = PBXFileReference; lastKnownFileType = folder; path = Scripts; sourceTree = "<group>"; };
+        F20000000000000000000009 = {isa = PBXFileReference; lastKnownFileType = folder; path = Runtime; sourceTree = "<group>"; };
+        F2000000000000000000000A = {isa = PBXFileReference; lastKnownFileType = folder; path = Documentation; sourceTree = "<group>"; };
+        F2000000000000000000000B = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+        F2000000000000000000000C = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LauncherLibrary.swift; sourceTree = "<group>"; };
+        F2000000000000000000000D = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeritageTheme.swift; sourceTree = "<group>"; };
+        F2000000000000000000000E = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeritageAudio.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+/* Begin PBXFrameworksBuildPhase section */
+        F40000000000000000000001 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXFrameworksBuildPhase section */
+/* Begin PBXGroup section */
+        F50000000000000000000001 = {
+            isa = PBXGroup;
+            children = (F50000000000000000000002, F50000000000000000000003, F20000000000000000000008, F20000000000000000000009, F2000000000000000000000A, F2000000000000000000000B, F50000000000000000000004,);
+            sourceTree = "<group>";
+        };
+        F50000000000000000000002 = {
+            isa = PBXGroup;
+            children = (F20000000000000000000001, F20000000000000000000002, F20000000000000000000003, F20000000000000000000004, F2000000000000000000000C, F2000000000000000000000D, F2000000000000000000000E,);
+            path = Sources;
+            sourceTree = "<group>";
+        };
+        F50000000000000000000003 = {
+            isa = PBXGroup;
+            children = (F20000000000000000000005, F20000000000000000000006,);
+            path = Resources;
+            sourceTree = "<group>";
+        };
+        F50000000000000000000004 = {
+            isa = PBXGroup;
+            children = (F20000000000000000000007,);
+            name = Products;
+            sourceTree = "<group>";
+        };
+/* End PBXGroup section */
+/* Begin PBXNativeTarget section */
+        F60000000000000000000001 = {
+            isa = PBXNativeTarget;
+            buildConfigurationList = F90000000000000000000002;
+            buildPhases = (F40000000000000000000002, F40000000000000000000001, F40000000000000000000003, F40000000000000000000004,);
+            buildRules = ();
+            dependencies = ();
+            name = FarmVillage;
+            productName = FarmVillage;
+            productReference = F20000000000000000000007;
+            productType = "com.apple.product-type.application";
+        };
+/* End PBXNativeTarget section */
+/* Begin PBXProject section */
+        F70000000000000000000001 = {
+            isa = PBXProject;
+            attributes = {BuildIndependentTargetsInParallel = YES; LastSwiftUpdateCheck = 1500; LastUpgradeCheck = 1500; TargetAttributes = {F60000000000000000000001 = {CreatedOnToolsVersion = 15.0; }; }; };
+            buildConfigurationList = F90000000000000000000001;
+            compatibilityVersion = "Xcode 14.0";
+            developmentRegion = en;
+            hasScannedForEncodings = 0;
+            knownRegions = (en, Base,);
+            mainGroup = F50000000000000000000001;
+            productRefGroup = F50000000000000000000004;
+            projectDirPath = "";
+            projectRoot = "";
+            targets = (F60000000000000000000001,);
+        };
+/* End PBXProject section */
+/* Begin PBXResourcesBuildPhase section */
+        F40000000000000000000003 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (F10000000000000000000005,); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXResourcesBuildPhase section */
+/* Begin PBXShellScriptBuildPhase section */
+        F40000000000000000000004 = {
+            isa = PBXShellScriptBuildPhase;
+            alwaysOutOfDate = 1;
+            buildActionMask = 2147483647;
+            files = ();
+            inputPaths = ();
+            name = "Bundle FarmVillage server and launcher";
+            outputPaths = ();
+            runOnlyForDeploymentPostprocessing = 0;
+            shellPath = /bin/bash;
+            shellScript = "\"${SRCROOT}/Scripts/bundle-runtime.sh\"\n";
+        };
+/* End PBXShellScriptBuildPhase section */
+/* Begin PBXSourcesBuildPhase section */
+        F40000000000000000000002 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (F10000000000000000000001, F10000000000000000000002, F10000000000000000000003, F10000000000000000000004, F10000000000000000000006, F10000000000000000000007, F10000000000000000000008,); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXSourcesBuildPhase section */
+/* Begin XCBuildConfiguration section */
+        F80000000000000000000001 = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                CLANG_ENABLE_MODULES = YES;
+                CLANG_ENABLE_OBJC_ARC = YES;
+                DEBUG_INFORMATION_FORMAT = dwarf;
+                GCC_C_LANGUAGE_STANDARD = gnu17;
+                GCC_OPTIMIZATION_LEVEL = 0;
+                MACOSX_DEPLOYMENT_TARGET = 14.0;
+                ONLY_ACTIVE_ARCH = YES;
+                SDKROOT = macosx;
+                SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+                SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+            };
+            name = Debug;
+        };
+        F80000000000000000000002 = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                CLANG_ENABLE_MODULES = YES;
+                CLANG_ENABLE_OBJC_ARC = YES;
+                DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+                GCC_C_LANGUAGE_STANDARD = gnu17;
+                MACOSX_DEPLOYMENT_TARGET = 14.0;
+                ONLY_ACTIVE_ARCH = NO;
+                SDKROOT = macosx;
+                SWIFT_COMPILATION_MODE = wholemodule;
+                SWIFT_OPTIMIZATION_LEVEL = "-O";
+            };
+            name = Release;
+        };
+        F80000000000000000000003 = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+                CODE_SIGNING_ALLOWED = NO;
+                CODE_SIGN_STYLE = Manual;
+                COMBINE_HIDPI_IMAGES = YES;
+                CURRENT_PROJECT_VERSION = 1;
+                DEVELOPMENT_TEAM = "";
+                ENABLE_APP_SANDBOX = NO;
+                ENABLE_HARDENED_RUNTIME = NO;
+                ENABLE_USER_SCRIPT_SANDBOXING = NO;
+                GENERATE_INFOPLIST_FILE = NO;
+                FARMVILLAGE_NATIVE_ASSET_ROOT = "$(SRCROOT)/Resources";
+                FARMVILLAGE_PUBLIC_RESOURCES = "";
+                FARMVILLAGE_RESOURCE_PYTHON = /usr/bin/python3;
+                INFOPLIST_FILE = Resources/Info.plist;
+                LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/../Frameworks",);
+                MARKETING_VERSION = 0.1.0;
+                PRODUCT_BUNDLE_IDENTIFIER = org.farmvillage.macos;
+                PRODUCT_NAME = "$(TARGET_NAME)";
+                SWIFT_EMIT_LOC_STRINGS = NO;
+                SWIFT_STRICT_CONCURRENCY = complete;
+                SWIFT_VERSION = 5.0;
+            };
+            name = Debug;
+        };
+        F80000000000000000000004 = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+                CODE_SIGNING_ALLOWED = NO;
+                CODE_SIGN_STYLE = Manual;
+                COMBINE_HIDPI_IMAGES = YES;
+                CURRENT_PROJECT_VERSION = 1;
+                DEVELOPMENT_TEAM = "";
+                ENABLE_APP_SANDBOX = NO;
+                ENABLE_HARDENED_RUNTIME = NO;
+                ENABLE_USER_SCRIPT_SANDBOXING = NO;
+                GENERATE_INFOPLIST_FILE = NO;
+                FARMVILLAGE_NATIVE_ASSET_ROOT = "$(SRCROOT)/Resources";
+                FARMVILLAGE_PUBLIC_RESOURCES = "";
+                FARMVILLAGE_RESOURCE_PYTHON = /usr/bin/python3;
+                INFOPLIST_FILE = Resources/Info.plist;
+                LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/../Frameworks",);
+                MARKETING_VERSION = 0.1.0;
+                PRODUCT_BUNDLE_IDENTIFIER = org.farmvillage.macos;
+                PRODUCT_NAME = "$(TARGET_NAME)";
+                SWIFT_EMIT_LOC_STRINGS = NO;
+                SWIFT_STRICT_CONCURRENCY = complete;
+                SWIFT_VERSION = 5.0;
+            };
+            name = Release;
+        };
+/* End XCBuildConfiguration section */
+/* Begin XCConfigurationList section */
+        F90000000000000000000001 = {isa = XCConfigurationList; buildConfigurations = (F80000000000000000000001, F80000000000000000000002,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+        F90000000000000000000002 = {isa = XCConfigurationList; buildConfigurations = (F80000000000000000000003, F80000000000000000000004,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+/* End XCConfigurationList section */
+    };
+    rootObject = F70000000000000000000001;
+}
