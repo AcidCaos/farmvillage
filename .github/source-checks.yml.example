@@ -1,0 +1,33 @@
+# DISABLED EXAMPLE. GitHub runs only files inside .github/workflows/, so this file
+# does nothing where it is. To turn it on, copy it to
+# .github/workflows/source-checks.yml in a separate, reviewed change.
+name: Source-only checks
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  synthetic-regressions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      # One staging test runs a macOS script that calls /usr/bin/rsync. Without it that
+      # test is reported as UNRUN instead of passing.
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends rsync
+      # pytest is only needed by the conftest.py hook test, which is skipped without it.
+      - run: python -m pip install -r FarmVillage/requirements.txt pytest
+      - run: python -B tools/check-source.py --for-publication --tests
+# No original files, credentials, game server or private build artifacts are
+# downloaded, requested or uploaded by this workflow. A future green workflow
+# is Linux source/synthetic evidence, separate from graphics/gameplay acceptance.
+
+# The README asks for Python 3.10 or newer. The gate was run on 3.11, 3.12 and 3.13;
+# 3.10 has not been run (UNRUN). Add it to a matrix only after running it.
+
+# Action majors verified against their official READMEs on 2026-10-25:
+# https://github.com/actions/checkout
+# https://github.com/actions/setup-python

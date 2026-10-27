@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#8ecfe7">
+  <title>Your farms · FarmVille</title>
+  <link rel="icon" href="/img/favicon.gif">
+  <link rel="stylesheet" href="/css/farm-gate.css">
+</head>
+<body class="farm-gate">
+<div class="gate-scenery" aria-hidden="true"></div>
+<main class="gate-shell farms-shell gate-panel">
+  <div class="farms-header">
+    <img src="/img/farm-gate/logo.png" alt="FarmVille" width="473" height="131">
+    <div class="farms-balance"><b>{{ cash|int }}</b><span>Farm Cash</span></div>
+  </div>
+  <div class="farms-heading">
+    <div>
+      <p class="gate-eyebrow">Your little corner of the world</p>
+      <h1>Your farms</h1>
+      <p>A familiar home, and a little more room to grow.</p>
+    </div>
+    <img src="/img/farm-gate/farmyard.png" alt="" width="1536" height="1024" aria-hidden="true">
+  </div>
+  {% if error %}<p class="gate-notice" role="alert">{{ error }}</p>{% endif %}
+  <div class="farms-list">
+  {% for farm in farms %}
+  <section class="farm-card{% if farm.current %} farm-card-current{% endif %}">
+    <h2>{{ farm.name }}</h2>
+    {% if farm.current %}<p class="farm-current">Your current farm</p>{% endif %}
+    <form method="post">
+      <input type="hidden" name="token" value="{{ token }}">
+      <input type="hidden" name="action" value="visit">
+      <input type="hidden" name="world" value="{{ farm.worldType }}">
+      <button class="gate-button" type="submit">{{ 'Continue farming' if farm.current else 'Visit farm' }} <span aria-hidden="true">→</span></button>
+    </form>
+  </section>
+  {% endfor %}
+  {% for farm in candidates if not farm.owned %}
+  <section class="farm-card">
+    <h2>{{ farm.name }}</h2>
+    <p>More space for classic farming and decorating. Level {{ farm.minimumLevel }} required.</p>
+    <p>{{ farm.reward }}</p>
+    <form method="post">
+      <input type="hidden" name="token" value="{{ token }}">
+      <input type="hidden" name="action" value="purchase">
+      <input type="hidden" name="world" value="{{ farm.worldType }}">
+      <input type="hidden" name="option" value="{{ farm.option }}">
+      <button class="gate-button" type="submit">Add farm · {% if farm.cashCost %}{{ farm.cashCost }} Farm Cash{% else %}Free{% endif %}</button>
+    </form>
+    <small>{{ farm.starter }} {{ farm.shipping }}</small>
+  </section>
+  {% endfor %}
+  </div>
+  <a class="gate-secondary farms-back" href="/">← Back to the farm gate</a>
+</main>
+<footer class="gate-footer">By the Farm Village team · {{ version }}</footer>
+</body>
+</html>

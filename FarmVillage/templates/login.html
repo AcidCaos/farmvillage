@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta name="theme-color" content="#8ecfe7"/>
+        <title>Welcome home · FarmVille</title>
+        <link rel="shortcut icon" href="img/favicon.gif"/>
+        <link rel="icon" type="image/gif" href="img/favicon.gif"/>
+        <link rel="stylesheet" href="css/farm-gate.css"/>
+    </head>
+    <body class="farm-gate">
+        <div class="gate-scenery" aria-hidden="true"></div>
+        <main class="gate-shell">
+            <section class="gate-welcome" aria-labelledby="welcome-title">
+                <div class="gate-logo"><img src="img/farm-gate/logo.png" alt="FarmVille" width="474" height="131"/></div>
+                <p class="gate-eyebrow">Good days grow here</p>
+                <h1 id="welcome-title">Welcome home,<br/> farmer.</h1>
+                <p class="gate-intro">Sun on your fields. Friends at the fence.<br/> All the little things you missed.</p>
+                <div class="gate-farm-art" aria-hidden="true">
+                    <div class="gate-grass"></div>
+                    <img class="gate-art-redrawn" src="img/farm-gate/farmyard.png" alt="" width="1536" height="1024">
+                </div>
+            </section>
+            <section class="gate-content gate-panel" aria-labelledby="gate-title">
+                {% if game_error %}
+                <p class="gate-notice" role="alert">The game hit a problem and returned you to the farm gate. Your farm was saved.</p>
+                {% endif %}
+                {% if saves_info %}
+                <p class="gate-eyebrow">Your little corner of the world</p>
+                <h2 id="gate-title">Let’s head to the farm.</h2>
+                <p class="gate-description">The chickens have been expecting you.</p>
+                <form method="post" class="gate-form">
+                    <label for="UID">Select your village</label>
+                    <select id="UID" name="UID" required>
+                        {% for save in saves_info %}
+                        <option value="{{save.uid}}" title="{{save.uid}}">{{save.name}} ({{save.xp}} xp)</option>
+                        {% endfor %}
+                    </select>
+                    <button class="gate-button" type="submit">Play FarmVille <span aria-hidden="true">&#8594;</span></button>
+                    <button class="gate-farms-button" type="submit" name="destination" value="farms">Your farms <span aria-hidden="true">&#8594;</span></button>
+                    <details class="gate-options">
+                        <summary>Game options</summary>
+                        <div class="gate-options-content">
+                            <label for="GAMEVERSION">Game version</label>
+                            <select id="GAMEVERSION" name="GAMEVERSION" required>
+                                <option value="v855097-855094" title="v855097-855094">v855097-855094 (Latest)</option>
+                            </select>
+                            {% if native_wrapper %}
+                            <input type="hidden" name="RUFFLE" value="1">
+                            <p class="gate-player-note">Local Ruffle player <span>(Experimental)</span></p>
+                            {% else %}
+                            <label class="gate-checkbox" for="RUFFLE">
+                                <input type="checkbox" id="RUFFLE" name="RUFFLE" checked aria-describedby="ruffle-help">
+                                <span>Use Ruffle <span class="gate-muted">(Experimental)</span></span>
+                            </label>
+                            <p class="gate-help" id="ruffle-help">Play without Flash Player. Some parts of the game may not work yet.</p>
+                            {% endif %}
+                        </div>
+                    </details>
+                </form>
+                <div class="gate-divider"><span>A fresh start?</span></div>
+                <a class="gate-secondary" href="/new.html">Create a new village <span aria-hidden="true">&#8594;</span></a>
+                {% else %}
+                <p class="gate-eyebrow">Every farm begins somewhere</p>
+                <h2 id="gate-title">Your first harvest awaits.</h2>
+                <p class="gate-description">Start a village of your own and settle into life on the farm.</p>
+                <a class="gate-button" href="/new.html">Create a new village <span aria-hidden="true">&#8594;</span></a>
+                <p class="gate-help gate-empty-note">A fresh patch of possibility, just for you.</p>
+                {% endif %}
+            </section>
+        </main>
+        <footer class="gate-footer">By the Farm Village team <span aria-hidden="true">&middot;</span> {{version}}</footer>
+    </body>
+</html>

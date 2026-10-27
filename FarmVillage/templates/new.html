@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta name="theme-color" content="#8ecfe7"/>
+        <title>A fresh start · FarmVille</title>
+        <link rel="shortcut icon" href="img/favicon.gif"/>
+        <link rel="icon" type="image/gif" href="img/favicon.gif"/>
+        <link rel="stylesheet" href="css/farm-gate.css"/>
+    </head>
+    <body class="farm-gate">
+        <div class="gate-scenery" aria-hidden="true"></div>
+        <main class="gate-shell">
+            <section class="gate-welcome" aria-labelledby="welcome-title">
+                <div class="gate-logo"><img src="img/farm-gate/logo.png" alt="FarmVille" width="474" height="131"/></div>
+                <p class="gate-eyebrow">A fresh start. A world of possibility.</p>
+                <h1 id="welcome-title">Fresh soil.<br/> New beginnings.</h1>
+                <p class="gate-intro">A patch of land, a handful of seeds,<br/> and so many good days ahead.</p>
+                <div class="gate-farm-art" aria-hidden="true">
+                    <div class="gate-grass"></div>
+                    <img class="gate-art-redrawn" src="img/farm-gate/farmyard.png" alt="" width="1536" height="1024">
+                </div>
+            </section>
+            <section class="gate-content gate-panel" aria-labelledby="gate-title">
+                <p class="gate-eyebrow">Make yourself at home</p>
+                <h2 id="gate-title">Your story starts here.</h2>
+                <p class="gate-description">Every great farm starts with a farmer.</p>
+                <form method="post" action="/new.html" class="gate-form">
+                    {% if error %}
+                    <p class="gate-notice gate-notice-error" role="alert" id="name-error">{{ error }}</p>
+                    {% endif %}
+                    <label for="name">Farmer name</label>
+                    <input type="text" id="name" name="name" value="{{ name }}" maxlength="80" placeholder="Farmer" required autocomplete="nickname" aria-describedby="name-help{% if error %} name-error{% endif %}"{% if error %} aria-invalid="true"{% endif %}>
+                    <p class="gate-help" id="name-help">What should we call you on the farm?</p>
+                    {% if october_available %}
+                    <label for="preset">Village style</label>
+                    <select id="preset" name="preset" aria-describedby="preset-help">
+                        <option value="classic"{% if preset == 'classic' %} selected{% endif %}>Classic farm</option>
+                        <option value="quintessential_october"{% if preset == 'quintessential_october' %} selected{% endif %}>Quintessential October</option>
+                    </select>
+                    <p class="gate-help" id="preset-help">{{ october_description }}</p>
+                    {% endif %}
+                    <button class="gate-button" type="submit">Create farm <span aria-hidden="true">&#8594;</span></button>
+                </form>
+                <div class="gate-divider"><span>Already feeling at home?</span></div>
+                <a class="gate-secondary" href="/"><span aria-hidden="true">&#8592;</span> Back to the farm gate</a>
+            </section>
+        </main>
+        <footer class="gate-footer">By the Farm Village team <span aria-hidden="true">&middot;</span> {{version}}</footer>
+    </body>
+</html>

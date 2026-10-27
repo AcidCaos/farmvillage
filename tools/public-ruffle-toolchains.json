@@ -1,0 +1,55 @@
+{
+  "bindgen": {
+    "aarch64-apple-darwin": "cd93e691eb5953ace5d8ffce52a20b024077a3dac3e2215b8224136b0efb7585",
+    "aarch64-unknown-linux-gnu": "1ce0ebd74e378d989651091f93c917bd7700996945d4c5ce37ec9507f149225c",
+    "x86_64-apple-darwin": "81049c79f4e283e1725e6582a0528af1301a70ad23add1df1c4d042ec825263d",
+    "x86_64-unknown-linux-musl": "61d4a7dc85acfa0d2354ccc0b8361928c7e52a746d17f28ebaa795ed3dc1614a"
+  },
+  "bindgenVersion": "0.2.127",
+  "java": {
+    "darwin-arm64": "30c3cfb717a2a84bf164c010a9c51dc81a15dcf214cf83a9695206233c9c5d37",
+    "darwin-x64": "45438e511171f21ade709c6987ef4b88ea98b6c0124b4775a4b29d5822395cdd",
+    "linux-arm64": "98f9d60be880b6ec551f5f1fcd784971aa573e8d8f5b9923fb0148c25afcd161",
+    "linux-x64": "2885b944da3793144d4a86a29524f4d7b68ba155f5c08afa444a3b40f7071892"
+  },
+  "javaVersion": "17.0.16+8",
+  "node": {
+    "darwin-arm64": "3f1cf157479c1480352083105e13faf9d008ede98e7e157746b6df940d197b94",
+    "darwin-x64": "d35e95230f46f6f0751df497c56622c6735e05d5e1fb1630996a005b9d328fe4",
+    "linux-arm64": "01443c1e1a29e531ccad5a46fefa6df490d2189c49f7955904aecdbb0fe86fdc",
+    "linux-x64": "14b342e71204f811bde6153be8e04b62aef63c236fef92b55f9c83154b409647"
+  },
+  "nodeVersion": "24.19.0",
+  "npmIntegrity": "Ed/ylWXSKXx058WUqXYlgb3pafCqXL5vWzZEvwCKFsBl7OYQlNn/u4ESW+ON+OG6Q+uCRLPTDGHreX6aJEDj7A==",
+  "npmVersion": "11.0.0",
+  "rust": {
+    "aarch64-apple-darwin": {
+      "cargo": "685e563d94db1f003ffa5f5831439eec02569b9950b69867953c8213269c1eaf",
+      "llvm-tools": "b348db9d79666aee4b5e2ff4269029fffd16815cbd47f47018cd0b06e4f815f5",
+      "rust-std": "fe79d6ab5a0321de26463999d8c112b8ad3eafbcbcf822d66a2300b45dde1031",
+      "rustc": "23948a0a9c162fd2952defb3fb0462c44e8fcfd1a4ab8a274a1e1bdb2cf810a3"
+    },
+    "aarch64-unknown-linux-gnu": {
+      "cargo": "5156832e0c1254e9b49a79edabdc6d4c35f32f8fc1cf3ca700f268ff96087ab0",
+      "llvm-tools": "cd1818058908c1c4e99bd2843fe103df255157454e16186ec9cc3b5b5823b39c",
+      "rust-std": "e25668477083d6a9ddb87b9beb9c00742225f38233ccb4bfba3afa7a07427f52",
+      "rustc": "acdcdfe09ae1f103aa9a2b7f88903a9588bc2e99288af10e6fbf5514e2e49f25"
+    },
+    "x86_64-apple-darwin": {
+      "cargo": "6636dabcec164909d1c6eb9e2c596148787c84f7d3a02ff68a141569077f80b5",
+      "llvm-tools": "3112e92b03b1cca4264a30ca602948d31976cd45db7de2bc7900efa25a39a045",
+      "rust-std": "484d5b88b424ddd29df196e1eb9420c8335bb5fac90a3c37140253345a8c65c4",
+      "rustc": "203feef2c2165d7dda1f30ccf75590f72a6abc52ce259ed1c418de84a6887698"
+    },
+    "x86_64-unknown-linux-gnu": {
+      "cargo": "53f3521949404d595efb06a55c12c5658d4ed1c75566f33d3d514eaebe70bd8a",
+      "llvm-tools": "8429c5117debfb45c22cf2f97712ef00e0e94976c96cf92f661974a458ca7e84",
+      "rust-std": "109b074225bf5b9ea3820890876bfdf4ed161adbfaf94b2b4b5984c85ee5d958",
+      "rustc": "2ff05ff9c08a90861e7f6e4065b40a8b87463b4576186fd613871c3e37f2091f"
+    }
+  },
+  "rustDate": "2026-10-15",
+  "rustSrc": "e485a88c45db546b73571df7bebfcb4454ba4fb552c492e25fc5b00eeb5bf22d",
+  "rustVersion": "1.99.1",
+  "rustWasm": "5f628f857dd00a8aa3fcac2e275665d2782066a5795274ed124c5b560f46423c"
+}

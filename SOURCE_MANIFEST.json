@@ -1,0 +1,2747 @@
+{
+  "abandonedTargets": [
+    "iPad/iOS"
+  ],
+  "activeTargets": [
+    "macOS native desktop wrapper",
+    "browser game on Ubuntu/private LAN"
+  ],
+  "communityHandoffRepair": {
+    "date": "2026-10-25",
+    "previousSourceCommit": "af4224c950a602b41a1e01d27c677bc15427cc40",
+    "privateHistoryImported": false,
+    "scope": "Curated engineering knowledge, resource setup, upload guide, owner-selected GPL-3.0 for original God Barn code, documentation-link verification. Active game source unchanged."
+  },
+  "excluded": [
+    "private Git history",
+    "personal saves/snapshots",
+    "credentials/cookies",
+    "game/media/font files",
+    "generated catalogs",
+    "compiled WebAssembly",
+    "build products",
+    "raw QA evidence"
+  ],
+  "files": {
+    ".gitattributes": {
+      "bytes": 209,
+      "sha256": "519a0ae4cca2474c04c5ce2f5b1583b2e8c9d363410552edad5c4a3fac971047"
+    },
+    ".github/ISSUE_TEMPLATE/game-problem.md": {
+      "bytes": 928,
+      "sha256": "2b4be46056460d2e39723873660134bd7036c152a1124207a442ccf50be8b80b"
+    },
+    ".github/ISSUE_TEMPLATE/install-report.md": {
+      "bytes": 1481,
+      "sha256": "528643eafeeaf26c43e291bdb253afcf69fe2e9303c8d635415dd86beecc77c0"
+    },
+    ".github/source-checks.yml.example": {
+      "bytes": 1561,
+      "sha256": "0b2f0bafcf97c0a3e93510c48099d70afcadca7697a88ab0e3d9a81f6766876e"
+    },
+    ".gitignore": {
+      "bytes": 149115,
+      "sha256": "5a12b7bbc177eaadbcd0d4590a5085670fb7915b1d45e49729a90a0b625013da"
+    },
+    "ACCEPTANCE.md": {
+      "bytes": 10898,
+      "sha256": "061e6c3c77bde9d601c62dd6a4597d6e3509dd263346de994024e8c462b353ea"
+    },
+    "AGENTS.md": {
+      "bytes": 2376,
+      "sha256": "ef86036682263282933863ce43582497fd7737fb2bcbcea1b75eea47ccf6e819"
+    },
+    "BIFROST_SETUP.md": {
+      "bytes": 7251,
+      "sha256": "8d23abbf32aad8849e27de65e0dea72ae36f5507d5734ca0e18444be44bcdbd4"
+    },
+    "CONTRIBUTING.md": {
+      "bytes": 2658,
+      "sha256": "6af0b18c4092b326c76e48cf49b8ed0d88c72efadcdd0d6d29ad98fb234c7ddf"
+    },
+    "FarmVillage/FLASH.md": {
+      "bytes": 2413,
+      "sha256": "d7a2733f2c6fd64d41eef851949ab170edd40af20f22c0c4afe1185e74970913"
+    },
+    "FarmVillage/LICENSE": {
+      "bytes": 35149,
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    "FarmVillage/LINUX.md": {
+      "bytes": 2352,
+      "sha256": "b6fb6465e46e349f4af6534d9fe3181962ab6d4c4534f5204fba9d2c6d6f70b4"
+    },
+    "FarmVillage/README.md": {
+      "bytes": 310,
+      "sha256": "40829e666472c851e73dee592ca1aa4e98aeabbb81fa9389c1d564c29c0a171e"
+    },
+    "FarmVillage/assets.py": {
+      "bytes": 7151,
+      "sha256": "d82fb364842fc6c3f80d91bbfb08e5c3c8fa86b6e8fb1d5fee432b81ee6cfbc0"
+    },
+    "FarmVillage/avatar.py": {
+      "bytes": 4227,
+      "sha256": "fa553d8899b9e416d4dd3220dbc243fdaf5fe152764c0d5aa196d561b6b769eb"
+    },
+    "FarmVillage/barn_actions.py": {
+      "bytes": 23751,
+      "sha256": "f95a50c94013a4d0e81c0eec77ec6e106bc2a71f3ac83a2ba310663b54996502"
+    },
+    "FarmVillage/breeding.py": {
+      "bytes": 61567,
+      "sha256": "cf14cc2b69c8b579235c99d1f2b96125cbdc5c7a98919975b00a40db33df2c46"
+    },
+    "FarmVillage/building_harvest.py": {
+      "bytes": 13152,
+      "sha256": "6b173ce37ab9c35bed40b4fd9fceab4d4f501ccb4d638cfb4c67f7f525e82eb0"
+    },
+    "FarmVillage/bundle.py": {
+      "bytes": 1876,
+      "sha256": "ff238a57e84cb6a7a8f192384963c9136251a2661942a2c5ec4b48df3b5f577d"
+    },
+    "FarmVillage/bushels.py": {
+      "bytes": 21338,
+      "sha256": "d56cac7ecd4bda2be742ec9bf15b5f3c0fd5c33fb5eb587b15832f8d68bec9d5"
+    },
+    "FarmVillage/cellar_progression.py": {
+      "bytes": 13447,
+      "sha256": "104c6a2883d7457a2f224ea10b3051316fb820c72e287758eb6c0cc6c9abbdda"
+    },
+    "FarmVillage/client_catalog.py": {
+      "bytes": 9244,
+      "sha256": "96cfdc6b065710514731f38c9d5430ec515295fecd80eb7f105b467c9d5f5874"
+    },
+    "FarmVillage/client_compatibility.py": {
+      "bytes": 58135,
+      "sha256": "54ccfa770622b532d29f97514b9c050094c9407a4cf3e2460721566f791bd2e9"
+    },
+    "FarmVillage/client_england.py": {
+      "bytes": 8112,
+      "sha256": "0b8da3d0eab1e531eaea0deef342e96617d832b523d1a8b3add078ab26524e64"
+    },
+    "FarmVillage/client_graphics.py": {
+      "bytes": 10303,
+      "sha256": "05df3da4f4b0fb10d375d25593f4bdbd404379ee4c09d5879e7df55e0f41291f"
+    },
+    "FarmVillage/commands.py": {
+      "bytes": 117988,
+      "sha256": "7e4876c567efbc4a0964c0c55410b69968d98186cc2da2a6074af4c574bd638c"
+    },
+    "FarmVillage/constants.py": {
+      "bytes": 50,
+      "sha256": "a363bf0b29c504d9572435d098f746bbc4fe0a99d79ad56530b503b5f82bbe56"
+    },
+    "FarmVillage/construction.py": {
+      "bytes": 37118,
+      "sha256": "17b1d204542430e21c8d76a3d978eabe0e7d2bffc845c291d5801d08999daca6"
+    },
+    "FarmVillage/cove_client.py": {
+      "bytes": 3656,
+      "sha256": "40315f688b4e2d14251b4cff9843534f6f2b5db272d7e551c76de4be2eb9fd11"
+    },
+    "FarmVillage/cove_port.py": {
+      "bytes": 15986,
+      "sha256": "13f5ed814e8e9586b9cbefba872d67a0ecf61dcbd91a784ff31e6c3594b14e74"
+    },
+    "FarmVillage/cove_rules.py": {
+      "bytes": 17151,
+      "sha256": "c2adeae9e418ccf85b89a54ddfc898e4eb1a18709b8685b8b39edd6576d07251"
+    },
+    "FarmVillage/cove_shipping.py": {
+      "bytes": 9591,
+      "sha256": "cbea7e7c3afbc201b3e5a58f56c8b060f7fa76de62fa70d9a33e381fa49676d4"
+    },
+    "FarmVillage/crafting.py": {
+      "bytes": 64712,
+      "sha256": "b97f8d716904dca50f98a113325b1ddc3594da897eda315f2f9dd24a5bf1443c"
+    },
+    "FarmVillage/creative_worlds.py": {
+      "bytes": 41674,
+      "sha256": "d8c8ea01d6b8eb3cacb50e7c2e24bf4ab9980d21d9c973410ee79d8fe0dc9568"
+    },
+    "FarmVillage/engine.py": {
+      "bytes": 12571,
+      "sha256": "962e0b8eedaa917d093495e35cd6ac2ce5d18f68fe2723b7dbdde5ada2acdd8e"
+    },
+    "FarmVillage/england_animals.py": {
+      "bytes": 6954,
+      "sha256": "77b902b0fd5c4ddb7219eb0c232ab91dca692132fff5110d61c31292846bf953"
+    },
+    "FarmVillage/england_progression.py": {
+      "bytes": 5730,
+      "sha256": "3bbd57642013828e6f8e65005741c3bde9a86ea781f44ed008819a6a57eb3754"
+    },
+    "FarmVillage/england_shipping.py": {
+      "bytes": 12680,
+      "sha256": "86b2cf50d5f12ff5c3b9d49e84e4a18bec199009258824906ee33c7a8be31743"
+    },
+    "FarmVillage/feature_availability.py": {
+      "bytes": 7054,
+      "sha256": "26753bf7066ff7f7e706c6d61cd1c4cd528bbe17c4366d57cec76b25de60bdae"
+    },
+    "FarmVillage/feature_options.py": {
+      "bytes": 4995,
+      "sha256": "17b6ba0f7d61103d488ab1dc0442f029cf13df110fa24b18aa917e0bffaead04"
+    },
+    "FarmVillage/game_settings.py": {
+      "bytes": 4799,
+      "sha256": "04159fae3767569b355da9eb18eb68237557ef284f8d03e491e3ecf90c883da9"
+    },
+    "FarmVillage/gifting.py": {
+      "bytes": 3239,
+      "sha256": "07ea851ddb377e95f2503cd92cdbec04f93a80519f1fbf2604e002c937ce4fd1"
+    },
+    "FarmVillage/hallow_rules.py": {
+      "bytes": 34574,
+      "sha256": "b7ce9b34038f8a7232e049c54a5f1c3f778b2569a402ba84972b4d9af40b51b8"
+    },
+    "FarmVillage/hallow_world_rules.py": {
+      "bytes": 16257,
+      "sha256": "9e071c1e03d2d88acfde8c2958059ba8c743302df6ae9e73bd57e3ded75a06ce"
+    },
+    "FarmVillage/hawaii_rules.py": {
+      "bytes": 12467,
+      "sha256": "0bd139e207e74abba12993898f268d18b974d2fd02bb532f98241529cc3d85bd"
+    },
+    "FarmVillage/heritage_pricing.py": {
+      "bytes": 22364,
+      "sha256": "c975591dc0fcc7e04f92a347b2a78a6f694138c452df836afaf9bbac4e099384"
+    },
+    "FarmVillage/instant_growth.py": {
+      "bytes": 12489,
+      "sha256": "16bd5d291b092b6c1f488f88478d92a3012e5308d2e2e0d84fcc2145a3cd93b8"
+    },
+    "FarmVillage/inventory_sales.py": {
+      "bytes": 6174,
+      "sha256": "f8a14df4792c4c7acaca5e72d5d8ccace5adc5cb637ef81b0cdf21a79e911e43"
+    },
+    "FarmVillage/irrigation_rewards.py": {
+      "bytes": 8114,
+      "sha256": "63ceaa78a36e88afa19fd1405c286cec5edd013d78519dd88a03ca97da6b5d0e"
+    },
+    "FarmVillage/items.py": {
+      "bytes": 2996,
+      "sha256": "d9a8922d8f7b49708994bc0a916479623e9848eef12eeb66e2edf815fd3eccda"
+    },
+    "FarmVillage/macOS/Documentation/AGENT_PLAYBOOK.md": {
+      "bytes": 14294,
+      "sha256": "8549b1d7e52f98145b8f8e3497e9aa4d521ef957268785df8958a8354c27f0c5"
+    },
+    "FarmVillage/macOS/Documentation/AMF_BATCH_ISOLATION.md": {
+      "bytes": 4176,
+      "sha256": "414607770da76c7c4b564d5db75b3f6b437432eb6eacdb9c64a404d32b96a930"
+    },
+    "FarmVillage/macOS/Documentation/ANIMAL_RENAME_2026-10-24.md": {
+      "bytes": 4270,
+      "sha256": "6409c5ab47dbbde40c48e1c395a759ecb0485fa1a0670ff2e33ebd7ce471fd9b"
+    },
+    "FarmVillage/macOS/Documentation/BUSHEL_RECOVERY_2026-10-24.md": {
+      "bytes": 12995,
+      "sha256": "4331444f8b4931a82fb9638b52057fd07368a53381b2f46bf21d14f1c59e4e5b"
+    },
+    "FarmVillage/macOS/Documentation/BUSHEL_RESTORATION_2026-10-24.md": {
+      "bytes": 5714,
+      "sha256": "31a87dcbf1d730f3e4cd1354ed28bc9cec350f3ddeb98f15016cb616a4da463f"
+    },
+    "FarmVillage/macOS/Documentation/CLIENT_ACTION_AUDIT.md": {
+      "bytes": 40412,
+      "sha256": "1905a9fd05c504c198b536568c9159d5ae8686a5a77133d998fc37501de5b1e1"
+    },
+    "FarmVillage/macOS/Documentation/COTTAGE_INVITATIONS_CLIENT_2026-10-24.md": {
+      "bytes": 6739,
+      "sha256": "9c0875e4c1e0d63e50944b8fe853181d24e6e6de56db771e035c0564a0c01fcd"
+    },
+    "FarmVillage/macOS/Documentation/COTTAGE_RECOVERY_2026-10-23.md": {
+      "bytes": 13378,
+      "sha256": "dae698c27ae6af713ae4c3023a6b99a2850912141ecfc5e8a5b2ba1c2c072c52"
+    },
+    "FarmVillage/macOS/Documentation/CRAFTING_EXPANSION_PLAN_2026-10-24.md": {
+      "bytes": 9111,
+      "sha256": "da933c97569f53eefae1cb4159b8d2987d9ee9abc535fec97f922e6d8fff6691"
+    },
+    "FarmVillage/macOS/Documentation/CRAFTING_PROGRESSION_2026-10-24.md": {
+      "bytes": 9370,
+      "sha256": "979bbc71e89a81966bfbfb9aaba3e26df98b677d91732f905202fa0147e8e036"
+    },
+    "FarmVillage/macOS/Documentation/ClientPatches/IMAGE_ROW_LINEAR_2026-10-24.md": {
+      "bytes": 5802,
+      "sha256": "39f0ee148e48270392b6a6841a29b43d2185ed71f344afa5c7f92b81f07180f2"
+    },
+    "FarmVillage/macOS/Documentation/ClientPatches/INVENTORY_TAB_ART_2026-10-24.md": {
+      "bytes": 4296,
+      "sha256": "efba11f125132e10929458c8c0e3673e0f92722ed9ffeee220431d4928cf9b34"
+    },
+    "FarmVillage/macOS/Documentation/ClientPatches/MARKETSTALL_EXPANSION_2026-10-24.md": {
+      "bytes": 4172,
+      "sha256": "b3187e7748a49c5e0c73d5003917f06c86de0068c0a167fc18e15a8ce244988b"
+    },
+    "FarmVillage/macOS/Documentation/ClientPatches/QUEST_REWARD_CLOSE_2026-10-24.md": {
+      "bytes": 4322,
+      "sha256": "4f2a864a90aeee2a0352fdaa40299d7d91651500cd48bc666284722684f2b8a7"
+    },
+    "FarmVillage/macOS/Documentation/ClientPatches/README.md": {
+      "bytes": 15300,
+      "sha256": "fd77d9a73fb673e95bf7c794c1e4edfaa4dcf47fe77f9c7a074135e9cf8a6c17"
+    },
+    "FarmVillage/macOS/Documentation/ClientPatches/Ruffle-runtime-candidate.md": {
+      "bytes": 3869,
+      "sha256": "5e8d9af6d18c96ea651185973a147b9508842b7a52da4c5c884961477a92f04a"
+    },
+    "FarmVillage/macOS/Documentation/ClientPatches/WIDGET_STORAGE_VISIBILITY_2026-10-24.md": {
+      "bytes": 4313,
+      "sha256": "07fb29bfec0b5682d9b4b8b8286c55b14f84adef829e4ea24f8e2803daf66f1f"
+    },
+    "FarmVillage/macOS/Documentation/ENGINEERING_INDEX.md": {
+      "bytes": 6018,
+      "sha256": "039441d4d046a2fed420f4ee96de414cc79cfb0907c7caff31f95c216d41d86e"
+    },
+    "FarmVillage/macOS/Documentation/FEATURE_AVAILABILITY.md": {
+      "bytes": 11010,
+      "sha256": "f64916e2e7b9eb1ffbd74da9bb2f2924c23f143a1d675e171be359f1ba591c51"
+    },
+    "FarmVillage/macOS/Documentation/FEATURE_INVITATION_INVENTORY.csv": {
+      "bytes": 21569,
+      "sha256": "0c56f4d5b112aabd34acd1f4a496495bbc100fbd8899da63986d76f6b12047b6"
+    },
+    "FarmVillage/macOS/Documentation/GOD_BARN.md": {
+      "bytes": 8902,
+      "sha256": "63b8e1bbba238cd32b87541c4821b47bccf2b97e98d0145cfcd88f6b860cb301"
+    },
+    "FarmVillage/macOS/Documentation/HERB_GARDEN_HARVEST_2026-10-24.md": {
+      "bytes": 7697,
+      "sha256": "0e572196a5fa942459cd1746af991b01c661332b55c64533ed61d9cbe520cd26"
+    },
+    "FarmVillage/macOS/Documentation/HERITAGE_PRICING_2026-10-23.md": {
+      "bytes": 21740,
+      "sha256": "62354c0c3ae70fcc77a69b5222bfc6594d3cc1fe2861acd23cf85b9e1fba14cc"
+    },
+    "FarmVillage/macOS/Documentation/IRRIGATION_REWARDS_2026-10-24.md": {
+      "bytes": 4899,
+      "sha256": "96b9c9a6509b5c4b463819bd1003dadf0a137a63ba3e342247c9935d98aa1443"
+    },
+    "FarmVillage/macOS/Documentation/LAMB_RAISING_STATUS.md": {
+      "bytes": 4220,
+      "sha256": "c3a2653ce57d8787449b80f263527419cddc2066508c7cccfcf2d352d7b34075"
+    },
+    "FarmVillage/macOS/Documentation/LEVEL_PROGRESSION_AUDIT.md": {
+      "bytes": 7307,
+      "sha256": "e7ecb4325894b36ae6a1b9a0c0a413ff4e6f3408c0b973078338e3852e524009"
+    },
+    "FarmVillage/macOS/Documentation/MARKET_STALL_OWNED_STATE_2026-10-24.md": {
+      "bytes": 7831,
+      "sha256": "e82b94df529225851a3e5d7e9bc0dad1c7eb3e1fcff6ef6259dddf2de369a757"
+    },
+    "FarmVillage/macOS/Documentation/MASTERY_SIGNS_2026-10-24.md": {
+      "bytes": 5827,
+      "sha256": "4d64d7e9879b9772116c6b4ee3728d14b68698d36f6915d92405e2aea0c00fd1"
+    },
+    "FarmVillage/macOS/Documentation/MINIGAMES_STATUS.md": {
+      "bytes": 10451,
+      "sha256": "49a39882ace464a74b67d1736f7aa2cbc21ab8f620362cca426fa7a2154d2826"
+    },
+    "FarmVillage/macOS/Documentation/OTHER_MECHANICS_STATUS.md": {
+      "bytes": 13307,
+      "sha256": "e51b0b53b93a47ffaf7597b74c45c4a58e06407264f835d7f72b4c3454506d11"
+    },
+    "FarmVillage/macOS/Documentation/PAID_BUILDING_ACTIONS_2026-10-24.md": {
+      "bytes": 11623,
+      "sha256": "a2f565119d611005c47d6c3830733c9917b8f43bfa5aacefc8931e555e787eda"
+    },
+    "FarmVillage/macOS/Documentation/PETS_STATUS.md": {
+      "bytes": 6477,
+      "sha256": "cc1f5b31033c5e4bae0da20947881aa0d47d2c688c08ed51ac06fd80125ae913"
+    },
+    "FarmVillage/macOS/Documentation/QUEST_COMPLETION_RECOVERY_2026-10-24.md": {
+      "bytes": 6285,
+      "sha256": "f0c0e6c956cc22eb324d91898fca484e5c3a405e823490e3d68bb9b0fce5385a"
+    },
+    "FarmVillage/macOS/Documentation/THIRD_PARTY.md": {
+      "bytes": 4442,
+      "sha256": "5adbb5c532ae20d5ee6b4ff8bd5f73817c0f722059b354d2904c7a9d8533629a"
+    },
+    "FarmVillage/macOS/Documentation/TRAVEL_WINDOW_RECOVERY.md": {
+      "bytes": 4804,
+      "sha256": "ff2a873d297356394e4474a9d31cb007cdfd84dba330ff10d21634c230727b19"
+    },
+    "FarmVillage/macOS/Documentation/WATER_FUEL_ENERGY_2026-10-23.md": {
+      "bytes": 15779,
+      "sha256": "b4da37b83c71e6586896a369e7be91470c8fca4d8483f819f9cbd57f045fb705"
+    },
+    "FarmVillage/macOS/Documentation/WORLD_SCORE_QUEST_REWARDS_2026-10-24.md": {
+      "bytes": 5162,
+      "sha256": "e95cf077492b23ac8de1a6c5fe42d1bda59e8a20eaaff8a4ec9ba2d978bbac1f"
+    },
+    "FarmVillage/macOS/Documentation/WORLD_TRAVEL_STATUS.md": {
+      "bytes": 7726,
+      "sha256": "fae596e1bfb52207d1b88a182b3e049992968473b89f47cd18a98c6712b898ec"
+    },
+    "FarmVillage/macOS/Documentation/Worlds/CoveWave2/COTTAGE.md": {
+      "bytes": 3976,
+      "sha256": "cc752ce3bba0e4bb5b2fc0f83c26810d9cccc8638cd51efb575995bf00197bbf"
+    },
+    "FarmVillage/macOS/Documentation/Worlds/Expansion20261023/STORAGE_CONTRACT.md": {
+      "bytes": 6172,
+      "sha256": "561132e35a857857f1020b8c6b9f6b2332e8f6da7c7d73c29b53dbbf39c82c2b"
+    },
+    "FarmVillage/macOS/Documentation/Worlds/NEXT_WORLD_RULES.md": {
+      "bytes": 21965,
+      "sha256": "2c5898a9fd22a798533c8224db4474c9039c00a7a705d2bc0b1116065669c03a"
+    },
+    "FarmVillage/macOS/Documentation/Worlds/README.md": {
+      "bytes": 3943,
+      "sha256": "eada059d8a98d4b8bae6f40912ebcf1c2b9695c60339c2b915c2daf903976b07"
+    },
+    "FarmVillage/macOS/Documentation/Worlds/SESSION_B_HTOWN_CRAFTING_2026-10-24.md": {
+      "bytes": 5947,
+      "sha256": "7cde9f12ae91503ae5e8f1a23ede7f426d0e5d5a71e5227b64143adb6d4f5467"
+    },
+    "FarmVillage/macOS/Documentation/Worlds/THEMED_AUTHORED_CASH_2026-10-24.md": {
+      "bytes": 3052,
+      "sha256": "b8a7142788dbe72cfa7df65a6f7fb9f26477cd3dfdc5d8c779757c95c165967d"
+    },
+    "FarmVillage/macOS/Documentation/Worlds/THEMED_BASIC_PRESENTATION_AUDIT_2026-10-24.md": {
+      "bytes": 5875,
+      "sha256": "0fb324c2e5bc34ed8c9b92ca36058a1875ca47163c5ff4d128d46153478d50b1"
+    },
+    "FarmVillage/macOS/Documentation/Worlds/THEMED_MARKET_PRESENTATION_2026-10-24.md": {
+      "bytes": 6910,
+      "sha256": "4fda6c5f41065f163e3b69bcf25f4bec1ca21273ed829b329bf5f401d1159ad9"
+    },
+    "FarmVillage/macOS/Documentation/Worlds/THEMED_WORLDS.md": {
+      "bytes": 25866,
+      "sha256": "d22e32a45a4824861d019e76e7c0305b7a12bc44a35fffa602fcc1b5cffb4b3b"
+    },
+    "FarmVillage/macOS/Documentation/Worlds/W01_HOME_OCTOBER_2026-10-24.md": {
+      "bytes": 6066,
+      "sha256": "96e21c20757fcb4bd16aed93698373ace0877041684fe0444254408455b6074c"
+    },
+    "FarmVillage/macOS/Documentation/Worlds/W04_COVE_GEOMETRY_2026-10-24.md": {
+      "bytes": 7275,
+      "sha256": "e5d69b91045bbae8bdc87c3f6bca19aef81c619e345436bea201de9284a3e684"
+    },
+    "FarmVillage/macOS/Documentation/Worlds/WORLD_CURRENCY_CONVERSION.md": {
+      "bytes": 8608,
+      "sha256": "18402b2da360ea7307612e856c1c526919e620245a01ace545f9f2c1a800c205"
+    },
+    "FarmVillage/macOS/FarmVillage.xcodeproj/project.pbxproj": {
+      "bytes": 11482,
+      "sha256": "4c7d67919f18bed453d64c3c92e86f9939a0c894cb3c988caaae2f4b217f4fd5"
+    },
+    "FarmVillage/macOS/FarmVillage.xcodeproj/xcshareddata/xcschemes/FarmVillage.xcscheme": {
+      "bytes": 1995,
+      "sha256": "38fbd15010baa73909893f3baa051db9a07808c0fd63bdea63160a37f82ad1ec"
+    },
+    "FarmVillage/macOS/README.md": {
+      "bytes": 345,
+      "sha256": "216cd58a5cf31e1fe43cb182945461c4b6c4e996fbc5960a6fa311a2dffc5c91"
+    },
+    "FarmVillage/macOS/Resources/Assets.xcassets/AppIcon.appiconset/Contents.json": {
+      "bytes": 1257,
+      "sha256": "13b1c7461192863c9f3ab3ceab313acd6f6531898360983495bf13d48dfc967f"
+    },
+    "FarmVillage/macOS/Resources/Assets.xcassets/Contents.json": {
+      "bytes": 50,
+      "sha256": "2320eb3e02f9e3419d35676c6fd470ec13d5aa314c0d29700e09ec76d8e2360a"
+    },
+    "FarmVillage/macOS/Resources/Info.plist": {
+      "bytes": 1264,
+      "sha256": "3215dbecf2cad91190683d6a0b9d1d088a62033d5f367ba06d48ca561dd8e6d4"
+    },
+    "FarmVillage/macOS/Runtime/bootstrap.py": {
+      "bytes": 23912,
+      "sha256": "1871c73f801b7f4473018f3062b7531c9dc9cf751d7a3627da8f7ee21360b261"
+    },
+    "FarmVillage/macOS/Runtime/native_assets.py": {
+      "bytes": 11282,
+      "sha256": "13a04d83d643bd174726311709a0b7aa99d74ea022f5e9a0af3647e98b423a7b"
+    },
+    "FarmVillage/macOS/Runtime/native_launcher.py": {
+      "bytes": 7357,
+      "sha256": "8ea32ee2e93c101e825eb937ff6a344a32f157c9d52041249d33f2076eb5921f"
+    },
+    "FarmVillage/macOS/Runtime/native_paths.py": {
+      "bytes": 1545,
+      "sha256": "aa13456c0ae661beef5d8902d4c52b7811017afeaa0452f58df0c7b38c1415f8"
+    },
+    "FarmVillage/macOS/Runtime/server_runner.py": {
+      "bytes": 3089,
+      "sha256": "0c09a858f60b7a0ef93ed33144f8e3badc889709298d84a570e906fc06a65a65"
+    },
+    "FarmVillage/macOS/Scripts/build.sh": {
+      "bytes": 8202,
+      "sha256": "87db889f2f0257ecd160e0d7d6a3de09d2165212c11ab5f752f647e35d6a0324"
+    },
+    "FarmVillage/macOS/Scripts/bundle-runtime.sh": {
+      "bytes": 6185,
+      "sha256": "5edaca4e40c6af71372e0d123ef254b7edca25f306811d09c3d13ea47b275a46"
+    },
+    "FarmVillage/macOS/Scripts/client-inspection/abcdis.py": {
+      "bytes": 14391,
+      "sha256": "6a04ec778def3d68d5469f39f0d0fa2abb4b3bf47cf697bc4cf9ea3bf895ebf2"
+    },
+    "FarmVillage/macOS/Scripts/client-inspection/evalconfig.py": {
+      "bytes": 1587,
+      "sha256": "8974394b7574c26fda71f984f68b0ba16f098499b540439250ce5677c649ff73"
+    },
+    "FarmVillage/macOS/Scripts/enable-world-candidate.py": {
+      "bytes": 4178,
+      "sha256": "4ad8d946bd923845ce99f187ca29898da7068fb63bacdda0d2a37c7f18eea700"
+    },
+    "FarmVillage/macOS/Scripts/patch-game-client.py": {
+      "bytes": 3853,
+      "sha256": "64b89f5f62bdb84e478ddedf94c11b682662e0a383ed1929cfd4b5adc6af2099"
+    },
+    "FarmVillage/macOS/Scripts/prepare-github-fork.py": {
+      "bytes": 12261,
+      "sha256": "8e3f9bde47a9d548da52ecd9be75ff8b3b77951068d7b7a9db11501023d3327e"
+    },
+    "FarmVillage/macOS/Scripts/prepare-heritage-assets.py": {
+      "bytes": 15512,
+      "sha256": "da4786ac195eaf83eb70747c0a1eca218a12617c5a381df6e17184d844b38bd9"
+    },
+    "FarmVillage/macOS/Scripts/prepare-portable-release.py": {
+      "bytes": 29038,
+      "sha256": "16d398c6ba83eb95a25033d3308261c3ef813a81e8088969c3440e2b3789f294"
+    },
+    "FarmVillage/macOS/Scripts/run-active-release-regressions.py": {
+      "bytes": 6438,
+      "sha256": "715324c0238d6bd57d117277a93ff5959cb42b00f4b92177ad3d7c798c948379"
+    },
+    "FarmVillage/macOS/Scripts/run-other-mechanics-regressions.py": {
+      "bytes": 3078,
+      "sha256": "e3686357ecd9f2fb1bba325650186755ee63bac9aa49be43976939c0bfa38178"
+    },
+    "FarmVillage/macOS/Scripts/runtime.sh": {
+      "bytes": 3438,
+      "sha256": "29e70a5909bcd1a4b3beeb9211f3b11771c934db5732da35de1104a3610997bc"
+    },
+    "FarmVillage/macOS/Scripts/verify-home-music.py": {
+      "bytes": 2541,
+      "sha256": "1ffb31cc6ed9c79dc137ff2cea9f3e966d025ad40e962453cc9f263ed8c19672"
+    },
+    "FarmVillage/macOS/Sources/ContentView.swift": {
+      "bytes": 34826,
+      "sha256": "317337ee1e5c1332cf4a53687588db4a055fdab988f3059c567217ad84edb7ea"
+    },
+    "FarmVillage/macOS/Sources/FarmVillageApp.swift": {
+      "bytes": 4736,
+      "sha256": "9e1e32c8a7e9a41c8428b6e5a37dd78bb8d0511a077ef88b477a5a7a9cbfd73e"
+    },
+    "FarmVillage/macOS/Sources/GameWebView.swift": {
+      "bytes": 24876,
+      "sha256": "578e300e17145a434322aa2c75e03c6b9284fba1ffd4a284924ddc86f3b5dc83"
+    },
+    "FarmVillage/macOS/Sources/HeritageAudio.swift": {
+      "bytes": 1834,
+      "sha256": "c97bfc409d4614356712f2304d8732f0f8dfdb9e4b50c7d4ff022764609d2724"
+    },
+    "FarmVillage/macOS/Sources/HeritageTheme.swift": {
+      "bytes": 6773,
+      "sha256": "d48566cfba370226e1ab89d199d75f6fe68721480a24c8b79aab964208ce32e5"
+    },
+    "FarmVillage/macOS/Sources/LauncherLibrary.swift": {
+      "bytes": 16249,
+      "sha256": "b671d9a94ebbfad05626486890af1cd5289b8b648a5799425c0fb82a4c618fd3"
+    },
+    "FarmVillage/macOS/Sources/RuntimeController.swift": {
+      "bytes": 21973,
+      "sha256": "b01bc48ff118bafa727edc4a32eeb74aff54c9d39662c4159d6d7e1746df7cd3"
+    },
+    "FarmVillage/macOS/Tests/ACTIVE_RELEASE.md": {
+      "bytes": 2711,
+      "sha256": "f80d73226d3d2d22ff60095111bd9388747a280ad255078cdcd7d1174207a80a"
+    },
+    "FarmVillage/macOS/Tests/HeritageSnapshot.swift": {
+      "bytes": 9057,
+      "sha256": "8a599d57fd67eccab455e2a59f75aa75e3b6cf470bedfbe93d6e447576b26b78"
+    },
+    "FarmVillage/macOS/Tests/LauncherLibrarySmoke.swift": {
+      "bytes": 6997,
+      "sha256": "0c919b8910cc00aca6c5fdd062dbe4b074232a7aa6f2950a86ea98b47e30bc85"
+    },
+    "FarmVillage/macOS/Tests/NativeHeritageGodBarnSmoke.swift": {
+      "bytes": 34383,
+      "sha256": "052516acab28bb13a469391eccf421fed670d8974499594b6593d7497ec18163"
+    },
+    "FarmVillage/macOS/Tests/NativeLaunchSmoke.swift": {
+      "bytes": 5638,
+      "sha256": "ad796746c456e0145d3cdcf91dc04e6ca8c3eb9fca0051a69ca9e9049244689a"
+    },
+    "FarmVillage/macOS/Tests/NativeLogSmoke.swift": {
+      "bytes": 4648,
+      "sha256": "6a757fe73c41316c8920cfbd8b3d94044405b21f7401053b93f68421719b31ba"
+    },
+    "FarmVillage/macOS/Tests/NativeWebSmoke.swift": {
+      "bytes": 46855,
+      "sha256": "b7911ce08b1395d9eb3764df1fd029d819d2fe3a9bf82cc5cc8ae3879fd6562d"
+    },
+    "FarmVillage/macOS/Tests/RuntimeDirectorySmoke.swift": {
+      "bytes": 1231,
+      "sha256": "992f719f9abb10d95a18587233eac673f2540a17657257ef2bdd2f90f80b9326"
+    },
+    "FarmVillage/macOS/Tests/RuntimeLifecycleSmoke.swift": {
+      "bytes": 5086,
+      "sha256": "6c5c3be18b5aa90f3d01d76ef7f8d754a541266404afc53ee5f5b0f27842fca4"
+    },
+    "FarmVillage/macOS/Tests/retired-world-test-cases.json": {
+      "bytes": 13972,
+      "sha256": "5115487c906bd152f44fc5489ccfc3754f361e72485df8b5e77315f626cbd263"
+    },
+    "FarmVillage/macOS/Tests/run-full-game-smoke.sh": {
+      "bytes": 1207,
+      "sha256": "2a7a3b2ef5f232401c68049ec54af0617676bcf2199ac17285c7f09b49a988fb"
+    },
+    "FarmVillage/macOS/Tests/run-launcher-library-smoke.sh": {
+      "bytes": 632,
+      "sha256": "38af4acb38c2573db1f7ce72e0c581a2582774b8a5669af689af0c5b9546359c"
+    },
+    "FarmVillage/macOS/Tests/run-native-heritage-smoke.sh": {
+      "bytes": 2261,
+      "sha256": "7442e37d13184d2d71a685ce7579655c182d28f4334873bbf23d5da27d646fc2"
+    },
+    "FarmVillage/macOS/Tests/run-native-smoke.sh": {
+      "bytes": 2914,
+      "sha256": "b1efac2a15d73c6731f7a9a3bf5fe5c58176f8d314cd0ea5950c0ab92e2ff3ee"
+    },
+    "FarmVillage/macOS/Tests/run-runtime-lifecycle-smoke.sh": {
+      "bytes": 1603,
+      "sha256": "f6a1b5a05ba3249eff1f2a2d64fec356854bebef4a54ef4e5e62b3070b300f37"
+    },
+    "FarmVillage/macOS/Tests/session_a_farming_fixture.py": {
+      "bytes": 11207,
+      "sha256": "fee378036340369bf75463bf35227b82d6a1c1f725300d2b27dbd4017ec1c876"
+    },
+    "FarmVillage/macOS/Tests/test_action_ledger.py": {
+      "bytes": 11969,
+      "sha256": "f0a01ae02cb3ddc36a6ad61db244c05e23c915d03ed988c20537c2a6e7b84f09"
+    },
+    "FarmVillage/macOS/Tests/test_additional_farms_http.py": {
+      "bytes": 5286,
+      "sha256": "922ae1c5c6aa18f11df1abcbfd5871403379e9996975ce02492313fc4c23f050"
+    },
+    "FarmVillage/macOS/Tests/test_amf_xml_bootstrap.py": {
+      "bytes": 2386,
+      "sha256": "b93bccc420c93c0ad73e4336cebfe0d19f25823c44ef08b924e9c78a1f39818b"
+    },
+    "FarmVillage/macOS/Tests/test_atlantis_instantgrow_carrier.py": {
+      "bytes": 4166,
+      "sha256": "7cfa363e377e013a2474accad0897380734b3e2a2c6ad34a4b0cf73b43a7032e"
+    },
+    "FarmVillage/macOS/Tests/test_atlantis_world_rules.py": {
+      "bytes": 21789,
+      "sha256": "1aa96dbc7333b51cde61c7f5ddd266ec46ea8fd38099c1be7aecbd0cba8ce134"
+    },
+    "FarmVillage/macOS/Tests/test_audio_client.py": {
+      "bytes": 2111,
+      "sha256": "0129d962a884cecc174cd6e275b6425e3efcb17442210b1ab64af76a49dcff31"
+    },
+    "FarmVillage/macOS/Tests/test_barn_actions.py": {
+      "bytes": 16011,
+      "sha256": "300f14c982350ab7eebb40dd9afba93c16377ca0b93e35814b514bdf345f9e87"
+    },
+    "FarmVillage/macOS/Tests/test_breeding.py": {
+      "bytes": 25164,
+      "sha256": "d9fe300ae430492ac4388e4561d21c0f0f95ac4de6eabc5d4005c9e89c90eb45"
+    },
+    "FarmVillage/macOS/Tests/test_breeding_rename_storage.py": {
+      "bytes": 8991,
+      "sha256": "9068c23aab84fc03e1ca6f0aea2cd252b8625343098f6ff61af2bd68a5972118"
+    },
+    "FarmVillage/macOS/Tests/test_breeding_wire.py": {
+      "bytes": 37562,
+      "sha256": "64eba018067b3d45316890d42b171f2c9ac745cd69318ef8b524a44034b918e8"
+    },
+    "FarmVillage/macOS/Tests/test_building_harvest.py": {
+      "bytes": 10401,
+      "sha256": "984e48e791745f868de0055f6126c11dfaef38f74b4ea4d473dadf52f3674c6a"
+    },
+    "FarmVillage/macOS/Tests/test_building_harvest_wire.py": {
+      "bytes": 9200,
+      "sha256": "d38ddd0bf0b4a72dd066718f75dd14d11eb101bfbd6d5f5330f87085f6bf38a7"
+    },
+    "FarmVillage/macOS/Tests/test_bushel_harvest.py": {
+      "bytes": 10602,
+      "sha256": "342009546e033d9d68713a8aab178f76957ee624838eb103b39029946fb17e5d"
+    },
+    "FarmVillage/macOS/Tests/test_bushels_wire.py": {
+      "bytes": 14029,
+      "sha256": "2ab13ccb9edc6707b1bc1a1a48fc278180c986ed9d2de91b141337bcb8593704"
+    },
+    "FarmVillage/macOS/Tests/test_client_catalog.py": {
+      "bytes": 22219,
+      "sha256": "c46b12544d35d297240eb54859b63ee86a5f09981c82504995bce4cfc18d3ce8"
+    },
+    "FarmVillage/macOS/Tests/test_client_england.py": {
+      "bytes": 8500,
+      "sha256": "20a736f65b124ad64f26197bea07894ac9e36e0d098d0dfceaf19af6597be060"
+    },
+    "FarmVillage/macOS/Tests/test_client_graphics.py": {
+      "bytes": 22793,
+      "sha256": "caca1a812ac66b12f9ae81a67d4c2da2c72e09a1f48d5b6bf939ce324ca9b082"
+    },
+    "FarmVillage/macOS/Tests/test_client_serving.py": {
+      "bytes": 2456,
+      "sha256": "96954598e77922cde7afaf6413f700742892ed1d0b1d7dd28250cfd800247d85"
+    },
+    "FarmVillage/macOS/Tests/test_construction.py": {
+      "bytes": 25502,
+      "sha256": "c81cd0aab570b79b680df4f85af3fcd4d99ec22ff8b64b8ec772dbbff35125c6"
+    },
+    "FarmVillage/macOS/Tests/test_construction_wire.py": {
+      "bytes": 17256,
+      "sha256": "0b865bdeffd92ca9562fb29a600c455863214977e6afa4fbca55ca6a744431b1"
+    },
+    "FarmVillage/macOS/Tests/test_core_actions.py": {
+      "bytes": 21701,
+      "sha256": "9215113dfed684525960ef3c575b3205f23c19c6935ab0e4a402e1cbd20fe4d5"
+    },
+    "FarmVillage/macOS/Tests/test_cottage_client_graphics.py": {
+      "bytes": 6333,
+      "sha256": "15c219d1f5e6b608ddc8c8952f29ccc1844eef385bb92a6c249f091743ea3b6a"
+    },
+    "FarmVillage/macOS/Tests/test_cottage_client_upgrades.py": {
+      "bytes": 10454,
+      "sha256": "e078eba347a964d8fb6c16d2976308c85bcdc0e50ddb61a0876c198d6e4d10a7"
+    },
+    "FarmVillage/macOS/Tests/test_cottage_invitation_stage.py": {
+      "bytes": 15524,
+      "sha256": "e858b6940baa8b44d0563c1744675dc9307e6daa0eb2d103a3c1213a303349ca"
+    },
+    "FarmVillage/macOS/Tests/test_cottage_lifecycle.py": {
+      "bytes": 19548,
+      "sha256": "c1c1d7aaa313de6e161541333ec3793b7cf76453034a3b58e130e74331a5785c"
+    },
+    "FarmVillage/macOS/Tests/test_cottage_recipes.py": {
+      "bytes": 14861,
+      "sha256": "758f8164b748af49f5121da3b3a0685487e6ccfd0c9d13ae71b0a0f9bb542dc4"
+    },
+    "FarmVillage/macOS/Tests/test_cove_cellar.py": {
+      "bytes": 8466,
+      "sha256": "53e4fffccc3ea5ca6bd06b82fc713bac429e903e32eb3971e946a882635ae499"
+    },
+    "FarmVillage/macOS/Tests/test_cove_cellar_progression.py": {
+      "bytes": 35021,
+      "sha256": "fa511d988a4932fe6ab64c7196a2136839287020abcaf3209b6b56233711ac62"
+    },
+    "FarmVillage/macOS/Tests/test_cove_cottage_client.py": {
+      "bytes": 6853,
+      "sha256": "d28743974a831f75fa704a6b4cef420b4feba82d136cab837a6f365ba660cc49"
+    },
+    "FarmVillage/macOS/Tests/test_cove_crafting.py": {
+      "bytes": 11900,
+      "sha256": "acd0eadc5cfb60e08ed6ffa7024b1a41cf58da4a7813cb2c2b66530bd5fd9ef7"
+    },
+    "FarmVillage/macOS/Tests/test_cove_crafting_wire.py": {
+      "bytes": 16550,
+      "sha256": "964dd145caa8c3fa1587b0a1fd2e16d114da3ccaa070d4cd5d079398be3b8675"
+    },
+    "FarmVillage/macOS/Tests/test_cove_geometry.py": {
+      "bytes": 4124,
+      "sha256": "e771d68897ec2a6a5439d0c7abccca69225417d38db8023597b42d9a0340ab98"
+    },
+    "FarmVillage/macOS/Tests/test_cove_port_wave2.py": {
+      "bytes": 16375,
+      "sha256": "28db1d0b2825c811d387ddc28b1e5b0a9e4b790eed155a1afb9a0fa94182d29a"
+    },
+    "FarmVillage/macOS/Tests/test_cove_progression_epochs.py": {
+      "bytes": 11226,
+      "sha256": "39ee87694dbbc29f02c891581984d45d2dfbd0120bc5e93056033a991470dbe9"
+    },
+    "FarmVillage/macOS/Tests/test_cove_rules.py": {
+      "bytes": 8891,
+      "sha256": "32c82f37620bdaa999a5cc88634ce574708da824e01975d00f88a1a97ea58630"
+    },
+    "FarmVillage/macOS/Tests/test_cove_shipping_wave2.py": {
+      "bytes": 12914,
+      "sha256": "dd91fcdc345e25c3fa47ed44b61d5229dba8692ca27629e870fa3095f06873ea"
+    },
+    "FarmVillage/macOS/Tests/test_cove_travel.py": {
+      "bytes": 23602,
+      "sha256": "7df78934e1895cdff76479c7e17e37dd4a85c7cc155f944633ee18e21f965b03"
+    },
+    "FarmVillage/macOS/Tests/test_crafting.py": {
+      "bytes": 27974,
+      "sha256": "f3cf8a5a1a0a692713ede98de68a3a0ebee4c0d70351f0d7ecaedbe93b870af6"
+    },
+    "FarmVillage/macOS/Tests/test_crafting_expansion.py": {
+      "bytes": 18339,
+      "sha256": "29e3213167a2717515ac6528c2e200ec72974f7fce9eb6fc73e3f67f7e306173"
+    },
+    "FarmVillage/macOS/Tests/test_crafting_expansion_wire.py": {
+      "bytes": 16795,
+      "sha256": "36b873d8d729c51dd287cc6e5def43292d603cf6d885daf3691495a8a811ec3a"
+    },
+    "FarmVillage/macOS/Tests/test_crafting_progression.py": {
+      "bytes": 15564,
+      "sha256": "108ea9dfec2373b1413683a3c653f658a43dfda32ee0b9cdcebe009de00748c7"
+    },
+    "FarmVillage/macOS/Tests/test_crafting_progression_wire.py": {
+      "bytes": 13987,
+      "sha256": "8ee45cc71873b2dc43dc67cc9841aec060211be160e7c63df571f4a7088f4b31"
+    },
+    "FarmVillage/macOS/Tests/test_creative_worlds.py": {
+      "bytes": 25548,
+      "sha256": "1e24440c28a9d9cf10cbd19823e660ec76e1ff0db09048edad715940b15d1da1"
+    },
+    "FarmVillage/macOS/Tests/test_derived_mastery_signs.py": {
+      "bytes": 11374,
+      "sha256": "83bcd02481341ad5c806a0acb282a4d7a25b7b276e502c7bd33f753941a0def1"
+    },
+    "FarmVillage/macOS/Tests/test_enabled_farms_regression.py": {
+      "bytes": 21716,
+      "sha256": "73b0a7197333536320bd587b3ff4a707fcc48844cf06987efa67dc22e16cb9c5"
+    },
+    "FarmVillage/macOS/Tests/test_england_progression.py": {
+      "bytes": 11645,
+      "sha256": "70ebfb8b8d92941291395ee3ba0599398e5c246795831a0dce440262d195be61"
+    },
+    "FarmVillage/macOS/Tests/test_england_pub_engine.py": {
+      "bytes": 12375,
+      "sha256": "be74b445b7284c9ae963c7cf6a43c3af79473a633ed153c97d1c81e2892c7e7c"
+    },
+    "FarmVillage/macOS/Tests/test_england_pub_wire.py": {
+      "bytes": 5119,
+      "sha256": "e60d0d3a75ded19bfa3757c73372bf157a758f993db7957c43eb0f11ec32e221"
+    },
+    "FarmVillage/macOS/Tests/test_equipment_wire.py": {
+      "bytes": 3345,
+      "sha256": "48ebc5dfde4a19bd80abc15a7810052774a8d71c2cf3bcaeafa99b26313a244d"
+    },
+    "FarmVillage/macOS/Tests/test_feature_availability.py": {
+      "bytes": 5632,
+      "sha256": "8f244260434282aa0b2781a3a7821de2ab983b57bb2eb0b1145d2057506eecc1"
+    },
+    "FarmVillage/macOS/Tests/test_feature_options.py": {
+      "bytes": 11210,
+      "sha256": "13745a8ddf021ae0f38fe12daf2c452f7af84ce508c98bec6d86686d9d12eb05"
+    },
+    "FarmVillage/macOS/Tests/test_game_client_patch.py": {
+      "bytes": 18337,
+      "sha256": "906ac25c7e3343653649f019361a2a4f2019c060c129c7e66597d04e3557e04d"
+    },
+    "FarmVillage/macOS/Tests/test_gifts_storage.py": {
+      "bytes": 17842,
+      "sha256": "2b945f8981be5149d04d4a3790f41a3a779449d2ffa56d010b10f4ad02b1305e"
+    },
+    "FarmVillage/macOS/Tests/test_github_publication.py": {
+      "bytes": 5470,
+      "sha256": "e48e1bd5066a4db7277292d0a576c2c1e05c6ec4d2e22f8d145fdfb175adc01f"
+    },
+    "FarmVillage/macOS/Tests/test_glen_candidate.py": {
+      "bytes": 18143,
+      "sha256": "935f3d038ab7f2d89383d1b017f6bcd637326ee9dfc46f28eb90a49c593f8d50"
+    },
+    "FarmVillage/macOS/Tests/test_glen_harvest_score_projection.py": {
+      "bytes": 8473,
+      "sha256": "0eb250a78e5b6ae7a56d51f28ac8f2b92a60f4f3ff383146aad8cc5fa41fc05e"
+    },
+    "FarmVillage/macOS/Tests/test_hallow_rules.py": {
+      "bytes": 29733,
+      "sha256": "0ec56cf8fa368afcee05a4301f5ed7b9d899002bf1dbeca69d372595b6bf7ea1"
+    },
+    "FarmVillage/macOS/Tests/test_hallow_world_rules.py": {
+      "bytes": 14841,
+      "sha256": "61e1e91467cfcaf4b2036fe927b64f997e4eb111987258e1c907b77d1de69e07"
+    },
+    "FarmVillage/macOS/Tests/test_hawaii_rules.py": {
+      "bytes": 12772,
+      "sha256": "7b9fdaa7bead8ba9d2b9b1cc7161afbf5994a8e300aa42a3e1d1817bdb962277"
+    },
+    "FarmVillage/macOS/Tests/test_heritage_pricing.py": {
+      "bytes": 28851,
+      "sha256": "0e23d034e9ef7966fec09631d72f7f928887d1cddd12962e5e8021755c0c2892"
+    },
+    "FarmVillage/macOS/Tests/test_htown_crafting_admission.py": {
+      "bytes": 14482,
+      "sha256": "ef45d4bd93f16347d84b155a025020116f00c09f6cae57547f6912d5a0dbb48f"
+    },
+    "FarmVillage/macOS/Tests/test_image_row_client.py": {
+      "bytes": 16838,
+      "sha256": "e7e713eed87a3ccbcba851929695b84227f558212605fdaa158ca6d6db283033"
+    },
+    "FarmVillage/macOS/Tests/test_imported_world_mutation_guards.py": {
+      "bytes": 7317,
+      "sha256": "364900de6160c0a8cc35bd100052e66626dea2190b25f8c533ed8489558f5cd9"
+    },
+    "FarmVillage/macOS/Tests/test_instantgrow_worlds.py": {
+      "bytes": 17697,
+      "sha256": "b6259dcb5f132d9009ed8e74b82a23c05027ecce52cccb3150eedd14571a0b4a"
+    },
+    "FarmVillage/macOS/Tests/test_inventory_art_client.py": {
+      "bytes": 7395,
+      "sha256": "08e71c0669f191141ed9c7798c17b272fd8af59221939fc5d579245f53d06008"
+    },
+    "FarmVillage/macOS/Tests/test_inventory_capacity.py": {
+      "bytes": 9149,
+      "sha256": "fc7244a9becf77086843c97473345a8419f6a4c1d099374a80c83eb80f0322ce"
+    },
+    "FarmVillage/macOS/Tests/test_inventory_sales.py": {
+      "bytes": 12695,
+      "sha256": "c4aefe99f2df394b61bb0f8c8161502ca7e767fd15ddfe4b8642afe4b2e3ab4e"
+    },
+    "FarmVillage/macOS/Tests/test_irrigation_fuel.py": {
+      "bytes": 13539,
+      "sha256": "e1279e6f318bd26da042e3512a8b0bf38862e6f1f45e766b03e5730cd0fac7aa"
+    },
+    "FarmVillage/macOS/Tests/test_irrigation_rewards.py": {
+      "bytes": 4941,
+      "sha256": "4136e8e35ae7df0350f17f3f2b666c480c63838ebac5c20f7a1c8f766c334d90"
+    },
+    "FarmVillage/macOS/Tests/test_irrigation_rewards_wire.py": {
+      "bytes": 9747,
+      "sha256": "e16d04d178e92225ce61940a356dc7cd9ed0f99d01921ab498715d1b0c0fc63a"
+    },
+    "FarmVillage/macOS/Tests/test_irrigation_wire.py": {
+      "bytes": 3397,
+      "sha256": "494d8fbdc014adc98542684f57191fa62088df5f277f452b08bc3efff1b496a3"
+    },
+    "FarmVillage/macOS/Tests/test_level_progression_1_100.py": {
+      "bytes": 4701,
+      "sha256": "f0d8fdb04105b287b7a5c3342c2032c82d6c44c08fa4d280d7ee030ade7634de"
+    },
+    "FarmVillage/macOS/Tests/test_levels.py": {
+      "bytes": 2269,
+      "sha256": "d27aab952cf39d71b0b3d5619d2c4afee8a9463a8296c168f41a2848d19ce106"
+    },
+    "FarmVillage/macOS/Tests/test_maple_contracts.py": {
+      "bytes": 16365,
+      "sha256": "91079df9e22c0a45b0fffc7c167e2c704cbef6e3ecf4a0c399c0ba430c6b1ef6"
+    },
+    "FarmVillage/macOS/Tests/test_maple_frontier_wire.py": {
+      "bytes": 13214,
+      "sha256": "406f2ee5ba68731a0227b3c6874b98539807e767411e90c023758587be53aa8c"
+    },
+    "FarmVillage/macOS/Tests/test_market.py": {
+      "bytes": 1932,
+      "sha256": "a6678716744cbb8a4f16b7054de12e0dee5a2426127ecb280a887041239d54f2"
+    },
+    "FarmVillage/macOS/Tests/test_market_availability.py": {
+      "bytes": 13432,
+      "sha256": "2a686e599545aae1626d6b48f9ea1e528192038510915e0b70cb505dcdcbcf9f"
+    },
+    "FarmVillage/macOS/Tests/test_market_dates.py": {
+      "bytes": 12365,
+      "sha256": "e2dbc3f1f3c6c60c5923195e5e3a1077ab82f9db851b7237f872ccc9295104d3"
+    },
+    "FarmVillage/macOS/Tests/test_market_stalls_wire.py": {
+      "bytes": 12778,
+      "sha256": "d58675887f44756c89b1b753056602bc1e01aff55978c678f306fd1b443643cf"
+    },
+    "FarmVillage/macOS/Tests/test_market_walkthrough_client.py": {
+      "bytes": 6407,
+      "sha256": "fc8e537b64c6eb2c48535f2d23a13279a9ef4c3d3b6df5609774618e6af6c29c"
+    },
+    "FarmVillage/macOS/Tests/test_marketstall_expansion_client.py": {
+      "bytes": 6298,
+      "sha256": "9e31330a755b39d38b92bd9bf7dd100163be562776937da8319b37eefccd04ee"
+    },
+    "FarmVillage/macOS/Tests/test_mastery_preservation.py": {
+      "bytes": 23889,
+      "sha256": "f3311f5201ed1417230c461b85c89387875722d24a2441678b5f3d4e9ebf0641"
+    },
+    "FarmVillage/macOS/Tests/test_mastery_sign_bootstrap.py": {
+      "bytes": 10995,
+      "sha256": "ec022cb4f524920fa13c24a9aa50186215b8fbeb38feaf833ed77db39a641d98"
+    },
+    "FarmVillage/macOS/Tests/test_minigames.py": {
+      "bytes": 21735,
+      "sha256": "d6718151302fddb77219ed7e02dec5aa9df34a7c9fb41a257bfad2e8cd2f2cd9"
+    },
+    "FarmVillage/macOS/Tests/test_minion_backups.py": {
+      "bytes": 10799,
+      "sha256": "ac078ee164107f3e4684893eef4287b1a5daa409d2d112c9a6a70f61f66e1111"
+    },
+    "FarmVillage/macOS/Tests/test_minion_browser_qol.py": {
+      "bytes": 13494,
+      "sha256": "7849aff1a749c3fd56d3efe91cd2e0f09648dd57b48e5e4e7b184942f28b43c7"
+    },
+    "FarmVillage/macOS/Tests/test_minion_commands_equipment.py": {
+      "bytes": 4821,
+      "sha256": "2391c79c17b35d94cdd92f59e93ad72fd6428f163728d25d3ff04248938b4014"
+    },
+    "FarmVillage/macOS/Tests/test_minion_commands_pricing.py": {
+      "bytes": 6041,
+      "sha256": "ec54d0d7d4a964ff6fafc2adc7e51de0f5037dac050d7d31a6818ef6042b3083"
+    },
+    "FarmVillage/macOS/Tests/test_minion_player_storage_options.py": {
+      "bytes": 4670,
+      "sha256": "71ae179c72275a706afc76de9402d134bddd1dade04e5b6b693ecc7131913000"
+    },
+    "FarmVillage/macOS/Tests/test_minion_round3_commands.py": {
+      "bytes": 10886,
+      "sha256": "ca5c1fd46eb0caad1e78a74725b7b63f277dce7bb2916a14461fc40791187e3f"
+    },
+    "FarmVillage/macOS/Tests/test_minion_round3_quests.py": {
+      "bytes": 13778,
+      "sha256": "d7719e3e6dcda6c70f890894d6f6f5c145d9d5f9bca38205c69ebba40f4a4936"
+    },
+    "FarmVillage/macOS/Tests/test_motd_wire.py": {
+      "bytes": 3586,
+      "sha256": "e8c8e3d97b950665acdba7e8e2f75edfc219dc99d65d7664a512059a59fe8177"
+    },
+    "FarmVillage/macOS/Tests/test_native_gameplay.py": {
+      "bytes": 10880,
+      "sha256": "49272dfd83274ab28f6dbd35a8f3bed3cb81b1e54ad32a6dc858e6e5b6db3f2a"
+    },
+    "FarmVillage/macOS/Tests/test_native_launcher.py": {
+      "bytes": 11798,
+      "sha256": "481722f593aa8480a5d75197ae8f269a4e64654b239273491ac6e1d8ae14d007"
+    },
+    "FarmVillage/macOS/Tests/test_native_launcher_presets.py": {
+      "bytes": 5595,
+      "sha256": "41575a3c1e8a02fe353f163c28d855842b08706034b4922e0ffa59764b7fc502"
+    },
+    "FarmVillage/macOS/Tests/test_new_world_bootstrap_fences.py": {
+      "bytes": 7389,
+      "sha256": "5235f5575589aac279640f9252d95817dd30e34934ea1458df8772785468f92c"
+    },
+    "FarmVillage/macOS/Tests/test_october_actions.py": {
+      "bytes": 22513,
+      "sha256": "214837232c3561ef1bf5c1051dfde55c945485e94cd4b6dcc5d6afec6c2579d2"
+    },
+    "FarmVillage/macOS/Tests/test_october_creation.py": {
+      "bytes": 5506,
+      "sha256": "aca4675a38dfc3da4ff8a3dd67cc301a8b7eeb65f2067829554a04a3f2423671"
+    },
+    "FarmVillage/macOS/Tests/test_october_presentation.py": {
+      "bytes": 8677,
+      "sha256": "6d4e2c2c4f8e1dda3fd2dc9686d45566969833cb4f9b69c5b5edbf5c84cd66a0"
+    },
+    "FarmVillage/macOS/Tests/test_october_presentation_routes.py": {
+      "bytes": 6803,
+      "sha256": "c3cc2c6a0a6de522d92cfc16c86515d9ba0bdca6bbaca77e20291e7a9675cd13"
+    },
+    "FarmVillage/macOS/Tests/test_october_village.py": {
+      "bytes": 14106,
+      "sha256": "d516ac0a286ec377352ddba42d706631a6ef73eb263e59a283e4946c75db3bd3"
+    },
+    "FarmVillage/macOS/Tests/test_optional_prize_background_client.py": {
+      "bytes": 8952,
+      "sha256": "0430922a069e96c3959529b6fdbcd2184e01880a1f8e48973e5d66abd7e6d523"
+    },
+    "FarmVillage/macOS/Tests/test_orchard_storage.py": {
+      "bytes": 15741,
+      "sha256": "8ba9601dacc8547ab0af7a985d5430399cb51df74a3e1add82cc98790be3f185"
+    },
+    "FarmVillage/macOS/Tests/test_packaging.py": {
+      "bytes": 17896,
+      "sha256": "029c95c63b5aca46a18a360a312006e68d7fe6dcd44d2a934f434f3ea2df8ddf"
+    },
+    "FarmVillage/macOS/Tests/test_paid_buildings.py": {
+      "bytes": 55645,
+      "sha256": "e0fac990c8cedf0e1a36a5d45a800fff8eaf97673af7b57f5d0d737cb0bd9132"
+    },
+    "FarmVillage/macOS/Tests/test_paid_buildings_wire.py": {
+      "bytes": 49129,
+      "sha256": "4e106b021b6eba2ead7850eba73974dd21e0697dafb6ff0bd94cce2a1d3eddd1"
+    },
+    "FarmVillage/macOS/Tests/test_peaceful.py": {
+      "bytes": 6605,
+      "sha256": "bf38b847ea2e8a5cf813a78bbda0f3b0fff06869f15dcea0f83bb3bcc5d86142"
+    },
+    "FarmVillage/macOS/Tests/test_persistence.py": {
+      "bytes": 46956,
+      "sha256": "7d4707822d3140acf7627ed40a9215899dd1736fce0147ef9dbcbabee73c99b7"
+    },
+    "FarmVillage/macOS/Tests/test_pets.py": {
+      "bytes": 19984,
+      "sha256": "b80299c80381eee825aad7b775b065dbe9bce918a606f9f44ff1e0d59dfc4ac3"
+    },
+    "FarmVillage/macOS/Tests/test_placement_receipts_wire.py": {
+      "bytes": 10134,
+      "sha256": "c1cf892ecd507500b2926c0af235b1fc7f22ecd2f1b90447ec71d644ec6093bd"
+    },
+    "FarmVillage/macOS/Tests/test_portable_mastery_policy.py": {
+      "bytes": 3655,
+      "sha256": "018cf3a361a9d280a185fdb813e12d186454e9bbcb8a68385c13ca89cf9d1070"
+    },
+    "FarmVillage/macOS/Tests/test_portable_native_history.py": {
+      "bytes": 3644,
+      "sha256": "9ceca3e26fc2983ebd977916baaab49ca3b171d0749cc8c5bf79cd011faadfdd"
+    },
+    "FarmVillage/macOS/Tests/test_portable_untabbed.py": {
+      "bytes": 1949,
+      "sha256": "d4e186fcf9526d2b8bf4a53f1e7d96028f611563ab49793de647bbac37dd7ccc"
+    },
+    "FarmVillage/macOS/Tests/test_positive_container_storage.py": {
+      "bytes": 18586,
+      "sha256": "5b097e53f668b3f9cbe995c1120f58407e1ca6d4be88b50780c0b957630d5abe"
+    },
+    "FarmVillage/macOS/Tests/test_profile_images.py": {
+      "bytes": 4784,
+      "sha256": "e67adcd09c5ef91f919b2a5ba7d2d03947ecf440580105e505c71d2203ac2514"
+    },
+    "FarmVillage/macOS/Tests/test_progression.py": {
+      "bytes": 12800,
+      "sha256": "db8e2de3f67295ad7f5b785e306a199ca7f7055d8f7c783e2202b436f67930fc"
+    },
+    "FarmVillage/macOS/Tests/test_quest_actions.py": {
+      "bytes": 14192,
+      "sha256": "82ddbc8aa6d5318ece74dcb51b6df78a9df702d8779e6d116c2e1a7b1be9b05b"
+    },
+    "FarmVillage/macOS/Tests/test_quest_completion_recovery.py": {
+      "bytes": 9718,
+      "sha256": "f4311551ba9acde7554e812e048a5d4e41e239a4236d140c6ce5b659ffb5c219"
+    },
+    "FarmVillage/macOS/Tests/test_quest_reward_close_client.py": {
+      "bytes": 11970,
+      "sha256": "ded82052b58a76eff028ac1305fa774868d21f7e83aa769854fa46e3f74a7b02"
+    },
+    "FarmVillage/macOS/Tests/test_rainforest_containers_wire.py": {
+      "bytes": 15004,
+      "sha256": "1ad1ac946410cde009e71e59ec6ac734b5454eaffeca49ee2a43f821b0a64581"
+    },
+    "FarmVillage/macOS/Tests/test_rainforest_cottage_client_upgrades.py": {
+      "bytes": 10996,
+      "sha256": "3fd6296ee51b9967182549e461a6d36de457d1ca86ca98596425e15677dc1649"
+    },
+    "FarmVillage/macOS/Tests/test_rainforest_crafting_wire.py": {
+      "bytes": 28441,
+      "sha256": "edf13ea184ef46ffe2f295646ba170dc55d56ea90634396a7f13cbc56ecbf8be"
+    },
+    "FarmVillage/macOS/Tests/test_rainforest_featured_wire.py": {
+      "bytes": 11160,
+      "sha256": "a944f636deeb010a2abb651bf267c9997ce13a674241d4b2e5a41a541c29e4b4"
+    },
+    "FarmVillage/macOS/Tests/test_rainforest_fountain_probe_wire.py": {
+      "bytes": 7926,
+      "sha256": "f6dc04dfcb5f00965eb95f0c98bea3ffbddb601ae3aee46a4a7099603a521406"
+    },
+    "FarmVillage/macOS/Tests/test_rainforest_inventory_wire.py": {
+      "bytes": 14079,
+      "sha256": "90c14109f2e2f831578a8e2a68fb485634abd950bc301bbbf7ea44e7098b34da"
+    },
+    "FarmVillage/macOS/Tests/test_rainforest_rules.py": {
+      "bytes": 5747,
+      "sha256": "1bf89994f5a3c61d1075dec9b3aa4f4565f6081a022a9a2526b4c3597c9c3384"
+    },
+    "FarmVillage/macOS/Tests/test_regional_cottage_client_upgrades.py": {
+      "bytes": 12142,
+      "sha256": "4ef6793715c1e4974472f9d6333302ff5f9b5991a974b5249d9802835ba5d8aa"
+    },
+    "FarmVillage/macOS/Tests/test_retired_decor.py": {
+      "bytes": 13611,
+      "sha256": "050157429c08bf767196eedde5087824b00c7a8a686284593cdcbf5dc2b02b02"
+    },
+    "FarmVillage/macOS/Tests/test_retired_worlds.py": {
+      "bytes": 6155,
+      "sha256": "9abde30e303003c3f2e2e518778b3164d981b554ea3a0f02af4eafac49577097"
+    },
+    "FarmVillage/macOS/Tests/test_runtime.py": {
+      "bytes": 44956,
+      "sha256": "4f1ee840ca6e38bf7cc6f838e06ce77d35d0786c92473c0662c5db5065b9aad3"
+    },
+    "FarmVillage/macOS/Tests/test_runtime_compatibility.py": {
+      "bytes": 14313,
+      "sha256": "c62c8aa5cb5aecc7fc7d18045ed0cf673de624450b29275f21183654ea99a627"
+    },
+    "FarmVillage/macOS/Tests/test_runtime_serving.py": {
+      "bytes": 7434,
+      "sha256": "ea54dc839da7b430d2bbf21cd2a47e8c79dab0cc14beb036d7bec78920392969"
+    },
+    "FarmVillage/macOS/Tests/test_runtime_upgrade.py": {
+      "bytes": 7145,
+      "sha256": "1d2a4a8f0a022d49ee9ca75864fe749b72255c3b094e833c81bda7cf402815b0"
+    },
+    "FarmVillage/macOS/Tests/test_season_reload_wire.py": {
+      "bytes": 5035,
+      "sha256": "2046ecdc10ed7a0efa3eb2bbaa2bbae7b6fa84012bbc9a9649be81a7a0d03777"
+    },
+    "FarmVillage/macOS/Tests/test_session_b_hlights.py": {
+      "bytes": 8028,
+      "sha256": "9da2f788ecbce5cee8e7372265b8ed8c052e266ef082365e837c0c01c5d0b8da"
+    },
+    "FarmVillage/macOS/Tests/test_shared_farming_loop.py": {
+      "bytes": 5211,
+      "sha256": "987f93b14c00d9a83ae812cac1c451def95a34fc1b813f28d3e8fc710beb615c"
+    },
+    "FarmVillage/macOS/Tests/test_storage_active_inventory.py": {
+      "bytes": 8718,
+      "sha256": "0ed7e647ac905839b1a8fe27c19885e69e690bc2edf813986e31622e7e3efd02"
+    },
+    "FarmVillage/macOS/Tests/test_storage_client_refusal.py": {
+      "bytes": 5977,
+      "sha256": "a48f558ce590a4233a3ab71b9760699e5c5fd4f44916331886c1148ef020b06b"
+    },
+    "FarmVillage/macOS/Tests/test_template_identity.py": {
+      "bytes": 5962,
+      "sha256": "93cbf8a94071eb3d4856593198c8614c3cb22a0ef473656cbaa9bd25e6c64496"
+    },
+    "FarmVillage/macOS/Tests/test_themed_client_presentation.py": {
+      "bytes": 9436,
+      "sha256": "fd96dc4650e01c8faa6a9361c9e6ad50f6a54b939d5edde2f8a58def98c928bb"
+    },
+    "FarmVillage/macOS/Tests/test_themed_dual_prices.py": {
+      "bytes": 6897,
+      "sha256": "62a1d1fe3330de67322764a4e161261e17292b75dfaa6c5d2250ee25e2680396"
+    },
+    "FarmVillage/macOS/Tests/test_themed_inventory.py": {
+      "bytes": 7613,
+      "sha256": "1e6f8e8663e0466635885330d186fc4ba1d0f68db84cbd0fd6e0e72736ab7125"
+    },
+    "FarmVillage/macOS/Tests/test_themed_land_offers.py": {
+      "bytes": 5638,
+      "sha256": "e8bea5878e9dbcb260fa896d8352fdd6b0549d46ff37409029484a37e1aa0d98"
+    },
+    "FarmVillage/macOS/Tests/test_themed_market_presentation.py": {
+      "bytes": 15088,
+      "sha256": "936a54da1575940fd4cb1a9ba1a3ea1e163d537cacc6b05c4f331f6d82dc989c"
+    },
+    "FarmVillage/macOS/Tests/test_themed_worlds.py": {
+      "bytes": 26021,
+      "sha256": "8fe8effd1496b51a46b6dffa75378da799ac0c2641a7568a4bfd37d2b6fa879f"
+    },
+    "FarmVillage/macOS/Tests/test_turbo_client_refusal.py": {
+      "bytes": 7266,
+      "sha256": "b42f99cf25faaecbd3e09e9026bb269b19d49247d16c79d440b46cc1b6dc1c8e"
+    },
+    "FarmVillage/macOS/Tests/test_ugc.py": {
+      "bytes": 8600,
+      "sha256": "e75feb03be430f7d92362cd0ca68682ac234ca555de9582f718d1905214310fb"
+    },
+    "FarmVillage/macOS/Tests/test_ugc_wire.py": {
+      "bytes": 11260,
+      "sha256": "02d105ea699c70623b416931895ceb5c8cd8f52a70a505dd223d2a08b21f89ed"
+    },
+    "FarmVillage/macOS/Tests/test_w01_containers.py": {
+      "bytes": 19200,
+      "sha256": "c7bd2340019ee4d4ad48c694692c55da03091ccf4dbe7af192d7f8a2cb4304ad"
+    },
+    "FarmVillage/macOS/Tests/test_w01_cosmetics_flowers.py": {
+      "bytes": 9346,
+      "sha256": "e46868b4962e3ab6fd09f00f12be11db2c35ef2673cee2db0ce0fdb6783a867a"
+    },
+    "FarmVillage/macOS/Tests/test_w01_crafting_mastery.py": {
+      "bytes": 13416,
+      "sha256": "1558f3e2117e4582bb7d851c770d8663de6fe8719125bf1e9c5c0bb88b15156d"
+    },
+    "FarmVillage/macOS/Tests/test_w01_pets_breeding.py": {
+      "bytes": 15707,
+      "sha256": "6348f0743fb299b3650380d688d6d7d6cc541dc140dfe9d647e2b9af9aa54c82"
+    },
+    "FarmVillage/macOS/Tests/test_warc_resources.py": {
+      "bytes": 4085,
+      "sha256": "cffa2ea10d718038c511e4e06e4a42302dc6f6c67655a93f3b10f7e5755cec3c"
+    },
+    "FarmVillage/macOS/Tests/test_wave2_classic_metadata.py": {
+      "bytes": 7086,
+      "sha256": "686ec668d0959db4bbea4e891888aa2b1c080ba4d19f8599ec18c5a68fb8b5fb"
+    },
+    "FarmVillage/macOS/Tests/test_wave2_england_admission.py": {
+      "bytes": 7644,
+      "sha256": "9df179e70b6493e4358a2e4f0beac0e19959974363f57b03e77ad7dc46dedc38"
+    },
+    "FarmVillage/macOS/Tests/test_wave2_england_client.py": {
+      "bytes": 6917,
+      "sha256": "7d4e7ce0c0fd465d3b96bd6d60b1a473243e9c0aaab7f6c0afc41555e43f21c7"
+    },
+    "FarmVillage/macOS/Tests/test_wave2_england_depth.py": {
+      "bytes": 18754,
+      "sha256": "0f48f2d97f6f5710f02e2711aa7c22e6a3600da2e3e6fa51710b98d84fce9e28"
+    },
+    "FarmVillage/macOS/Tests/test_wave2_england_godbarn.py": {
+      "bytes": 13460,
+      "sha256": "e17ff9ec367c162f82962623db2dc0b5d270e9ec232a60729f93b6bd7b489d43"
+    },
+    "FarmVillage/macOS/Tests/test_wave2_england_shipping.py": {
+      "bytes": 10229,
+      "sha256": "7a3e8ab3f9b9e5ae95f8685dd08ad078050fef62d4842bba7f2c70a3affb2f5a"
+    },
+    "FarmVillage/macOS/Tests/test_wave2_england_shipping_review.py": {
+      "bytes": 10799,
+      "sha256": "73ad977465866bb72a53c0ee8213cad009b65b65383bfe026d62d677c2a0743c"
+    },
+    "FarmVillage/macOS/Tests/test_wave2_england_stable_initial.py": {
+      "bytes": 8478,
+      "sha256": "baadab7278ec3a2dfd94075ade8d351d9eae018c19e0bb3a1839905de5903034"
+    },
+    "FarmVillage/macOS/Tests/test_wave2_england_transforms.py": {
+      "bytes": 6240,
+      "sha256": "6dde2b65e853723a78580140386567964e539f1bc9f0155863fdf8bb1aaabd98"
+    },
+    "FarmVillage/macOS/Tests/test_wave2_meadows.py": {
+      "bytes": 12956,
+      "sha256": "35bafd5c6dd5857755b5ba65cb4e53af90eec882a6db2b2e1750909d355b4ddc"
+    },
+    "FarmVillage/macOS/Tests/test_wave2_meadows_amf.py": {
+      "bytes": 8178,
+      "sha256": "b0c17fa069c3f8971db0278ae8d24ecc8e0181a1ab13c369284b3476d6a7dac2"
+    },
+    "FarmVillage/macOS/Tests/test_wave2_meadows_client.py": {
+      "bytes": 6526,
+      "sha256": "eadfc5747df55101e12a01df2eebb062e6f756c52f1faf395c282b81dc6d6208"
+    },
+    "FarmVillage/macOS/Tests/test_wave2_meadows_completion.py": {
+      "bytes": 6465,
+      "sha256": "c0a3b6924b56bcafb58d562939583eb741cb60be1fe9af601addc96efd173b12"
+    },
+    "FarmVillage/macOS/Tests/test_wave2_meadows_packaging.py": {
+      "bytes": 9708,
+      "sha256": "2593e9747f174753117ccedbfc3afcfdd24dce02ed57ca02bc6cc093e792ba28"
+    },
+    "FarmVillage/macOS/Tests/test_wave2_meadows_storage.py": {
+      "bytes": 25021,
+      "sha256": "3789969124d9ff1b0a09f84d602372f96e4d30a449933969ea3f246a355cf8dd"
+    },
+    "FarmVillage/macOS/Tests/test_wave2_ordinary_metadata.py": {
+      "bytes": 5554,
+      "sha256": "be80e19803e7f1cac9b5913900a33a8aef158617c93c59b8ad4a0613956b2d5b"
+    },
+    "FarmVillage/macOS/Tests/test_wave2_placement_epochs.py": {
+      "bytes": 5905,
+      "sha256": "bc5c71d0f7a8b69064bd731f29e0432a1cce005f61b6929bc3d0ecd073283bd8"
+    },
+    "FarmVillage/macOS/Tests/test_wave2_specialized_store_epochs.py": {
+      "bytes": 7467,
+      "sha256": "e2ea0cbd797079ad925f903e3c8b01cf2960b53344a23950fb051e907baa067c"
+    },
+    "FarmVillage/macOS/Tests/test_wave2_storage_integration.py": {
+      "bytes": 5091,
+      "sha256": "e5cd9a687e32f7fd9e70498dc44b447a6a3ed4ab5946e573663af9b6bda33b07"
+    },
+    "FarmVillage/macOS/Tests/test_widget_storage_client.py": {
+      "bytes": 5875,
+      "sha256": "ac184dfafb80f709b537d9bb247a22614b69af9cc7f3236cbc1264d37d94f389"
+    },
+    "FarmVillage/macOS/Tests/test_world_candidate_fixture.py": {
+      "bytes": 6362,
+      "sha256": "1de3cbe46caa41f2709837e64cc0ca2bfb2861ce803c6ca4e42f7442a2964b2a"
+    },
+    "FarmVillage/macOS/Tests/test_world_currency_conversion.py": {
+      "bytes": 7903,
+      "sha256": "aeecd0f3e930ec168aeaa3ecfce543c1392198e0b39e271ebd1bae893f5f8498"
+    },
+    "FarmVillage/macOS/Tests/test_world_score_quests.py": {
+      "bytes": 14680,
+      "sha256": "6fdd23522c609e06064223bb5b4158394cd469f6a479f36b82b0695016f50166"
+    },
+    "FarmVillage/macOS/Tests/test_world_score_wire.py": {
+      "bytes": 2400,
+      "sha256": "078479aaa677700a78b9d99e4a9f2d8bbb931b851a8d50db9b0f9d57279d5e89"
+    },
+    "FarmVillage/macOS/Tests/test_world_travel.py": {
+      "bytes": 32774,
+      "sha256": "85df3f44726cfdb1019ad2099fec18def7527129b3ddfaa2fba64ba325594521"
+    },
+    "FarmVillage/macOS/Tests/test_world_travel_review.py": {
+      "bytes": 4115,
+      "sha256": "aea183d67815008d4407242d07449495d6eb1ac00353dcaa38efc8a9e0dcb04b"
+    },
+    "FarmVillage/macOS/Tests/verify_native_gameplay.py": {
+      "bytes": 15769,
+      "sha256": "c351d37eee3673cf506f03e7bcdd4982921f04dc8fa56f141a39e087eba4865a"
+    },
+    "FarmVillage/maple_contracts.py": {
+      "bytes": 14474,
+      "sha256": "06beebbeb697e0022c0acee8c877e33f7f7daa7cb2e7682c44b102b5317e99c3"
+    },
+    "FarmVillage/maple_frontier.py": {
+      "bytes": 2394,
+      "sha256": "1187e40f3a18fb6b34ec2e800af51bfaead806b2315e351ca8611ba005ceb144"
+    },
+    "FarmVillage/market.py": {
+      "bytes": 702,
+      "sha256": "8e8a055167b316cf1be5a02b2102a0b608dd15289001a7855b6537460e62295e"
+    },
+    "FarmVillage/mastery_signs.py": {
+      "bytes": 11658,
+      "sha256": "895fa95edd30560c3dbc192c59dcc23ccef6661521634dacbe2430b8db1cfb3f"
+    },
+    "FarmVillage/meadows_client.py": {
+      "bytes": 8974,
+      "sha256": "3de87f60640fe413d3dd382cff760e5a9c8f1672d8ae24c406b6f20995050c29"
+    },
+    "FarmVillage/meadows_rules.py": {
+      "bytes": 4980,
+      "sha256": "a1f94e8cbc27b8c674e0f368fd75948bdf157035e9fb1d13a77b5d9ca844afbe"
+    },
+    "FarmVillage/meadows_storage.py": {
+      "bytes": 21546,
+      "sha256": "f5f4d7f955b4df83e522252cba6ecc783e87f2f838bd0288403b19b4a3926d5a"
+    },
+    "FarmVillage/minigames.py": {
+      "bytes": 13887,
+      "sha256": "8fb574aee1799cbe6bd09a3e837188229272fb32a9ab675ebf437e459be31c1c"
+    },
+    "FarmVillage/october_presentation.py": {
+      "bytes": 6024,
+      "sha256": "f8c09b1a18593d839de4570948d64bfe8286efaf7b91fed310f57d4b1818e7b8"
+    },
+    "FarmVillage/october_village.py": {
+      "bytes": 17286,
+      "sha256": "bff13a553c8d0e5f7ebf81142811b19ebc7d5dc20359b1f4ca0cf2374cd81b07"
+    },
+    "FarmVillage/paid_buildings.py": {
+      "bytes": 30516,
+      "sha256": "7a62479c69ada6dff76474c238d645818fe08225bb1f01f8a6afafd6d4226f8a"
+    },
+    "FarmVillage/peaceful.py": {
+      "bytes": 4028,
+      "sha256": "568586274abba1eae40c49dbca4635a1dc0f1ed6132d8a8993444b1d462354b8"
+    },
+    "FarmVillage/persistence.py": {
+      "bytes": 17015,
+      "sha256": "338549f0c2f9c1c813ae622f28ec98caeba1aa663d1d117fb827683181e41cfd"
+    },
+    "FarmVillage/pets.py": {
+      "bytes": 19672,
+      "sha256": "ddcb54d9b894a4b12f86eee441e977c1d78957f3c4960e9299ac8a7a3c8ac4ae"
+    },
+    "FarmVillage/placement_receipts.py": {
+      "bytes": 5021,
+      "sha256": "6a164fae1274560420f3b05797b04ed7b98181ead7e090040c5fca508f0e7085"
+    },
+    "FarmVillage/player.py": {
+      "bytes": 24195,
+      "sha256": "fd16834c62e1630b1f9391e12e2647640d994817a29d635c0488f4b7834fefea"
+    },
+    "FarmVillage/portable/Linux/diagnose-saves.py": {
+      "bytes": 10532,
+      "sha256": "8d020105d90772f83353e4bdf7fe3903eae65a8622096e885fa4df048c1ae206"
+    },
+    "FarmVillage/portable/Linux/install-fresh-world.py": {
+      "bytes": 19061,
+      "sha256": "1bb317b6b8e3d460c690c62c0f9fcb8ecb8cb2335253b036a7fd11aba40f076e"
+    },
+    "FarmVillage/portable/Linux/install-service.sh": {
+      "bytes": 8290,
+      "sha256": "b92f7988248ca8533870d062f43dfea2b2c12eaa7beef50749d50e5510c291e5"
+    },
+    "FarmVillage/portable/Linux/neighborhood_host.py": {
+      "bytes": 5942,
+      "sha256": "38edd08996a85c7a5bde38f4ad4cb5b37ef94c47087fa401398b7513c7c1a863"
+    },
+    "FarmVillage/portable/Linux/preloader_timing.py": {
+      "bytes": 4015,
+      "sha256": "705ad1bc776fc4e98a71ff578c1172f7f21b8e9b2edec3441233eeec2a548b8c"
+    },
+    "FarmVillage/portable/Linux/server_runner.py": {
+      "bytes": 20235,
+      "sha256": "05961d706ea19acd3739545bf7533965fca07ca7d1a5b95c6226d51fa074909f"
+    },
+    "FarmVillage/portable/Linux/start-server.sh": {
+      "bytes": 1016,
+      "sha256": "8258ff2dee288bb747ca60b1bf06552322ba56f4c49f1711fa2a206b430466e7"
+    },
+    "FarmVillage/portable/Linux/test_diagnose_saves.py": {
+      "bytes": 4328,
+      "sha256": "869a954d30fb105b1863d07c19a4c74d6214e76fae222c71cef692797f9c05c0"
+    },
+    "FarmVillage/portable/Linux/test_install_fresh_world.py": {
+      "bytes": 15167,
+      "sha256": "306d33f7c5cd0bd5fc8d0a3499a869b38d03369b57dedefcdd65b4528c4d7c33"
+    },
+    "FarmVillage/portable/Linux/test_install_service.py": {
+      "bytes": 12497,
+      "sha256": "917521962bb46255dd46e83e5f4f14447fa5772a55bdfa2d28d31842409a67f6"
+    },
+    "FarmVillage/portable/Linux/test_preloader_timing.py": {
+      "bytes": 5310,
+      "sha256": "1e7b0b29ed770f4b1a8325f347b4461af5625c0cc2170de96670431238b55e21"
+    },
+    "FarmVillage/portable/Linux/test_server_runner.py": {
+      "bytes": 17206,
+      "sha256": "d4eafaa2d78dd6792f72097a9568cc6014c86b16495e772f1005465b2a0b7319"
+    },
+    "FarmVillage/portable/bifrost-update/activate-release.sh": {
+      "bytes": 3436,
+      "sha256": "22a626b473905d0e5df7a6df4a39752530e98ff2c99ad4238cb10f9dc310009c"
+    },
+    "FarmVillage/portable/bifrost-update/build-bifrost-update.py": {
+      "bytes": 21481,
+      "sha256": "eb73c5c8afdda00d71a6cd8810039d6f96de0c98c6eb2ac039a153451e6e49f9"
+    },
+    "FarmVillage/portable/bifrost-update/manage-bifrost.sh": {
+      "bytes": 3761,
+      "sha256": "158611ae03f451ff8ce23be1fb19ab88ec339f7b0495b0f899a92fe117432725"
+    },
+    "FarmVillage/portable/bifrost-update/package-community-source.py": {
+      "bytes": 5094,
+      "sha256": "a6c4eded2eaa65d32d85af1e51f1ed861747413e15fde1989f402b9c44801edf"
+    },
+    "FarmVillage/portable/bifrost-update/package-mechanics-source.py": {
+      "bytes": 8499,
+      "sha256": "b3bd8d0eee45439d8644e0e975071ccf84233cba249cdecb0a9b76e7fa6875d1"
+    },
+    "FarmVillage/portable/bifrost-update/test_bifrost_update.py": {
+      "bytes": 33977,
+      "sha256": "1d21873715c92621c4d2c1a85e635525ef52f95e2962462f2534a1e4e3baba89"
+    },
+    "FarmVillage/portable/bifrost-update/test_community_source.py": {
+      "bytes": 5640,
+      "sha256": "bf2a27e6d395cbb363120e14f3ac6a04fe1e4a82f84176d2fbd292c59c714b79"
+    },
+    "FarmVillage/portable/bifrost-update/test_mechanics_source.py": {
+      "bytes": 7031,
+      "sha256": "d3c0bcff2b5f3455975654e5e1d7d25f4288cb80285b26a0d00402a47a067de5"
+    },
+    "FarmVillage/portable/manage-bifrost.sh": {
+      "bytes": 2644,
+      "sha256": "7c654e7aad72de4f811a9d6b7d605fd88b2de9089730548ebe6b1f2a8e01f60a"
+    },
+    "FarmVillage/portable/neighborhood/build_world.py": {
+      "bytes": 37063,
+      "sha256": "c5dbc0b0b6381a63faf507cf2b5f766dc3f1e736570b236c46d0233970c721d6"
+    },
+    "FarmVillage/portable/neighborhood/test_neighborhood_host.py": {
+      "bytes": 15975,
+      "sha256": "a5b859506feb72a81ec93fa92d832905c9dd6579130b51a4cfd953d62d57f726"
+    },
+    "FarmVillage/portable/neighborhood/test_world.py": {
+      "bytes": 8906,
+      "sha256": "f959ff01d0cedb499ddf15f71c78f288a980021a9d1fe92c5ce2362c6d088834"
+    },
+    "FarmVillage/portable/package-lan-host.py": {
+      "bytes": 3369,
+      "sha256": "3c3b656d7263f3ef42da2dfe379fe096d8c7fd655e43abc80b22e791ca1e6d65"
+    },
+    "FarmVillage/portable/test_manage_bifrost.py": {
+      "bytes": 5908,
+      "sha256": "6e3efbe2f035e32757c84d3dfd46bd3cd2731731fcb9d73bbda57d17b541d2ff"
+    },
+    "FarmVillage/prereq_eval.py": {
+      "bytes": 13168,
+      "sha256": "9715d35a8ee34ad9e293def900784642009be7bd2b75221db06c5a45a7fb77f6"
+    },
+    "FarmVillage/progression.py": {
+      "bytes": 8826,
+      "sha256": "1971ed2df484dbdc2c2c990d1e48f2c6f6a736206381da1ae9702aa130ecb0e7"
+    },
+    "FarmVillage/quests.py": {
+      "bytes": 61561,
+      "sha256": "62362a3ef34dd219bc56478c9ffaac65f4694afa7696db54051cb05de4219626"
+    },
+    "FarmVillage/rainforest_features.py": {
+      "bytes": 9712,
+      "sha256": "ad3e3c0eb4ac5c627c5c24f961d1f1cb27c3b4df32aa8c63d302a981145a0660"
+    },
+    "FarmVillage/rainforest_rules.py": {
+      "bytes": 7488,
+      "sha256": "10e8d51f42666d6618bb68f1c8483915240256ae93dd4299ff7981fd976b7235"
+    },
+    "FarmVillage/requirements.txt": {
+      "bytes": 73,
+      "sha256": "0b6bc7c03eec22083323bcf9b5c84fca9a7c47f5373dfd41b96a4b132b22cc92"
+    },
+    "FarmVillage/retired_decor.py": {
+      "bytes": 2975,
+      "sha256": "fa1cde4dd2d59f9e4e2bd06134ea252ab1e61eab59292a18a9de794cb72df8f9"
+    },
+    "FarmVillage/ruffle_runtime/0.7.1-farmvillage-gc1/.farmvillage-ruffle.json": {
+      "bytes": 3113,
+      "sha256": "a841dc7fc1729eab67afe67cf3418a4633a2de5e03ebd878e1cf6749387ddf03"
+    },
+    "FarmVillage/ruffle_runtime/0.7.1-farmvillage-gc1/LICENSE_APACHE": {
+      "bytes": 9723,
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a"
+    },
+    "FarmVillage/ruffle_runtime/0.7.1-farmvillage-gc1/LICENSE_MIT": {
+      "bytes": 1097,
+      "sha256": "4de9338a7879c68e911742a7d691f0797ff1ef8d8a6fb978b0c711e258fe959c"
+    },
+    "FarmVillage/ruffle_runtime/0.7.1-farmvillage-gc1/provenance/Cargo.lock": {
+      "bytes": 190676,
+      "sha256": "c63981977750d740c24a70fdd1582f9f4b40f9bb8bf18fd8ed2790e576628e0d"
+    },
+    "FarmVillage/ruffle_runtime/0.7.1-farmvillage-gc1/provenance/README.md": {
+      "bytes": 3509,
+      "sha256": "b2e67db750f0f34f1007a6762286e5b66afbb24c8c347f435f3306467ed557df"
+    },
+    "FarmVillage/ruffle_runtime/0.7.1-farmvillage-gc1/provenance/build-runtime.py": {
+      "bytes": 5733,
+      "sha256": "83e333c908de4035da03cf5798414547a479e98f6e6089967f2f6fdd81100f94"
+    },
+    "FarmVillage/ruffle_runtime/0.7.1-farmvillage-gc1/provenance/gc-pacing.patch": {
+      "bytes": 1069,
+      "sha256": "502ad9492deb3b5904d1b09c535ec521345b86b17b8db16145de862046515d14"
+    },
+    "FarmVillage/ruffle_runtime/0.7.1-farmvillage-gc1/provenance/package-lock.json": {
+      "bytes": 721670,
+      "sha256": "fff432c1cd6a43c1b907dca1ebe438d38f28748368060cd1769bb9cb5bf05147"
+    },
+    "FarmVillage/ruffle_runtime/0.7.1-farmvillage-gc1/provenance/runtime-files.json": {
+      "bytes": 1157,
+      "sha256": "dbf47a0423d55d36e2201099f4922f9a4fe03417fc39c75809d14099f25f2e4c"
+    },
+    "FarmVillage/ruffle_runtime/0.7.1-farmvillage-gc1/provenance/version-seal.json": {
+      "bytes": 295,
+      "sha256": "e31f5d3d95f93dc508f2921263917950907ca616a16f63ba7fbb0a6656f4db5a"
+    },
+    "FarmVillage/runtime_compatibility.py": {
+      "bytes": 27067,
+      "sha256": "37195f670c6e5c10d024bb7c55cb686987ab8a5895e87b25012ca1aaaf709cde"
+    },
+    "FarmVillage/server.py": {
+      "bytes": 55901,
+      "sha256": "54be2ab06128e2f2aa7101728391b3e70fe6078362f67855c56c311c761bedb5"
+    },
+    "FarmVillage/storage.py": {
+      "bytes": 74723,
+      "sha256": "3a1101ad7ab664cda0e32795f96294efde124d4a22c6d5dcb2e78a36458fd5a8"
+    },
+    "FarmVillage/templates/crossdomain.xml": {
+      "bytes": 161,
+      "sha256": "5bc388df51ed61f5bcca3a895798f1f3c4ff93897653675624209229d428801b"
+    },
+    "FarmVillage/templates/css/facebook.css": {
+      "bytes": 24310,
+      "sha256": "9c65725e7393775c3e9c105db3cec3c75fa6cf79b250880eb15fb95e905e1210"
+    },
+    "FarmVillage/templates/css/farm-gate.css": {
+      "bytes": 15786,
+      "sha256": "0160d3d9442dad66dd9b5e66e6f9516c10930caa5b2939764c31bd143a618e06"
+    },
+    "FarmVillage/templates/farms.html": {
+      "bytes": 2642,
+      "sha256": "f51833f0ac41367ab8c9b2df1c5589d7acf9d0b8d06c970839442d1bbfb189d2"
+    },
+    "FarmVillage/templates/gifts.html": {
+      "bytes": 2997,
+      "sha256": "a714a2ec5a99af0943e2d479fac11bf4040727100ae161889e9104eabf07633a"
+    },
+    "FarmVillage/templates/login.html": {
+      "bytes": 4811,
+      "sha256": "090ca1d1e42a53029ab1015700e0f36607847c541385b1ef52d906a593ce19df"
+    },
+    "FarmVillage/templates/new.html": {
+      "bytes": 3440,
+      "sha256": "4e0ade5ee8e281dae09000ea73281a036bef404dc9171d2504524eb5d4746ffa"
+    },
+    "FarmVillage/templates/play.html": {
+      "bytes": 149499,
+      "sha256": "eaa88e350619cdd952dde1c5601b820da1dda8e5b80eacdc19d74201eecd8e56"
+    },
+    "FarmVillage/templates/ruffle.html": {
+      "bytes": 151854,
+      "sha256": "3189c8a3c6874e63440cc7bbd6446ed41b6cc9cc382b316e2eed8c04e596b97c"
+    },
+    "FarmVillage/themed_client_presentation.py": {
+      "bytes": 6618,
+      "sha256": "fde346f051437b08568c547f867ceb00e19dac822150f35a5fdf6d60eccacb9c"
+    },
+    "FarmVillage/themed_land_offers.py": {
+      "bytes": 3552,
+      "sha256": "1f9edb0ec8524ede91e1b173db28c0a6e0ebe62bfeb3d8764e6fb7a8bedddc92"
+    },
+    "FarmVillage/themed_market_presentation.py": {
+      "bytes": 10723,
+      "sha256": "85e748c1d3936f90659e61c88d41308d487fa3250e8e832ee56248ddf5d48863"
+    },
+    "FarmVillage/themed_worlds.py": {
+      "bytes": 43821,
+      "sha256": "65220017b6227da22262a0bd07ff103190273530c46da909a7033203c2aea9d3"
+    },
+    "FarmVillage/ugc.py": {
+      "bytes": 13639,
+      "sha256": "d1080e1a782ba6e2b5be47e56773a79130a65b44399539469aebe4271afcb137"
+    },
+    "FarmVillage/version.py": {
+      "bytes": 16424,
+      "sha256": "51d37e1efed5bab59f9896ff17390caeceb507d46c369491a02724d980fb086d"
+    },
+    "FarmVillage/warc_extractor/README.txt": {
+      "bytes": 340,
+      "sha256": "406e17d02c8cb8251bc6ac45cb177b167e794eda0acb7a71a6ab2f6e2d54241d"
+    },
+    "FarmVillage/warc_extractor/warc_extractor.py": {
+      "bytes": 29973,
+      "sha256": "22c9558454c8ddbf211f3a19f6a9bc19a2af2f082a197147c2895968a4175c3f"
+    },
+    "FarmVillage/world_currency_conversion.py": {
+      "bytes": 6220,
+      "sha256": "1c7b848ee95ee13a0ca88f83546dec4f007d7247eddf7e9c271fcbeb3dc79b54"
+    },
+    "FarmVillage/world_scores.py": {
+      "bytes": 9964,
+      "sha256": "e21cff9e63587de5f6a0a4c2f4ffb38121921ece37b134831f286d82e4fb75fd"
+    },
+    "FarmVillage/world_travel.py": {
+      "bytes": 18425,
+      "sha256": "22c9dee48e606dd66cb732a2d2d31e75ad05f5c5f4ac7e7039367cfefd3a029e"
+    },
+    "GodBarn/CREDITS.md": {
+      "bytes": 1631,
+      "sha256": "d0fae0e7bc8b1efb7a667736cae6d4dce4d3885293b2b09613ce0fb61e8f524b"
+    },
+    "GodBarn/Documentation/CATALOG_PIPELINE.md": {
+      "bytes": 6059,
+      "sha256": "94201a86d8aa2a891dc6812c18e7112317c58fcd2828bf9b1a67783f8a6cc1b7"
+    },
+    "GodBarn/Documentation/INTEGRATION_CONTRACTS.md": {
+      "bytes": 4676,
+      "sha256": "e5670c4a59fb2f07de2ea9783dfc22f73e314ac40aa728324db338c63345f539"
+    },
+    "GodBarn/HANDOFF.md": {
+      "bytes": 4561,
+      "sha256": "ec705a4e4af824eddd065d9e792aa40117b261a1d96a658f71b82e191a560f54"
+    },
+    "GodBarn/LICENSE": {
+      "bytes": 35149,
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    "GodBarn/README.md": {
+      "bytes": 5862,
+      "sha256": "49565a1c00b98cf127f7dacc95b3fa775898e26935439d9d905d3979422af992"
+    },
+    "GodBarn/__init__.py": {
+      "bytes": 73,
+      "sha256": "1b969df0d0ca6372aec884da79c9c172c1bbccca4ad907fa4a22d093017bbd11"
+    },
+    "GodBarn/branding/README.md": {
+      "bytes": 1611,
+      "sha256": "3e7418547c049e1186ca09e7e880de3745cc8df0a214d69d51e5f4087179c558"
+    },
+    "GodBarn/catalog_tools.py": {
+      "bytes": 13818,
+      "sha256": "8662ac27b4aede78c793c93ebb80ff4ef2bb9bdce323972dd0149a037a75610a"
+    },
+    "GodBarn/encyclopedia.py": {
+      "bytes": 8650,
+      "sha256": "3204e7040f67d7b30306b566465d61ea7e9c596968dd7229c0c32c95973cfec0"
+    },
+    "GodBarn/engine.py": {
+      "bytes": 29332,
+      "sha256": "fe6b5487aedb0d06d673f3ff9df1ff73bfdc939631812d825afd04a0f119f017"
+    },
+    "GodBarn/helper_tools.py": {
+      "bytes": 19167,
+      "sha256": "f4c230f1fb03dc4c6607a16500081e414d5519584fb49ff20d98a75eb971d434"
+    },
+    "GodBarn/integration.py": {
+      "bytes": 41082,
+      "sha256": "a2a9d34dcb422a47af6f35ea4045a37ac81df54480ba3d058b5a650a692f05fa"
+    },
+    "GodBarn/launcher.py": {
+      "bytes": 1765,
+      "sha256": "5263e95779318c66439bdaedd93f7a70d322a617991e54a3343062398c676021"
+    },
+    "GodBarn/progression_tools.py": {
+      "bytes": 14961,
+      "sha256": "eb5967bbc9e91593ea36a8f7080e06ef0dd9daa45d1f07c6c6f12ae7ef759d8f"
+    },
+    "GodBarn/scripts/bootstrap_resources.py": {
+      "bytes": 11256,
+      "sha256": "d0805bd763409291a4a7aa9e5bcd3864839ee5c08c687c02da477cbbe24434ac"
+    },
+    "GodBarn/scripts/build_native.sh": {
+      "bytes": 611,
+      "sha256": "9018703afd6f0bc70ab16c12807ebeff15b170773c346971f3f01aef368a9436"
+    },
+    "GodBarn/scripts/bundle_companion.py": {
+      "bytes": 6742,
+      "sha256": "c50cb0ed7f9bf55578fc79515fa761e5e3e41521a469d5fd794ab69cfe91ec8c"
+    },
+    "GodBarn/scripts/deploy_bifrost_barn.sh": {
+      "bytes": 3617,
+      "sha256": "92037ee74c56f1536d06819e031020f738c78bb3e20b7315ad1611e7828549b9"
+    },
+    "GodBarn/scripts/install_bifrost_barn.py": {
+      "bytes": 28114,
+      "sha256": "7c0b647bfeb9d9fd50d2767f833a4e0c301a1a4f08e9d9403e0e97346ce5173f"
+    },
+    "GodBarn/scripts/pack_bifrost_artwork.py": {
+      "bytes": 12317,
+      "sha256": "18b5d88ba31e5794018a07351b56e1a7ec698ebe44005bb95d65b01817483ae1"
+    },
+    "GodBarn/scripts/prepare_archive.py": {
+      "bytes": 9997,
+      "sha256": "68474a7d8e1875935cb82b1882b53773d8bbf696e2bacd87fefa60d2b711130b"
+    },
+    "GodBarn/scripts/prepare_assets.py": {
+      "bytes": 14523,
+      "sha256": "ae4b4033c6e2e106b2c6ff7900f559c51bbb4d1b66a98bab2e8bd44116c10e17"
+    },
+    "GodBarn/scripts/prepare_encyclopedia.py": {
+      "bytes": 10470,
+      "sha256": "9d2c123b6a498d4e87259cd88c98f6146c24a9c1edbfb2ca402741a50983985d"
+    },
+    "GodBarn/scripts/prepare_helpers.py": {
+      "bytes": 10465,
+      "sha256": "9c51ea501f3cb72ba695c155e3cfb4e0ed5a9eb53a09e411707cbef2f15201e1"
+    },
+    "GodBarn/scripts/prepare_progression.py": {
+      "bytes": 6904,
+      "sha256": "275b2ebe225185112e53dc98803de18f0019623c657df3d15cdd12e959863a34"
+    },
+    "GodBarn/scripts/prepare_skin.py": {
+      "bytes": 10271,
+      "sha256": "5e940e450b1d9c3cbddaa559381895f0e1b1fc11852233f9256a8ce6e84c4324"
+    },
+    "GodBarn/scripts/prepare_untabbed.py": {
+      "bytes": 7713,
+      "sha256": "b53cda14f70af7a1eae5a9f5ee3f2a4cf13611058061747f72de1183f3e3dc42"
+    },
+    "GodBarn/scripts/preview_integration.py": {
+      "bytes": 9881,
+      "sha256": "248ee60379e35c2dfd97f95ced9776d55d7d6c2d0be6afbbd70a790c28e8055e"
+    },
+    "GodBarn/scripts/recover_catalog.py": {
+      "bytes": 24445,
+      "sha256": "9fb267d41ed53676d696489446c764f49623c8ad7e369f10ffd04ccd5269bf0e"
+    },
+    "GodBarn/scripts/recover_labels.py": {
+      "bytes": 11799,
+      "sha256": "0b16467a8de07a81b904349f74b7f70f908d6f5b1f656bd842d352c1435d2b27"
+    },
+    "GodBarn/scripts/verify_resources.py": {
+      "bytes": 10630,
+      "sha256": "f32df621b2aa2d3d7bdb20f176473bcc1ac0e430fd990f8f1dcfef9f564bf9be"
+    },
+    "GodBarn/seasonal.py": {
+      "bytes": 4326,
+      "sha256": "7abba7dfc1b8a21bc44b231507bf66cf0d588d79e6dfe61d890f875f89edef95"
+    },
+    "GodBarn/server.py": {
+      "bytes": 40036,
+      "sha256": "bc04a1a56ce70a5d8aa65c3b08afd5f21026196b4b8460ec3687b3ac269dbc9c"
+    },
+    "GodBarn/static/app.js": {
+      "bytes": 108809,
+      "sha256": "b8fd15ff2be1b995aae8d67ee58cc89817b6db28548beaa49d09ece382b2f724"
+    },
+    "GodBarn/static/error.html": {
+      "bytes": 1575,
+      "sha256": "6b710de93d1a554efcf0d755302755ce667706783abab6490ffc7916cbd3af92"
+    },
+    "GodBarn/static/farmville.css": {
+      "bytes": 45001,
+      "sha256": "6ea4fdc404e7a8ea9aa0985ee493e2619f41fc5088d6e55d8c6c0a3c97ae86ee"
+    },
+    "GodBarn/static/index.html": {
+      "bytes": 830,
+      "sha256": "dbd0826b7fcb2fec3863e3236d1b152f691ea2c2c17e775149f3c51c75707715"
+    },
+    "GodBarn/static/style.css": {
+      "bytes": 43705,
+      "sha256": "9216b98c92322db86b4c19f39984831aed67169c9f8a45a3fc704d35358f69c7"
+    },
+    "GodBarn/static/touch.js": {
+      "bytes": 28667,
+      "sha256": "adf5f03965d36ca044d27e6453b4cd37108abf7e2f25ca94b33627990fea81da"
+    },
+    "GodBarn/tests/catalog_ui.test.cjs": {
+      "bytes": 12664,
+      "sha256": "450376ef7c5f5694da2b167efc8948cd8b14a63a7f0acb09fd5bb6748abf2201"
+    },
+    "GodBarn/tests/game_script_observer.test.cjs": {
+      "bytes": 11191,
+      "sha256": "e4728f1c4ea9831340062b2174610ba8ac2905e67d934e32bbbbfd787196d22b"
+    },
+    "GodBarn/tests/helpers_ui.test.cjs": {
+      "bytes": 21073,
+      "sha256": "b5c5abd465802dfb4f3f3fb3bfdfff1086ae2b8ffbd38bac80610d1d6e79fc9b"
+    },
+    "GodBarn/tests/test_archive.py": {
+      "bytes": 4659,
+      "sha256": "14cd0a5e35d98a2c551670fce427a7300dc09eaccdcb7399fa071df33e7467fd"
+    },
+    "GodBarn/tests/test_bifrost_artwork_pack.py": {
+      "bytes": 11251,
+      "sha256": "a6cb421b903b930361f02b17acf088fff0216cd87a996ee443719f97092aeeff"
+    },
+    "GodBarn/tests/test_bifrost_barn_deploy.py": {
+      "bytes": 23682,
+      "sha256": "6e6f684758da3045f994eb7dee4762405198a2e9efdd16d0f8611209683dee03"
+    },
+    "GodBarn/tests/test_brand_wordmark.py": {
+      "bytes": 2545,
+      "sha256": "1b5718215ca996281ce95024822181e34f6256f2aba67b09db9e3254d6917bf4"
+    },
+    "GodBarn/tests/test_bundle_companion.py": {
+      "bytes": 11311,
+      "sha256": "17ef3eef1c63386bac619b8d3d10661c36bbf7e979bb482e74d3b34b1aac018d"
+    },
+    "GodBarn/tests/test_catalog_recovery.py": {
+      "bytes": 11938,
+      "sha256": "cefc61bd66ffbafae20a954b39636a017fd0cb52a2cf71d20015d7c7752e383c"
+    },
+    "GodBarn/tests/test_catalog_tools.py": {
+      "bytes": 6375,
+      "sha256": "9ce2cc4539bea7f047c7b295ba3d0cd9ceedc95a0e192d651e31a5caf88d7d24"
+    },
+    "GodBarn/tests/test_catalog_ui.py": {
+      "bytes": 1010,
+      "sha256": "49952122b346eebfdd402d00efe0cff050955a5ba420d23c75e74cb1dc45c84f"
+    },
+    "GodBarn/tests/test_encyclopedia.py": {
+      "bytes": 13063,
+      "sha256": "f92276d3debb0c9ae53804b544ce884a9c245c04dfe03fd4649d291bbae594c2"
+    },
+    "GodBarn/tests/test_engine.py": {
+      "bytes": 14165,
+      "sha256": "15fa05876e68b8faea6d54f8f8578a43b7fefb1d7473d08b586584fc4d0d5214"
+    },
+    "GodBarn/tests/test_five_priority_integration.py": {
+      "bytes": 7510,
+      "sha256": "1b753fc95ecccd97a4c571db17190b079246e68d5a4a0278ff6c4a6e380a7146"
+    },
+    "GodBarn/tests/test_game_script_js.py": {
+      "bytes": 1216,
+      "sha256": "4e8b12c23b4ca047898aa8818d732222f36f6f7bc7e40c459bd710e491ce63e5"
+    },
+    "GodBarn/tests/test_helper_tools.py": {
+      "bytes": 21258,
+      "sha256": "e776437e5e5952ef13965bcf4ac52cb0c68cb2afe0b092f8da65b24e4327ae31"
+    },
+    "GodBarn/tests/test_helpers_integration.py": {
+      "bytes": 6461,
+      "sha256": "053a7979c1908fcf8ba9f6662116d47ab6159abc1c46322a16678211d9376484"
+    },
+    "GodBarn/tests/test_helpers_ui.py": {
+      "bytes": 1000,
+      "sha256": "ae95bb4d5c0ff0701b1f6defebaf1a3069067d2d35cf218dd9acd1852a2436b3"
+    },
+    "GodBarn/tests/test_integration.py": {
+      "bytes": 45815,
+      "sha256": "852404700b51c152bf4db89b6db8ed0d5f8b15e5bda1aca5138de78c3061298e"
+    },
+    "GodBarn/tests/test_label_recovery.py": {
+      "bytes": 9438,
+      "sha256": "8362e7364c6bf1ec81dd1d11ea0aad2f6e68a30153c77a19ec3fcc421323f137"
+    },
+    "GodBarn/tests/test_levels.py": {
+      "bytes": 1053,
+      "sha256": "810c6a481323ce6ebc30cf35d7b41f1acf2683443a1bf9fd8b37e8660c329589"
+    },
+    "GodBarn/tests/test_peaceful.py": {
+      "bytes": 3183,
+      "sha256": "4b68c4997493ddd74a6340b3566c54f541a930cc345a2d37deab65f733acafe3"
+    },
+    "GodBarn/tests/test_prepare_untabbed.py": {
+      "bytes": 6309,
+      "sha256": "7b02033cf03c6bd76f88b9ceed93eceb97d5b52d539f8b539c91fef38ab0cf85"
+    },
+    "GodBarn/tests/test_progression_tools.py": {
+      "bytes": 7375,
+      "sha256": "f5b8b05a24e3dc194f3da08efe11fd24d2b33079d2bd452b57d4122a663d8b98"
+    },
+    "GodBarn/tests/test_resource_bootstrap.py": {
+      "bytes": 19392,
+      "sha256": "06421e72b05f8eed17b70ca873fc479fc11120c266a4b10572bd3a999e34bbb5"
+    },
+    "GodBarn/tests/test_seasonal.py": {
+      "bytes": 5671,
+      "sha256": "5a99c565b81f96545eaad884dc0505e54193ce32920e46380fd8e5a8794617ca"
+    },
+    "GodBarn/tests/test_server.py": {
+      "bytes": 24827,
+      "sha256": "ba99a136007993d9db0bee932f409a615a4868c807f4d499f44e6bb32622ec81"
+    },
+    "GodBarn/tests/test_untabbed.py": {
+      "bytes": 13632,
+      "sha256": "012df4095851da934ac76904095116a7582256502e0929012f4264ece061f919"
+    },
+    "GodBarn/tests/test_untabbed_ui.py": {
+      "bytes": 1002,
+      "sha256": "7a4758ace3eb44a99c0cec651203c4e33a0cc9e1573e4ede8b82f5d25393f1ca"
+    },
+    "GodBarn/tests/touch_layout.test.cjs": {
+      "bytes": 27812,
+      "sha256": "1a8c758c7f59b47930b0f2d5883aa88558ffdb727d0eefcac423f4176f469f20"
+    },
+    "GodBarn/tests/untabbed_ui.test.cjs": {
+      "bytes": 8091,
+      "sha256": "3e81b797931fb151de07ec298f93f3d7143b506117f7e151d1ddafbbe5370107"
+    },
+    "HANDOVER_STATUS.md": {
+      "bytes": 6658,
+      "sha256": "ffe52f2c27ccaed059b3e61db00f2bdfda034d601a86bae4c4fa63e51590b00f"
+    },
+    "LICENSE": {
+      "bytes": 35149,
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    "PrivateInputs.expected.json": {
+      "bytes": 369299,
+      "sha256": "39987da1e007eb22b3fcf2efc2ef08bd180a0ad1aaf6101eca8f6815ef58e167"
+    },
+    "README.md": {
+      "bytes": 12662,
+      "sha256": "07a89bb8fa95a4b8249c5f45ef68b90dcc2ec73aafe3a1aa4fd5e29d90e0d990"
+    },
+    "RESOURCE_SETUP_RECOVERY.patch": {
+      "bytes": 225183,
+      "sha256": "b6e1e5cb8f5b7327751db114c0d631a2007d4a5dbb3aa7af837d0d830f5744d3"
+    },
+    "SOURCE_NOTICE.md": {
+      "bytes": 1346,
+      "sha256": "06f27b4d050b02515e21fdd33ca2a0768d05212e2dd6fb7f728e81b450c17586"
+    },
+    "START_HERE.sh": {
+      "bytes": 2169,
+      "sha256": "4c3a8e711f43e568bb3e19522de4c94efdf407d7139f73d1e0323f1415606d71"
+    },
+    "START_MAC.command": {
+      "bytes": 2116,
+      "sha256": "75e9c0e2a304052510466df5f29a7412b7a02ea7a3b4836b76dd7a4d7dfb58b6"
+    },
+    "TAKEOVER.md": {
+      "bytes": 5919,
+      "sha256": "80dc5e3fd222b0dda4cb0b32473b1c8805a1232f90bb6c87419251f85f27fafd"
+    },
+    "UPLOAD_TO_GITHUB.md": {
+      "bytes": 2506,
+      "sha256": "48c70094985cd0a1c0cfae602042db6642383439fcd6b2cb68cbd26fcfa5e252"
+    },
+    "WORLD_READINESS.md": {
+      "bytes": 12964,
+      "sha256": "fdf1e84f885a24c5604b8e5d915a82fead7fa1de4f8921b7389cb6a380bc7839"
+    },
+    "Wave 3.md": {
+      "bytes": 42613,
+      "sha256": "cda9445bb2c077d021c1ace68a4607419d3831b8518e577ae54075617665f42c"
+    },
+    "conftest.py": {
+      "bytes": 6724,
+      "sha256": "d4124fe6d6e93c87ec51e5bb662dffd0c5f961635422454a12ef266da44306c8"
+    },
+    "docs/DEVELOPMENT.md": {
+      "bytes": 10804,
+      "sha256": "c84ba02d95cad87ff3a75e5f488b47182d2174130a819d83a0b46483d998e136"
+    },
+    "docs/MAC_ACCEPTANCE.md": {
+      "bytes": 13096,
+      "sha256": "b51172a0e7d86351aab18e1df4668b59922b7e85c04d1b58e351b96d25d1f58d"
+    },
+    "docs/PLAY_ON_MAC.md": {
+      "bytes": 8350,
+      "sha256": "31b4cfecf38676192f16588bd95f2bcb4a0b5b3dfa1e23b93c76274e58a825d4"
+    },
+    "docs/PLAY_ON_SERVER.md": {
+      "bytes": 4919,
+      "sha256": "5ea0035961be78c0b817302a523d1ba5d461a2c5e50ff118d1ff467f65810018"
+    },
+    "docs/RESOURCE_SETUP.md": {
+      "bytes": 5660,
+      "sha256": "75a729e96cebe582a04881889d438638b28f8ee9910c6d04b0dca3eb277bbc00"
+    },
+    "docs/UBUNTU_ACCEPTANCE.md": {
+      "bytes": 13025,
+      "sha256": "b634d135c1cf620a77025a0f7bf508173d84b50f3b7b6d5ecb4b90d488fdf95d"
+    },
+    "docs/briefs/ASSET_REVIEW_NO_MAC.md": {
+      "bytes": 6551,
+      "sha256": "e6f198bdfce6005c09047728ad3393631fb25a68c2e9fa2bef4d01becb696915"
+    },
+    "docs/briefs/M02_PREREQUISITE_WIRING_SCOPE.md": {
+      "bytes": 5559,
+      "sha256": "5a60f633f36e24b8b343eba477de5adbd16b9ed35c67c680ce859cbcff335181"
+    },
+    "docs/briefs/SHELF_FIRST_BATCH.md": {
+      "bytes": 7061,
+      "sha256": "69d25ce6e874f43e74765a44c237dd5bb3c7cd0321173a97f5afef1ae50f5173"
+    },
+    "docs/briefs/W15_MISTLETOE_HOLIDAY_SEASON.md": {
+      "bytes": 6425,
+      "sha256": "e1be2b95d697f2a8e9ff73e8690ff7584e980e46941427ddc1d1fd0feb149362"
+    },
+    "docs/briefs/WORLD_ROSTER_AND_REPURPOSING.md": {
+      "bytes": 11824,
+      "sha256": "bcb216dec4f55ff9dadd82c76ad78668d042e12c1bac6642f63a5d9d45466ceb"
+    },
+    "pytest.ini": {
+      "bytes": 108,
+      "sha256": "4a385576eb1ae329cd5315770d96d63c50a4311743907e0c07d678fbfa752776"
+    },
+    "tools/build-public-ruffle.py": {
+      "bytes": 19787,
+      "sha256": "30d86146dbf33abb56e2959efbecceb223145bc052fa8a6dfa72c5c98a61c51e"
+    },
+    "tools/check-doc-links.py": {
+      "bytes": 2039,
+      "sha256": "de0c683160fe7a4efeaa779a3e3b3994c7ed22c74246e4a2ee6700601f47c2a6"
+    },
+    "tools/check-source.py": {
+      "bytes": 4907,
+      "sha256": "b90f02de901caea713769f1ea438c97fc4c3255e20d77bdfefea7699fe6e424d"
+    },
+    "tools/native_resources.py": {
+      "bytes": 15814,
+      "sha256": "eabe4b7f1f071d19035dbc762e43890a6064fd88a30b905ec04ca88b4c85ff92"
+    },
+    "tools/player-setup.py": {
+      "bytes": 9540,
+      "sha256": "799ad63156c73e3476048564ee5e38f5f504858e5f90b0dce26f6d28111fa46e"
+    },
+    "tools/player_install.py": {
+      "bytes": 7422,
+      "sha256": "d332f54270f459c6646985853938b3e86baac438891dea590b391e1404867659"
+    },
+    "tools/preparation-requirements.txt": {
+      "bytes": 50,
+      "sha256": "cee652c1a41c049c91e0929e11f3b1347722f86405c38cf034bdb333bacef707"
+    },
+    "tools/prepare-browser-runtime.py": {
+      "bytes": 5415,
+      "sha256": "8c579f8a036d804f51f4b282b56a45ac77c883f334f176b449748a282abfa94f"
+    },
+    "tools/private-inputs.py": {
+      "bytes": 4480,
+      "sha256": "a9b9ff2a88349c7fce58306c243c9ec78f709a8b16da9b634532a7078e45d7e3"
+    },
+    "tools/public-resources.json": {
+      "bytes": 8468,
+      "sha256": "fead81f47373f9eba61f5ad79016f4a660e05af764a18b85c8301f8ffd47ee0d"
+    },
+    "tools/public-ruffle-build/Cargo.lock": {
+      "bytes": 190676,
+      "sha256": "c63981977750d740c24a70fdd1582f9f4b40f9bb8bf18fd8ed2790e576628e0d"
+    },
+    "tools/public-ruffle-build/README.md": {
+      "bytes": 4501,
+      "sha256": "5c9199ef321bbced33a8c9faad9ad49b62b06577f06e94cf20ddd10a770617a0"
+    },
+    "tools/public-ruffle-build/build-runtime.py": {
+      "bytes": 9578,
+      "sha256": "a761b283d051f78fe18c85e9a5cb09733d17dc65b4c2a5cf86b064d453154e04"
+    },
+    "tools/public-ruffle-build/gc-pacing.patch": {
+      "bytes": 1069,
+      "sha256": "502ad9492deb3b5904d1b09c535ec521345b86b17b8db16145de862046515d14"
+    },
+    "tools/public-ruffle-build/historical-runtime-files.json": {
+      "bytes": 1157,
+      "sha256": "dbf47a0423d55d36e2201099f4922f9a4fe03417fc39c75809d14099f25f2e4c"
+    },
+    "tools/public-ruffle-build/package-lock.json": {
+      "bytes": 721670,
+      "sha256": "fff432c1cd6a43c1b907dca1ebe438d38f28748368060cd1769bb9cb5bf05147"
+    },
+    "tools/public-ruffle-build/public-build.json": {
+      "bytes": 1054,
+      "sha256": "2ea937ff40770f4654c273d3219144e67b5a69cf47b2a1c773de377d9cf0afd4"
+    },
+    "tools/public-ruffle-build/runtime-files.json": {
+      "bytes": 1157,
+      "sha256": "45ae72215a43427082a8a15b8f55d350d752143910f1430d8cf95e0def466836"
+    },
+    "tools/public-ruffle-build/version-seal.json": {
+      "bytes": 295,
+      "sha256": "e31f5d3d95f93dc508f2921263917950907ca616a16f63ba7fbb0a6656f4db5a"
+    },
+    "tools/public-ruffle-toolchains.json": {
+      "bytes": 3110,
+      "sha256": "80730d80f097224c84ac0bdb7c24115656f325be770eff8c9a56b55521411622"
+    },
+    "tools/public_downloads.py": {
+      "bytes": 5904,
+      "sha256": "6cf1bd583cb20a19a090c283c0d9d385691052e2db06884d0e2dd768f575f5ba"
+    },
+    "tools/refresh-source-manifest.py": {
+      "bytes": 2496,
+      "sha256": "a5591fb6e0dac30d789561833681136a8e707c892430ae402beedd15a06da081"
+    },
+    "tools/rehearse-linux-host.py": {
+      "bytes": 23108,
+      "sha256": "0c845e198c80fdf3bff1893cac0348c616e04dad40661587b5cbff1f28c6b55f"
+    },
+    "tools/resource_pipeline.py": {
+      "bytes": 19484,
+      "sha256": "7ec31b5d5ed94217208a20a86c160bd912e1ebce392a96ab115738933aec949b"
+    },
+    "tools/review-originals.py": {
+      "bytes": 14334,
+      "sha256": "d00dd3e39322b6b9b5bdf02bef0e0327cc77d12525b3e4c994a7c8f6e906b840"
+    },
+    "tools/setup-resources.py": {
+      "bytes": 1557,
+      "sha256": "a974f98b80c4e5ee111ec3b42489c37409974f6ce9435562a19e9d58fede7bf5"
+    },
+    "tools/setup-wizard.py": {
+      "bytes": 27145,
+      "sha256": "9c872dff429cb1b7556397305d983a4a25d39b97ccfd1bb980b054fea52fdae2"
+    },
+    "tools/test_conftest_unrun.py": {
+      "bytes": 10338,
+      "sha256": "c5d6f48edc0ee512578b29b29616bfbe5995808d50c78851bc54a561a044a209"
+    },
+    "tools/test_doc_consistency.py": {
+      "bytes": 6795,
+      "sha256": "d9a6a2f84e57a99e21309cc6323e62b179cf95617776af3b56e324400a6ab0ff"
+    },
+    "tools/test_handoff_tools.py": {
+      "bytes": 7404,
+      "sha256": "d145933d879d174e642f6a85844f651ff51717babd5dacd0d661464b9928511f"
+    },
+    "tools/test_installer_sequence.py": {
+      "bytes": 6680,
+      "sha256": "a71d798f3322eef3381dd8d6f3a8857cab709bca5686662c206f559cffa83613"
+    },
+    "tools/test_mac_build_preflight.py": {
+      "bytes": 6175,
+      "sha256": "0225af48b1aa00a4245fd0416f705399d81d56fc3e3324b8bd1eb621c8ae045a"
+    },
+    "tools/test_native_resources.py": {
+      "bytes": 8760,
+      "sha256": "279527d59e6dd8564eaac0a27ade992a1681ce0b2e7f8a1d2d912cecd6e4d1a7"
+    },
+    "tools/test_native_staging.py": {
+      "bytes": 12803,
+      "sha256": "5b80afe419af9d87bfe6781a907a09ac7422ed13988653f6d56b368318ef072d"
+    },
+    "tools/test_player_install.py": {
+      "bytes": 4340,
+      "sha256": "4857047a0357538f401143677a964e67dc675f75ff9de3d9971e0cadb42487cd"
+    },
+    "tools/test_player_setup.py": {
+      "bytes": 9600,
+      "sha256": "5d0fd4063581d094c01e22dd676bde030246e1f1ad22c00ad25044c975f2e4d2"
+    },
+    "tools/test_prereq_eval.py": {
+      "bytes": 33656,
+      "sha256": "ea75e84801f6b557c97a895c6f7fd633fa4f5d25ad712bbe4c4c5eed7487069e"
+    },
+    "tools/test_prerequisite_dispositions.py": {
+      "bytes": 18229,
+      "sha256": "4cea4978684f870a903994f5e6ab30791446b2809628c097371805e2e890ffd2"
+    },
+    "tools/test_public_browser_stage.py": {
+      "bytes": 10640,
+      "sha256": "2f6fb2d0f21f18c16c7ea249e7c6eca42a8c188b17d6f0bc1c0bd3432512ef44"
+    },
+    "tools/test_public_install_flow.py": {
+      "bytes": 11032,
+      "sha256": "9b540129dfee0dec56c826857683cdd0ad940339e84461793d45b044d72aca75"
+    },
+    "tools/test_public_ruffle.py": {
+      "bytes": 22978,
+      "sha256": "2cfa8d3027ea22b6209b5ca716f49a88fd3cfe4c50db58404c93cc2b5de88136"
+    },
+    "tools/test_rehearse_linux_host.py": {
+      "bytes": 11668,
+      "sha256": "6f99ce82a4f6c9822ad24839fd25e513d8c305a70814e9bf9e04d40e24b2d2a1"
+    },
+    "tools/test_resource_pipeline.py": {
+      "bytes": 14102,
+      "sha256": "4d784f81f49557eed0c046bb1ea6e831dbdaa2681a6d9aa5262f8a74445d06e8"
+    },
+    "tools/test_review_originals.py": {
+      "bytes": 10763,
+      "sha256": "d3972b67401bf08e0586cfab52d615c29688277ce5144786ea90e7b21060ba40"
+    },
+    "tools/test_setup_wizard.py": {
+      "bytes": 15253,
+      "sha256": "4dbf0c0da0f8c2e92530208d9a9e5f2a93a5a041e94dd5f0fff7abaf7d125fa3"
+    }
+  },
+  "githubDesktopHandoff": {
+    "date": "2026-10-26",
+    "ownerPerformsUpload": true,
+    "preservedCRLFSourceFiles": [
+      "FarmVillage/macOS/Documentation/FEATURE_INVITATION_INVENTORY.csv"
+    ],
+    "previousCheckoutGitHistoryCopied": false,
+    "repository": "https://github.com/jannsenburke/FarmVillage-GodBarn",
+    "repositoryAtDesktopCreation": "https://github.com/jannsenburke/FarmVillage-The-GodBarn-Edition",
+    "resourceBootstrap": "implemented; real clean-clone platform/gameplay qualification remains open",
+    "reviewedSourceCommit": "f1f8eeccfffabbd0793588877099eb535583fb32",
+    "sourceOnlyCopy": true
+  },
+  "handoverPreparation": {
+    "applicationSourceCommit": "70b5c02908c5567ead26e045026d22bca0d5e258",
+    "date": "2026-10-25",
+    "newBuildOrGameplayAcceptance": false,
+    "privateHistoryImported": false,
+    "publicResourceBootstrap": "unfinished; recovered changes retained only as unapplied RESOURCE_SETUP_RECOVERY.patch",
+    "recoveredChangedFiles": [
+      "BIFROST_SETUP.md",
+      "FarmVillage/macOS/FarmVillage.xcodeproj/project.pbxproj",
+      "FarmVillage/macOS/Scripts/build.sh",
+      "FarmVillage/macOS/Scripts/bundle-runtime.sh",
+      "FarmVillage/macOS/Scripts/prepare-heritage-assets.py",
+      "FarmVillage/macOS/Scripts/prepare-portable-release.py",
+      "FarmVillage/ruffle_runtime/0.7.1-farmvillage-gc1/.farmvillage-ruffle.json",
+      "FarmVillage/ruffle_runtime/0.7.1-farmvillage-gc1/provenance/README.md",
+      "FarmVillage/ruffle_runtime/0.7.1-farmvillage-gc1/provenance/build-runtime.py",
+      "FarmVillage/ruffle_runtime/0.7.1-farmvillage-gc1/provenance/historical-runtime-files.json",
+      "FarmVillage/ruffle_runtime/0.7.1-farmvillage-gc1/provenance/public-build.json",
+      "FarmVillage/ruffle_runtime/0.7.1-farmvillage-gc1/provenance/runtime-files.json",
+      "FarmVillage/runtime_compatibility.py",
+      "GodBarn/scripts/bootstrap_resources.py",
+      "GodBarn/scripts/bundle_companion.py",
+      "GodBarn/scripts/prepare_assets.py",
+      "GodBarn/scripts/prepare_helpers.py",
+      "GodBarn/scripts/prepare_progression.py",
+      "GodBarn/scripts/prepare_skin.py",
+      "GodBarn/scripts/prepare_untabbed.py",
+      "GodBarn/scripts/recover_catalog.py",
+      "GodBarn/scripts/verify_resources.py",
+      "GodBarn/tests/test_bundle_companion.py",
+      "GodBarn/tests/test_resource_bootstrap.py",
+      "README.md",
+      "SERVER_SETUP.md",
+      "START_HERE.sh",
+      "UPLOAD_TO_GITHUB.md",
+      "docs/RESOURCE_SETUP.md",
+      "tools/native_resources.py",
+      "tools/public-resources.json",
+      "tools/public-ruffle-toolchains.json",
+      "tools/setup-wizard.py",
+      "tools/test_native_resources.py",
+      "tools/test_public_host.py",
+      "tools/test_setup_wizard.py"
+    ]
+  },
+  "kind": "history-free-macos-browser-source-handoff",
+  "localSourceRepair": {
+    "accountOrCredentialAccess": false,
+    "date": "2026-10-26",
+    "newBuildOrGameplayAcceptance": false,
+    "optionalWorkflowTemplate": ".github/source-checks.yml.example",
+    "previousLocalCommit": "c4804c64f1a8480cfd15682663059c7c6cdabbba",
+    "recoveredSourcePreservedIn": "RESOURCE_SETUP_RECOVERY.patch",
+    "restoredReviewedApplicationBase": "70b5c02908c5567ead26e045026d22bca0d5e258",
+    "scope": "Resolve README conflict, return incomplete applied draft to preserved patch, correct upload instructions, reject sealed conflict markers",
+    "uploadStrategy": "Reviewed source copied into the existing owner-created GitHub Desktop repository; Desktop initial commit and text attributes preserved; previous checkout Git history not copied; owner publishes through browser-authenticated Desktop"
+  },
+  "playerSetupRevision": {
+    "accountOrCredentialAccess": false,
+    "actualNativeBuildOrUbuntuInstallationRun": false,
+    "archiveBytes": 19126111395,
+    "audiences": [
+      "native Mac players",
+      "Ubuntu/Linux server owners with browser players"
+    ],
+    "automaticPublicResourceBootstrapImplemented": true,
+    "date": "2026-10-26",
+    "entryPoints": {
+      "mac": "START_MAC.command",
+      "serverSource": "START_HERE.sh"
+    },
+    "gameplayRulesChanged": false,
+    "largeDownloadsPerformedForThisUpdate": false,
+    "ownerPerformsUpload": true,
+    "previousSourceCommit": "e413303645e7b792e264a2e6961de06a61eb60a4",
+    "qualification": "Synthetic/mocked installer coverage only; complete public install and gameplay unrun"
+  },
+  "priorPlayerSetupRevision": {
+    "actualNativeBuildOrUbuntuInstallationRun": false,
+    "archiveBytes": 19126111395,
+    "audiences": [
+      "native Mac players with large local installation",
+      "Ubuntu/Linux server owners with browser players"
+    ],
+    "automaticPublicResourceBootstrapImplemented": false,
+    "date": "2026-10-26",
+    "entryPoints": {
+      "mac": "START_MAC.command",
+      "serverSource": "START_HERE.sh"
+    },
+    "expectedPreparedInputsMissingInSourceClone": 1843,
+    "gameplayRulesChanged": false,
+    "macArtworkDownload": "A complete native app can fetch the four original archives on first Create/Open Farm",
+    "qualifiedPeakSpaceBytes": null,
+    "serverArtworkDownload": "Prepared-release installer requires already-extracted artwork",
+    "sourceWizard": "read-only readiness guide; no game install/download/build",
+    "syntheticSetupTestsPassed": 62
+  },
+  "publicDocumentationRevision": {
+    "applicationCodeChanged": false,
+    "date": "2026-10-26",
+    "resourceBootstrap": "unfinished",
+    "scope": "Public project README, contributor quick start, resource sources and gaps, development guide, neutral maintainer entry points, historical validation labels"
+  },
+  "publicForkProvenance": {
+    "applicationCodeChanged": false,
+    "currentTree": "reviewed source only",
+    "date": "2026-10-26",
+    "gameResourcesDownloaded": false,
+    "privateWorkingHistoryImported": false,
+    "repository": "https://github.com/jannsenburke/FarmVillage-GodBarn",
+    "upstreamCommit": "2dc25ca24032041a8b68d299b861eb2d4d449653",
+    "upstreamHistory": "original public commits retained",
+    "upstreamRepository": "https://github.com/AcidCaos/farmvillage"
+  },
+  "publicResourceInstaller": {
+    "date": "2026-10-26",
+    "exactFreshInstallPeakQualified": false,
+    "freeSpaceReserveGiB": 5,
+    "localPublicPlayerRequiresSourceVerifiedExplicitPin": true,
+    "minimumFreeGiB": {
+      "mac": 110,
+      "serverResources": 80
+    },
+    "nativeData": "chosen resource root/player-data; PLAY_MAC.command shortcut",
+    "newGameplayAcceptance": false,
+    "noPrivateInputsRequired": true,
+    "packBudgetGiB": {
+      "mac": 100,
+      "serverResources": 70
+    },
+    "preparedOutputOutsideSource": true,
+    "resourcePreparation": "tools/setup-resources.py; tools/resource_pipeline.py",
+    "serverData": "separate explicitly chosen managed target",
+    "sources": "tools/public-resources.json; tools/public-ruffle-toolchains.json",
+    "strictDefaultRuntimePinPreserved": true,
+    "supersedes": "Earlier readiness-only setup and unapplied recovery status"
+  },
+  "resealScope": "Reviewed source changes only; gameplay/platform acceptance requires a separate new record",
+  "reviewedFromCommit": "6083cf7008f933466c9e68f6939c1f76d4b15357",
+  "schema": 1,
+  "source": {
+    "FarmVillage": "62809de497404588f133e38740242864717af0c0",
+    "GodBarn": "31245bb8bc2848908667ae0cf95af8244531bff5"
+  },
+  "transformations": {
+    "FarmVillage/FLASH.md": {
+      "exportSHA256": "d7a2733f2c6fd64d41eef851949ab170edd40af20f22c0c4afe1185e74970913",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "239a0e0b1b8fcee04d75acdcc394da55bb536877944d6a3b3855e654d19d02d2"
+    },
+    "FarmVillage/LINUX.md": {
+      "exportSHA256": "b6fb6465e46e349f4af6534d9fe3181962ab6d4c4534f5204fba9d2c6d6f70b4",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "b5abd10b29159f93bce3072b2e66d3b046a991491af4ab0fc743b0654f69e592"
+    },
+    "FarmVillage/README.md": {
+      "exportSHA256": "40829e666472c851e73dee592ca1aa4e98aeabbb81fa9389c1d564c29c0a171e",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "a64c646f97fde5472b69f8e729a66e591f7868ad54b64f630025734d02dcb053"
+    },
+    "FarmVillage/macOS/Documentation/AGENT_PLAYBOOK.md": {
+      "exportSHA256": "8549b1d7e52f98145b8f8e3497e9aa4d521ef957268785df8958a8354c27f0c5",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "8a4ec0b79d0dc0dd411ad3784781f0efecff6cf757de133758cc34080bd1fc76"
+    },
+    "FarmVillage/macOS/Documentation/AMF_BATCH_ISOLATION.md": {
+      "exportSHA256": "414607770da76c7c4b564d5db75b3f6b437432eb6eacdb9c64a404d32b96a930",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "4cfc5b4078a721d88e8b15cf63dd13d22f62ac73e25126d909dc88aa4a7aaf31"
+    },
+    "FarmVillage/macOS/Documentation/ANIMAL_RENAME_2026-10-24.md": {
+      "exportSHA256": "6409c5ab47dbbde40c48e1c395a759ecb0485fa1a0670ff2e33ebd7ce471fd9b",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "f5fd87b9901820ab503e0022d882cba06c72ec3585b6fa9cc6bb44917264732f"
+    },
+    "FarmVillage/macOS/Documentation/BUSHEL_RECOVERY_2026-10-24.md": {
+      "exportSHA256": "4331444f8b4931a82fb9638b52057fd07368a53381b2f46bf21d14f1c59e4e5b",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "afb0ec1bc49fdd8014ab3af33c1ae7bcfa85472e9ff19f6c24b23ccdf0b84e23"
+    },
+    "FarmVillage/macOS/Documentation/BUSHEL_RESTORATION_2026-10-24.md": {
+      "exportSHA256": "31a87dcbf1d730f3e4cd1354ed28bc9cec350f3ddeb98f15016cb616a4da463f",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "52389e2c6784d4b0020393ed12f36dd4edff1b90c0f51b117ccf470b035d50c5"
+    },
+    "FarmVillage/macOS/Documentation/CLIENT_ACTION_AUDIT.md": {
+      "exportSHA256": "1905a9fd05c504c198b536568c9159d5ae8686a5a77133d998fc37501de5b1e1",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "5bedfccbbff1df370025b886abd9b7941878babbf4e98c013ff44e377e0326d2"
+    },
+    "FarmVillage/macOS/Documentation/COTTAGE_INVITATIONS_CLIENT_2026-10-24.md": {
+      "exportSHA256": "9c0875e4c1e0d63e50944b8fe853181d24e6e6de56db771e035c0564a0c01fcd",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "846b0b85f6f2b02cc68c6d44100282dba394dd84303ac61833a75c35596eb3db"
+    },
+    "FarmVillage/macOS/Documentation/COTTAGE_RECOVERY_2026-10-23.md": {
+      "exportSHA256": "dae698c27ae6af713ae4c3023a6b99a2850912141ecfc5e8a5b2ba1c2c072c52",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "c38230ecc748476f0440f3a740a5caefa6ecda6aaf0532624772793a2c05c854"
+    },
+    "FarmVillage/macOS/Documentation/CRAFTING_EXPANSION_PLAN_2026-10-24.md": {
+      "exportSHA256": "da933c97569f53eefae1cb4159b8d2987d9ee9abc535fec97f922e6d8fff6691",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "6cfa0c695add992b31e622e0c7db2f6f132028c6fa214ab54b68a47bfce9f338"
+    },
+    "FarmVillage/macOS/Documentation/CRAFTING_PROGRESSION_2026-10-24.md": {
+      "exportSHA256": "979bbc71e89a81966bfbfb9aaba3e26df98b677d91732f905202fa0147e8e036",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "dc2ba48750c57d6592c69e92c181442563088956f24fac47627bba005f0519a4"
+    },
+    "FarmVillage/macOS/Documentation/ClientPatches/IMAGE_ROW_LINEAR_2026-10-24.md": {
+      "exportSHA256": "39f0ee148e48270392b6a6841a29b43d2185ed71f344afa5c7f92b81f07180f2",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "176b9f38a1c47bcfb97110477d5bf19b8fbc51b5e0475183301d1a9a2c0ca38d"
+    },
+    "FarmVillage/macOS/Documentation/ClientPatches/INVENTORY_TAB_ART_2026-10-24.md": {
+      "exportSHA256": "efba11f125132e10929458c8c0e3673e0f92722ed9ffeee220431d4928cf9b34",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "79619b81ec5aed0fe163086b47461e296cbe3ff3ab2d57c5b936eae0afe36ca6"
+    },
+    "FarmVillage/macOS/Documentation/ClientPatches/MARKETSTALL_EXPANSION_2026-10-24.md": {
+      "exportSHA256": "b3187e7748a49c5e0c73d5003917f06c86de0068c0a167fc18e15a8ce244988b",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "92d4dd11b4452f11c0dc6143614b1dd65253693736027f0446c062a3286eae76"
+    },
+    "FarmVillage/macOS/Documentation/ClientPatches/QUEST_REWARD_CLOSE_2026-10-24.md": {
+      "exportSHA256": "4f2a864a90aeee2a0352fdaa40299d7d91651500cd48bc666284722684f2b8a7",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "1fb9702c49a61edd74a9d895b1994084dec182bbe3e0d2a22dbd6900e54ee109"
+    },
+    "FarmVillage/macOS/Documentation/ClientPatches/README.md": {
+      "exportSHA256": "fd77d9a73fb673e95bf7c794c1e4edfaa4dcf47fe77f9c7a074135e9cf8a6c17",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "2b79d890e825d0e96100c9f1be5d86e46ef3f108c66ed7a44edc6804074f1f0e"
+    },
+    "FarmVillage/macOS/Documentation/ClientPatches/Ruffle-runtime-candidate.md": {
+      "exportSHA256": "5e8d9af6d18c96ea651185973a147b9508842b7a52da4c5c884961477a92f04a",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "cd495cf8b0e5d738ad19f0d05eacb7df0ca5874d1d76c07905bde2a99458d7ae"
+    },
+    "FarmVillage/macOS/Documentation/ClientPatches/WIDGET_STORAGE_VISIBILITY_2026-10-24.md": {
+      "exportSHA256": "07fb29bfec0b5682d9b4b8b8286c55b14f84adef829e4ea24f8e2803daf66f1f",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "5a34611d82f4b3986343b2e48c096573d8f4750284a4f433eb7f0c8d0c70e9f0"
+    },
+    "FarmVillage/macOS/Documentation/FEATURE_AVAILABILITY.md": {
+      "exportSHA256": "f64916e2e7b9eb1ffbd74da9bb2f2924c23f143a1d675e171be359f1ba591c51",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "a0a354013e6640130d946ec6ff003c0baabab22df4362e96ac972b73b360f3f5"
+    },
+    "FarmVillage/macOS/Documentation/GOD_BARN.md": {
+      "exportSHA256": "63b8e1bbba238cd32b87541c4821b47bccf2b97e98d0145cfcd88f6b860cb301",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "fa7395aaf805471f69ba3623fccea82ab0c9334693ba15df94dd5b34aece6e2e"
+    },
+    "FarmVillage/macOS/Documentation/HERB_GARDEN_HARVEST_2026-10-24.md": {
+      "exportSHA256": "0e572196a5fa942459cd1746af991b01c661332b55c64533ed61d9cbe520cd26",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "7a7dfea0209a517170a83433021f4012e8ee75b6f2f5b7418c3289d97bb278c1"
+    },
+    "FarmVillage/macOS/Documentation/HERITAGE_PRICING_2026-10-23.md": {
+      "exportSHA256": "62354c0c3ae70fcc77a69b5222bfc6594d3cc1fe2861acd23cf85b9e1fba14cc",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "68e098ee9521c6ca4fc7497e51aaf43d780711efe37b2b40ab858d8088499caa"
+    },
+    "FarmVillage/macOS/Documentation/IRRIGATION_REWARDS_2026-10-24.md": {
+      "exportSHA256": "96b9c9a6509b5c4b463819bd1003dadf0a137a63ba3e342247c9935d98aa1443",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "0ce7b0f20a04fa7dbb433356fc46c36f0ee0cdab04142dc6603ade50eeb8b430"
+    },
+    "FarmVillage/macOS/Documentation/LAMB_RAISING_STATUS.md": {
+      "exportSHA256": "c3a2653ce57d8787449b80f263527419cddc2066508c7cccfcf2d352d7b34075",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "7a906a415d80c0d75a55ddf42efa59da6c12d408cf5d2690736e20159e534c7e"
+    },
+    "FarmVillage/macOS/Documentation/LEVEL_PROGRESSION_AUDIT.md": {
+      "exportSHA256": "e7ecb4325894b36ae6a1b9a0c0a413ff4e6f3408c0b973078338e3852e524009",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "a1a7c0bbdb7250b5503f8f8800107546bc52fbf7546ee26a6b6afae752a5ae6c"
+    },
+    "FarmVillage/macOS/Documentation/MARKET_STALL_OWNED_STATE_2026-10-24.md": {
+      "exportSHA256": "e82b94df529225851a3e5d7e9bc0dad1c7eb3e1fcff6ef6259dddf2de369a757",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "c060f377157d818ff7a95ede4c098249343a638b906db570ac74e6983c3d0be8"
+    },
+    "FarmVillage/macOS/Documentation/MASTERY_SIGNS_2026-10-24.md": {
+      "exportSHA256": "4d64d7e9879b9772116c6b4ee3728d14b68698d36f6915d92405e2aea0c00fd1",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "be7809343b2bcef0e242967c22af3ede2e0b5b57d5c271edc134bbca0c731df4"
+    },
+    "FarmVillage/macOS/Documentation/MINIGAMES_STATUS.md": {
+      "exportSHA256": "49a39882ace464a74b67d1736f7aa2cbc21ab8f620362cca426fa7a2154d2826",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "a03acb2d027e2fd7b3267ef93383e8788475efe56306d579b9c42fee0284e7d0"
+    },
+    "FarmVillage/macOS/Documentation/OTHER_MECHANICS_STATUS.md": {
+      "exportSHA256": "e51b0b53b93a47ffaf7597b74c45c4a58e06407264f835d7f72b4c3454506d11",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "1fa3fa1c326dc8fe282bc3bec15046e83b0f9d72197ef94fc8b545cf0fddcec1"
+    },
+    "FarmVillage/macOS/Documentation/PAID_BUILDING_ACTIONS_2026-10-24.md": {
+      "exportSHA256": "a2f565119d611005c47d6c3830733c9917b8f43bfa5aacefc8931e555e787eda",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "ade8ec7f2fa4e7eaa98e38658b93ea99dea780a85a1b85400825f9425aef6136"
+    },
+    "FarmVillage/macOS/Documentation/PETS_STATUS.md": {
+      "exportSHA256": "cc1f5b31033c5e4bae0da20947881aa0d47d2c688c08ed51ac06fd80125ae913",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "a5e64ff72da32fd45c2f71773678cde267475854eb18bd8410a6d39fbeac3020"
+    },
+    "FarmVillage/macOS/Documentation/QUEST_COMPLETION_RECOVERY_2026-10-24.md": {
+      "exportSHA256": "f0c0e6c956cc22eb324d91898fca484e5c3a405e823490e3d68bb9b0fce5385a",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "57aef3552724b452969dbaa2bce5925d51e504c0b53d12dc929bd077ef44a436"
+    },
+    "FarmVillage/macOS/Documentation/TRAVEL_WINDOW_RECOVERY.md": {
+      "exportSHA256": "ff2a873d297356394e4474a9d31cb007cdfd84dba330ff10d21634c230727b19",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "e6c17f3502dcf5547d6c27fecab7d9aefefdde66445676c8dbe782be94e96521"
+    },
+    "FarmVillage/macOS/Documentation/WATER_FUEL_ENERGY_2026-10-23.md": {
+      "exportSHA256": "b4da37b83c71e6586896a369e7be91470c8fca4d8483f819f9cbd57f045fb705",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "0f028a6955cca23af6e0cfd965f2e4ac5f173c42de45164256e6992c40b79c1d"
+    },
+    "FarmVillage/macOS/Documentation/WORLD_SCORE_QUEST_REWARDS_2026-10-24.md": {
+      "exportSHA256": "e95cf077492b23ac8de1a6c5fe42d1bda59e8a20eaaff8a4ec9ba2d978bbac1f",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "578f7d45cf2a17dbdd7036d8d098747f62bd25d555216c56034fae225c93736d"
+    },
+    "FarmVillage/macOS/Documentation/WORLD_TRAVEL_STATUS.md": {
+      "exportSHA256": "fae596e1bfb52207d1b88a182b3e049992968473b89f47cd18a98c6712b898ec",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "df90e5f22a7b89f0adaa843efd78f18a50a8e5a20cf0568d564eb8e1d94af886"
+    },
+    "FarmVillage/macOS/Documentation/Worlds/CoveWave2/COTTAGE.md": {
+      "exportSHA256": "cc752ce3bba0e4bb5b2fc0f83c26810d9cccc8638cd51efb575995bf00197bbf",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "7cbb4e66144c9a2e858d5cdf762128b7fb1d1ce16b1df213f9b68b690520931c"
+    },
+    "FarmVillage/macOS/Documentation/Worlds/Expansion20261023/STORAGE_CONTRACT.md": {
+      "exportSHA256": "561132e35a857857f1020b8c6b9f6b2332e8f6da7c7d73c29b53dbbf39c82c2b",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "9ac0906550ceca6aecfc08628581a0dbf95126476660e0c5665c8644d751036a"
+    },
+    "FarmVillage/macOS/Documentation/Worlds/NEXT_WORLD_RULES.md": {
+      "exportSHA256": "2c5898a9fd22a798533c8224db4474c9039c00a7a705d2bc0b1116065669c03a",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "4fb90243315e967ba24eceafc4e1bd0b0387312a44ec4a7bde0d68ef65b3ec47"
+    },
+    "FarmVillage/macOS/Documentation/Worlds/README.md": {
+      "exportSHA256": "eada059d8a98d4b8bae6f40912ebcf1c2b9695c60339c2b915c2daf903976b07",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "5d70e0cd30ab269a52b1ba9af3529adb965db95bd0193b35a14a2d4229b66503"
+    },
+    "FarmVillage/macOS/Documentation/Worlds/SESSION_B_HTOWN_CRAFTING_2026-10-24.md": {
+      "exportSHA256": "7cde9f12ae91503ae5e8f1a23ede7f426d0e5d5a71e5227b64143adb6d4f5467",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "99cfbb189a0ba37deb0f40619d2ad7bd34ad462f3bbe18b824a6b0efbabac38a"
+    },
+    "FarmVillage/macOS/Documentation/Worlds/THEMED_AUTHORED_CASH_2026-10-24.md": {
+      "exportSHA256": "b8a7142788dbe72cfa7df65a6f7fb9f26477cd3dfdc5d8c779757c95c165967d",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "2f24d16660b083cce96277b57522b9ee9d4bc024ffd267506103cfce0555ef8a"
+    },
+    "FarmVillage/macOS/Documentation/Worlds/THEMED_BASIC_PRESENTATION_AUDIT_2026-10-24.md": {
+      "exportSHA256": "0fb324c2e5bc34ed8c9b92ca36058a1875ca47163c5ff4d128d46153478d50b1",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "dc2691dcfc6638f9657efa208ed533e957665acfbe9fa32559f2e132c64f580c"
+    },
+    "FarmVillage/macOS/Documentation/Worlds/THEMED_MARKET_PRESENTATION_2026-10-24.md": {
+      "exportSHA256": "4fda6c5f41065f163e3b69bcf25f4bec1ca21273ed829b329bf5f401d1159ad9",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "ca9995bd99f038fee08c98626ace1495841e880e8e4e9625e90c012f603107b5"
+    },
+    "FarmVillage/macOS/Documentation/Worlds/THEMED_WORLDS.md": {
+      "exportSHA256": "d22e32a45a4824861d019e76e7c0305b7a12bc44a35fffa602fcc1b5cffb4b3b",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "747efee1393220c4a436dcf2b1826184b4ce0ec693365963b7540f57bc3ad883"
+    },
+    "FarmVillage/macOS/Documentation/Worlds/W01_HOME_OCTOBER_2026-10-24.md": {
+      "exportSHA256": "96e21c20757fcb4bd16aed93698373ace0877041684fe0444254408455b6074c",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "257b2414d6ab5ec30f2624c71a8f554a610b4ed56b7de51a22f20760b8d088d9"
+    },
+    "FarmVillage/macOS/Documentation/Worlds/W04_COVE_GEOMETRY_2026-10-24.md": {
+      "exportSHA256": "e5d69b91045bbae8bdc87c3f6bca19aef81c619e345436bea201de9284a3e684",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "eedf1b62258a56e7dfccc976c80493303f59e127ee03aafc3f7e0a585bc8bb53"
+    },
+    "FarmVillage/macOS/Documentation/Worlds/WORLD_CURRENCY_CONVERSION.md": {
+      "exportSHA256": "18402b2da360ea7307612e856c1c526919e620245a01ace545f9f2c1a800c205",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "d298485b6e9a2a030c4234b3334b8c89bd3e371c26d559546024f6095915fc11"
+    },
+    "FarmVillage/macOS/README.md": {
+      "exportSHA256": "216cd58a5cf31e1fe43cb182945461c4b6c4e996fbc5960a6fa311a2dffc5c91",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "2f6ce70454a767cfa565546d0f5a886953e16d07deec390495a3b1fdafe8a121"
+    },
+    "FarmVillage/portable/Linux/diagnose-saves.py": {
+      "exportSHA256": "8d020105d90772f83353e4bdf7fe3903eae65a8622096e885fa4df048c1ae206",
+      "reason": "Developer deployment values replaced by examples",
+      "sourceSHA256": "56bb0bc39406fafb939c3df838b23a3362fbaf17a09501eac4ee842a4f346e33"
+    },
+    "FarmVillage/portable/Linux/install-fresh-world.py": {
+      "exportSHA256": "1bb317b6b8e3d460c690c62c0f9fcb8ecb8cb2335253b036a7fd11aba40f076e",
+      "reason": "Developer deployment values replaced by examples",
+      "sourceSHA256": "4da4c6466149f37157ff37ea3a1b190e5bff36af454c8ba48f547711c0d4c416"
+    },
+    "FarmVillage/portable/Linux/install-service.sh": {
+      "exportSHA256": "b92f7988248ca8533870d062f43dfea2b2c12eaa7beef50749d50e5510c291e5",
+      "reason": "Developer deployment values replaced by examples",
+      "sourceSHA256": "f75eec8b9729d375549b3a40f3ff46d004d72cdea1f584a36f0e5726df5724c5"
+    },
+    "FarmVillage/portable/Linux/start-server.sh": {
+      "exportSHA256": "8258ff2dee288bb747ca60b1bf06552322ba56f4c49f1711fa2a206b430466e7",
+      "reason": "Developer deployment values replaced by examples",
+      "sourceSHA256": "ba0ce7d6daabcbac5207bdf0d4c1fc6c9bb1c1dd415ee2517ba088bbe9d46542"
+    },
+    "FarmVillage/portable/Linux/test_server_runner.py": {
+      "exportSHA256": "d4eafaa2d78dd6792f72097a9568cc6014c86b16495e772f1005465b2a0b7319",
+      "reason": "Developer deployment values replaced by examples",
+      "sourceSHA256": "3f5a6ec80b79c5fa29ce3e5cdeb3312b8b1a50e6a17ffcf64b8fbdcd14e93e80"
+    },
+    "FarmVillage/portable/bifrost-update/build-bifrost-update.py": {
+      "exportSHA256": "eb73c5c8afdda00d71a6cd8810039d6f96de0c98c6eb2ac039a153451e6e49f9",
+      "reason": "Developer deployment values replaced by examples",
+      "sourceSHA256": "49c0008f20a00ca2ac0909fb128edc5b490bf3524fd6bea86b9c7d76e8cb093c"
+    },
+    "FarmVillage/portable/bifrost-update/manage-bifrost.sh": {
+      "exportSHA256": "158611ae03f451ff8ce23be1fb19ab88ec339f7b0495b0f899a92fe117432725",
+      "reason": "Developer deployment values replaced by examples",
+      "sourceSHA256": "9f51b2caebd28fffe941270671b5e5d39cd12e013b4cbbf553a1b99eb2239ea7"
+    },
+    "FarmVillage/portable/bifrost-update/test_bifrost_update.py": {
+      "exportSHA256": "1d21873715c92621c4d2c1a85e635525ef52f95e2962462f2534a1e4e3baba89",
+      "reason": "Developer deployment values replaced by examples",
+      "sourceSHA256": "de8403c1215ed2d9c5b99b3ac4cc43723890df7557881a2fdddb56550db9a134"
+    },
+    "FarmVillage/portable/manage-bifrost.sh": {
+      "exportSHA256": "7c654e7aad72de4f811a9d6b7d605fd88b2de9089730548ebe6b1f2a8e01f60a",
+      "reason": "Developer deployment values replaced by examples",
+      "sourceSHA256": "4774823ccf23d2cf350aa9ba4766608869ee2fa468d3748cbebd50e313811862"
+    },
+    "FarmVillage/portable/neighborhood/test_neighborhood_host.py": {
+      "exportSHA256": "a5b859506feb72a81ec93fa92d832905c9dd6579130b51a4cfd953d62d57f726",
+      "reason": "Developer deployment values replaced by examples",
+      "sourceSHA256": "8d7e1b8d0222f545688f323012072461dd6d249c06cf4f493255080b2938dbd0"
+    },
+    "FarmVillage/portable/test_manage_bifrost.py": {
+      "exportSHA256": "6e3efbe2f035e32757c84d3dfd46bd3cd2731731fcb9d73bbda57d17b541d2ff",
+      "reason": "Developer deployment values replaced by examples",
+      "sourceSHA256": "2a7910a552900d604ffec29dcf6f5386590ccf352471aba6c4de42dc82e6da05"
+    },
+    "FarmVillage/templates/play.html": {
+      "exportSHA256": "eaa88e350619cdd952dde1c5601b820da1dda8e5b80eacdc19d74201eecd8e56",
+      "reason": "Exclude exact852-byte embedded notification-background PNG; authored CSS gradient retains badge geometry/counter DOM and every script byte",
+      "sourceSHA256": "3e8c2b976a7a45ffbcadf46028d22cdcb39b61044359a02db1800f623dadf20c"
+    },
+    "FarmVillage/templates/ruffle.html": {
+      "exportSHA256": "3189c8a3c6874e63440cc7bbd6446ed41b6cc9cc382b316e2eed8c04e596b97c",
+      "reason": "Exclude exact852-byte embedded notification-background PNG; authored CSS gradient retains badge geometry/counter DOM and every script byte",
+      "sourceSHA256": "02eb2aeffd3c92ad2fc7228a6ca1df48b4c9fffbfe289d69052d56ebccac5d1c"
+    },
+    "GodBarn/CREDITS.md": {
+      "exportSHA256": "d0fae0e7bc8b1efb7a667736cae6d4dce4d3885293b2b09613ce0fb61e8f524b",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "4fdd645ee536d2b20cce6a5df03c01ba6e04a28fa5771802a55468e7d47cacc1"
+    },
+    "GodBarn/HANDOFF.md": {
+      "exportSHA256": "ec705a4e4af824eddd065d9e792aa40117b261a1d96a658f71b82e191a560f54",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "847842fccca09a9a688eb99f3eaf6a9f7fb01fb78f6783742794b1b577b23590"
+    },
+    "GodBarn/README.md": {
+      "exportSHA256": "97771af8cbf7dbbef8c7abc76da4983d79a8aa86e851cc1356c214eefeee4379",
+      "reason": "Reviewed community handoff documentation: current-scope notice, portable examples and repaired source references; no new gameplay acceptance",
+      "sourceSHA256": "60a20766f46d269920a8508323d97cd74e3e9f5910f98a38e58c8722d6f67c35"
+    },
+    "GodBarn/integration.py": {
+      "exportSHA256": "a2a9d34dcb422a47af6f35ea4045a37ac81df54480ba3d058b5a650a692f05fa",
+      "reason": "Developer deployment values replaced by examples",
+      "sourceSHA256": "1a4de2c8ffcad09c7209b3e288c7bb344343fd12fa179f1950b782f97150f3f5"
+    },
+    "GodBarn/scripts/deploy_bifrost_barn.sh": {
+      "exportSHA256": "92037ee74c56f1536d06819e031020f738c78bb3e20b7315ad1611e7828549b9",
+      "reason": "Developer deployment values replaced by examples",
+      "sourceSHA256": "41f406f585edc968fb72b8116d6bbd2af20476b04f106a0fdfcee32473cc7032"
+    },
+    "GodBarn/scripts/install_bifrost_barn.py": {
+      "exportSHA256": "7c0b647bfeb9d9fd50d2767f833a4e0c301a1a4f08e9d9403e0e97346ce5173f",
+      "reason": "Developer deployment values replaced by examples",
+      "sourceSHA256": "53a40822bf8023a4e476d2cf6f13f654a402b30c643cdea65c3594b27a614e2b"
+    },
+    "GodBarn/tests/game_script_observer.test.cjs": {
+      "exportSHA256": "e4728f1c4ea9831340062b2174610ba8ac2905e67d934e32bbbbfd787196d22b",
+      "reason": "Developer deployment values replaced by examples",
+      "sourceSHA256": "2715bf756d41e28cfbd496030fe694b361b2e930cb01878918fd2066d553ddf1"
+    },
+    "GodBarn/tests/test_integration.py": {
+      "exportSHA256": "852404700b51c152bf4db89b6db8ed0d5f8b15e5bda1aca5138de78c3061298e",
+      "reason": "Developer deployment values replaced by examples",
+      "sourceSHA256": "ef41cb2869deccb8fcdf1e9c2ed517e3e1efcc43bd1de4e7bea5a9646d7c75d7"
+    }
+  }
+}

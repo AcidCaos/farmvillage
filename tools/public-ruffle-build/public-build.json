@@ -1,0 +1,24 @@
+{
+  "bootstrap_entry_point": "tools/build-public-ruffle.py",
+  "canonical_source_prefix": "/farmvillage-public-build",
+  "codec": "jpegxr",
+  "gameplay_acceptance": "No gameplay, native-window, Ubuntu or historical QA pass is conferred",
+  "historical_private_qa_sidecars": false,
+  "java": "Temurin 17.0.16+8",
+  "kind": "public-source-build-v1",
+  "node": "24.19.0",
+  "npm": "11.0.0",
+  "output_acceptance": "All twelve outputs are hashed in a verified host-local build receipt; the installer seals and binds the complete distribution manifest",
+  "rust": "1.99.1",
+  "schema": 1,
+  "source_patch_sha256": "502ad9492deb3b5904d1b09c535ec521345b86b17b8db16145de862046515d14",
+  "source_path_remapping": "Rust diagnostic/source paths and C file prefixes only; original upstream source and GC patch are unchanged",
+  "upstream": "https://github.com/ruffle-rs/ruffle.git",
+  "upstream_commit": "89a7049965f3090e706265670df309a5128233ac",
+  "variants": [
+    "web-wasm-extensions",
+    "web-wasm-mvp"
+  ],
+  "wasm_bindgen": "0.2.127",
+  "wasm_opt": false
+}

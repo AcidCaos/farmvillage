@@ -1,0 +1,5 @@
+# Auto detect text files and perform LF normalization
+* text=auto eol=lf
+
+# Preserve exact authored bytes covered by the source manifest.
+FarmVillage/macOS/Documentation/FEATURE_INVITATION_INVENTORY.csv -text
